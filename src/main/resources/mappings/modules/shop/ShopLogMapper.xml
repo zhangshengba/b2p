@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdut.b2p.modules.shop.mapper.ShopLogMapper">
+  <resultMap id="BaseResultMap" type="com.cdut.b2p.modules.shop.po.ShopLog">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="log_remote_addr" jdbcType="VARCHAR" property="logRemoteAddr" />
+    <result column="log_user_agent" jdbcType="VARCHAR" property="logUserAgent" />
+    <result column="log_request_uri" jdbcType="VARCHAR" property="logRequestUri" />
+    <result column="log_method" jdbcType="VARCHAR" property="logMethod" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.cdut.b2p.modules.shop.po.ShopLogWithBLOBs">
+    <result column="log_params" jdbcType="LONGVARCHAR" property="logParams" />
+    <result column="log_exception" jdbcType="LONGVARCHAR" property="logException" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, log_remote_addr, log_user_agent, log_request_uri, log_method, create_by, create_date, 
+    update_date
+  </sql>
+  <sql id="Blob_Column_List">
+    log_params, log_exception
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.cdut.b2p.modules.shop.po.ShopLogExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shop_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.cdut.b2p.modules.shop.po.ShopLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shop_log
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from shop_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cdut.b2p.modules.shop.po.ShopLogExample">
+    delete from shop_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cdut.b2p.modules.shop.po.ShopLogWithBLOBs">
+    insert into shop_log (id, log_remote_addr, log_user_agent, 
+      log_request_uri, log_method, create_by, 
+      create_date, update_date, log_params, 
+      log_exception)
+    values (#{id,jdbcType=VARCHAR}, #{logRemoteAddr,jdbcType=VARCHAR}, #{logUserAgent,jdbcType=VARCHAR}, 
+      #{logRequestUri,jdbcType=VARCHAR}, #{logMethod,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{logParams,jdbcType=LONGVARCHAR}, 
+      #{logException,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cdut.b2p.modules.shop.po.ShopLogWithBLOBs">
+    insert into shop_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="logRemoteAddr != null">
+        log_remote_addr,
+      </if>
+      <if test="logUserAgent != null">
+        log_user_agent,
+      </if>
+      <if test="logRequestUri != null">
+        log_request_uri,
+      </if>
+      <if test="logMethod != null">
+        log_method,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="logParams != null">
+        log_params,
+      </if>
+      <if test="logException != null">
+        log_exception,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="logRemoteAddr != null">
+        #{logRemoteAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="logUserAgent != null">
+        #{logUserAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="logRequestUri != null">
+        #{logRequestUri,jdbcType=VARCHAR},
+      </if>
+      <if test="logMethod != null">
+        #{logMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logParams != null">
+        #{logParams,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="logException != null">
+        #{logException,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cdut.b2p.modules.shop.po.ShopLogExample" resultType="java.lang.Long">
+    select count(*) from shop_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shop_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logRemoteAddr != null">
+        log_remote_addr = #{record.logRemoteAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logUserAgent != null">
+        log_user_agent = #{record.logUserAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logRequestUri != null">
+        log_request_uri = #{record.logRequestUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logMethod != null">
+        log_method = #{record.logMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDate != null">
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateDate != null">
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.logParams != null">
+        log_params = #{record.logParams,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.logException != null">
+        log_exception = #{record.logException,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update shop_log
+    set id = #{record.id,jdbcType=VARCHAR},
+      log_remote_addr = #{record.logRemoteAddr,jdbcType=VARCHAR},
+      log_user_agent = #{record.logUserAgent,jdbcType=VARCHAR},
+      log_request_uri = #{record.logRequestUri,jdbcType=VARCHAR},
+      log_method = #{record.logMethod,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      log_params = #{record.logParams,jdbcType=LONGVARCHAR},
+      log_exception = #{record.logException,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shop_log
+    set id = #{record.id,jdbcType=VARCHAR},
+      log_remote_addr = #{record.logRemoteAddr,jdbcType=VARCHAR},
+      log_user_agent = #{record.logUserAgent,jdbcType=VARCHAR},
+      log_request_uri = #{record.logRequestUri,jdbcType=VARCHAR},
+      log_method = #{record.logMethod,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cdut.b2p.modules.shop.po.ShopLogWithBLOBs">
+    update shop_log
+    <set>
+      <if test="logRemoteAddr != null">
+        log_remote_addr = #{logRemoteAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="logUserAgent != null">
+        log_user_agent = #{logUserAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="logRequestUri != null">
+        log_request_uri = #{logRequestUri,jdbcType=VARCHAR},
+      </if>
+      <if test="logMethod != null">
+        log_method = #{logMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logParams != null">
+        log_params = #{logParams,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="logException != null">
+        log_exception = #{logException,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cdut.b2p.modules.shop.po.ShopLogWithBLOBs">
+    update shop_log
+    set log_remote_addr = #{logRemoteAddr,jdbcType=VARCHAR},
+      log_user_agent = #{logUserAgent,jdbcType=VARCHAR},
+      log_request_uri = #{logRequestUri,jdbcType=VARCHAR},
+      log_method = #{logMethod,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      log_params = #{logParams,jdbcType=LONGVARCHAR},
+      log_exception = #{logException,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cdut.b2p.modules.shop.po.ShopLog">
+    update shop_log
+    set log_remote_addr = #{logRemoteAddr,jdbcType=VARCHAR},
+      log_user_agent = #{logUserAgent,jdbcType=VARCHAR},
+      log_request_uri = #{logRequestUri,jdbcType=VARCHAR},
+      log_method = #{logMethod,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
