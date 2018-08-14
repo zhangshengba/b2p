@@ -2,9 +2,6 @@ package com.cdut.b2p.modules.sys.controller;
 
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,7 +22,7 @@ import com.cdut.b2p.modules.sys.service.SysUserService;
  * @desc   有关管理员用户的处理类
  * @author zsb
  * @Date   2018/8/14
- *
+ * 
  */
 @Controller
 @RequestMapping("${sysPath}/admin")
@@ -48,7 +45,6 @@ public class SysUserController extends BaseController{
 		Model层
 		在注入对象时，首先会将其加载到Model层；再到传入目标处理方法中
 		*/
-		System.out.println("用户登录测试："+sysUser);
 		SysUser user=sysUserService.findSysUser(sysUser);
 		ModelAndView modelAndView=new ModelAndView();
 		if(user!=null) {
@@ -76,7 +72,8 @@ public class SysUserController extends BaseController{
 	 * @param sysUser
 	 * @return
 	 */
-	@RequestMapping(value = "${sysPath}/register", method = RequestMethod.POST)
+	
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(HttpServletResponse response,SysUser sysUser) {
 		ModelAndView model=new ModelAndView();
 		int count = sysUserService.addSysUser(sysUser);
@@ -88,7 +85,30 @@ public class SysUserController extends BaseController{
 		model.addObject("error","register");
 		return renderString(response, model);
 	}
-
+	/**
+	 * @desc 系统用户进入操作首页，进行查询相关信息
+	 * 个人信息【】
+	 * 新增订单信息【】
+	 * 新增商品【】
+	 * 新增注册用户【】
+	 * 新增浏览用户【】
+	 * 商品销售趋势表【】
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String Index(HttpServletResponse response,HttpServletRequest request) {
+		ModelAndView modelAndView=new ModelAndView();
+		//取出该回话过程中的用户信息
+		SysUser user=(SysUser) request.getSession().getAttribute("SYSUSER");
+		modelAndView.addObject("User", user);
+		//查询新增的用户数
+		//查询新增的商品数
+		//查询新增的订单数
+		//查询新增的浏览用户数
+		//统计价格趋势表
+		return renderString(response, modelAndView);
+	}
 	/**s
 	 * @desc 测试用例
 	 */
