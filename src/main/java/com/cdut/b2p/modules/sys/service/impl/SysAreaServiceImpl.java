@@ -1,5 +1,8 @@
 package com.cdut.b2p.modules.sys.service.impl;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.cdut.b2p.modules.sys.service.SysAreaService;
 
 /**
@@ -9,6 +12,9 @@ import com.cdut.b2p.modules.sys.service.SysAreaService;
  * @Date   2018/8/14
  *
  */
+
+@Service
+@Transactional
 public class SysAreaServiceImpl implements SysAreaService {
 
 }
