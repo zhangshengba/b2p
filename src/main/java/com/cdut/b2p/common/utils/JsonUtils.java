@@ -27,65 +27,17 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 
-public class JsonMapper extends ObjectMapper {
+public class JsonUtils extends ObjectMapper {
 
 	private static final long serialVersionUID = 1L;
 
-	private static Logger logger = LoggerFactory.getLogger(JsonMapper.class);
-
-	private static JsonMapper mapper;
-
-	public JsonMapper() {
-		this(Include.NON_EMPTY);
-	}
-
-	public JsonMapper(Include include) {
-		// 设置输出时包含属性的风格
-		if (include != null) {
-			this.setSerializationInclusion(include);
-		}
-		// 允许单引号、允许不带引号的字段名称
-		this.enableSimple();
-		// 设置输入时忽略在JSON字符串中存在但Java对象实际没有的属性
-		this.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        // 空值处理为空串
-		this.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>(){
-			@Override
-			public void serialize(Object value, JsonGenerator jgen,
-					SerializerProvider provider) throws IOException,
-					JsonProcessingException {
-				jgen.writeString("");
-			}
-        });
-		// 进行HTML解码。
-		this.registerModule(new SimpleModule().addSerializer(String.class, new JsonSerializer<String>(){
-			@Override
-			public void serialize(String value, JsonGenerator jgen,
-					SerializerProvider provider) throws IOException,
-					JsonProcessingException {
-				jgen.writeString(StringEscapeUtils.unescapeHtml4(value));
-			}
-        }));
-		// 设置时区
-		this.setTimeZone(TimeZone.getDefault());//getTimeZone("GMT+8:00")
-	}
-
-	/**
-	 * 创建只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串的Mapper,建议在外部接口中使用.
-	 */
-	public static JsonMapper getInstance() {
+	private static Logger logger = LoggerFactory.getLogger(JsonUtils.class);
+	
+	private static JsonUtils mapper;
+	
+	public static JsonUtils getInstance() {
 		if (mapper == null){
-			mapper = new JsonMapper().enableSimple();
-		}
-		return mapper;
-	}
-
-	/**
-	 * 创建只输出初始值被改变的属性到Json字符串的Mapper, 最节约的存储方式，建议在内部接口中使用。
-	 */
-	public static JsonMapper nonDefaultMapper() {
-		if (mapper == null){
-			mapper = new JsonMapper(Include.NON_DEFAULT);
+			mapper = new JsonUtils().enableSimple();
 		}
 		return mapper;
 	}
@@ -178,7 +130,7 @@ public class JsonMapper extends ObjectMapper {
 	 * 為False時時使用Enum的name()函數來讀寫Enum, 默認為False.
 	 * 注意本函數一定要在Mapper創建後, 所有的讀寫動作之前調用.
 	 */
-	public JsonMapper enableEnumUseToString() {
+	public JsonUtils enableEnumUseToString() {
 		this.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
 		this.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
 		return this;
@@ -188,7 +140,7 @@ public class JsonMapper extends ObjectMapper {
 	 * 支持使用Jaxb的Annotation，使得POJO上的annotation不用与Jackson耦合。
 	 * 默认会先查找jaxb的annotation，如果找不到再找jackson的。
 	 */
-	public JsonMapper enableJaxbAnnotation() {
+	public JsonUtils enableJaxbAnnotation() {
 		JaxbAnnotationModule module = new JaxbAnnotationModule();
 		this.registerModule(module);
 		return this;
@@ -198,26 +150,19 @@ public class JsonMapper extends ObjectMapper {
 	 * 允许单引号
 	 * 允许不带引号的字段名称
 	 */
-	public JsonMapper enableSimple() {
+	public JsonUtils enableSimple() {
 		this.configure(Feature.ALLOW_SINGLE_QUOTES, true);
 		this.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
 		return this;
 	}
 	
 	/**
-	 * 取出Mapper做进一步的设置或使用其他序列化API.
-	 */
-	public ObjectMapper getMapper() {
-		return this;
-	}
-
-	/**
 	 * 对象转换为JSON字符串
 	 * @param object
 	 * @return
 	 */
 	public static String toJsonString(Object object){
-		return JsonMapper.getInstance().toJson(object);
+		return JsonUtils.getInstance().toJson(object);
 	}
 	
 	/**
@@ -227,8 +172,7 @@ public class JsonMapper extends ObjectMapper {
 	 * @return
 	 */
 	public static Object fromJsonString(String jsonString, Class<?> clazz){
-		return JsonMapper.getInstance().fromJson(jsonString, clazz);
+		return JsonUtils.getInstance().fromJson(jsonString, clazz);
 	}
-	
 	
 }

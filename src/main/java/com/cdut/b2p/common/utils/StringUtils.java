@@ -2,18 +2,13 @@ package com.cdut.b2p.common.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.LocaleResolver;
 import com.google.common.collect.Lists;
-import com.cdut.b2p.common.utils.Encodes;
-import com.cdut.b2p.common.utils.SpringContextHolder;
+import com.cdut.b2p.common.utils.EncodeUtils;
 
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	
@@ -124,7 +119,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		if (txt == null){
 			return "";
 		}
-		return replace(replace(Encodes.escapeHtml(txt), "\n", "<br/>"), "\t", "&nbsp; &nbsp; ");
+		return replace(replace(EncodeUtils.escapeHtml(txt), "\n", "<br/>"), "\t", "&nbsp; &nbsp; ");
 	}
 
 	/**
@@ -252,16 +247,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 */
 	public static Integer toInteger(Object val){
 		return toLong(val).intValue();
-	}
-	
-	/**
-	 * 获得i18n字符串
-	 */
-	public static String getMessage(String code, Object[] args) {
-		LocaleResolver localLocaleResolver = (LocaleResolver) SpringContextHolder.getBean(LocaleResolver.class);
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();  
-		Locale localLocale = localLocaleResolver.resolveLocale(request);
-		return SpringContextHolder.getApplicationContext().getMessage(code, args, localLocale);
 	}
 	
 	/**

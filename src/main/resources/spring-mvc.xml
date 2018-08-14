@@ -24,7 +24,6 @@
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 	
-	<!-- 注解驱动：配置处理器映射器和适配器 -->
 	<mvc:annotation-driven />
 	
 	<!-- 定义视图文件解析 -->
@@ -50,22 +49,23 @@
 			<mvc:exclude-mapping path="${sysPath}/login"/>
 			<bean class="com.cdut.b2p.modules.sys.interceptor.LogInterceptor" />
 		</mvc:interceptor>
+	</mvc:interceptors>
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="${shopPath}/**" />
+			<mvc:exclude-mapping path="${shopPath}/"/>
+			<mvc:exclude-mapping path="${shopPath}/login"/>
+			<bean class="com.cdut.b2p.modules.shop.interceptor.LogInterceptor" />
+		</mvc:interceptor>
 	</mvc:interceptors>-->
-	
-	<!-- 支持Shiro对Controller的方法级AOP安全控制 begin
-	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
-		<property name="proxyTargetClass" value="true" />
-	</bean>-->
-	
+
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="exceptionMappings">
 			<props>
-				<prop key="org.apache.shiro.authz.UnauthorizedException">error/403</prop>
 				<prop key="java.lang.Throwable">error/500</prop>
 			</props>
 			</property>
 	</bean>
-	<!-- 支持Shiro对Controller的方法级AOP安全控制 end -->
 	
 	<!-- 上传文件拦截，设置最大上传文件大小   10M=10*1024*1024(B)=10485760 bytes -->  
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  

@@ -5,6 +5,6 @@ import org.springframework.stereotype.Controller;
 import com.cdut.b2p.common.controller.BaseController;
 
 @Controller
-public class ShopSellerController extends BaseController{
+public class ShopChatController extends BaseController{
 
 }

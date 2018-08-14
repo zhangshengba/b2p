@@ -5,7 +5,7 @@ import java.io.StringWriter;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class Exceptions {
+public class ExceptionUtils {
 
 	/**
 	 * 将CheckedException转换为UncheckedException.

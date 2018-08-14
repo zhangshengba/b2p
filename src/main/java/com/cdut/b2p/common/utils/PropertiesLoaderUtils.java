@@ -12,17 +12,16 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
-import com.cdut.b2p.common.utils.PropertiesLoader;
 
-public class PropertiesLoader {
+public class PropertiesLoaderUtils {
 
-	private static Logger logger = LoggerFactory.getLogger(PropertiesLoader.class);
+	private static Logger logger = LoggerFactory.getLogger(PropertiesLoaderUtils.class);
 
 	private static ResourceLoader resourceLoader = new DefaultResourceLoader();
 
 	private final Properties properties;
 
-	public PropertiesLoader(String... resourcesPaths) {
+	public PropertiesLoaderUtils(String... resourcesPaths) {
 		properties = loadProperties(resourcesPaths);
 	}
 

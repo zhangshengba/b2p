@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Map;
 import org.springframework.core.io.DefaultResourceLoader;
 import com.google.common.collect.Maps;
-import com.cdut.b2p.common.utils.PropertiesLoader;
+import com.cdut.b2p.common.utils.PropertiesLoaderUtils;
 import com.cdut.b2p.common.utils.StringUtils;
 import com.ckfinder.connector.ServletContextFactory;
 
@@ -41,7 +41,7 @@ public class Global {
 	/**
 	 * 属性文件加载对象
 	 */
-	private static PropertiesLoader loader = new PropertiesLoader("b2p.properties");
+	private static PropertiesLoaderUtils loader = new PropertiesLoaderUtils("b2p.properties");
 
 	/**
 	 * 显示/隐藏
