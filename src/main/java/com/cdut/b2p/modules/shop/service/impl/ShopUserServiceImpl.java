@@ -1,5 +1,7 @@
 package com.cdut.b2p.modules.shop.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +20,9 @@ public class ShopUserServiceImpl implements ShopUserService{
 	
 	@Transactional(readOnly = false)
 	public void saveUser(ShopUser shopUser) {
-		
-		shopUserMapper.insert(shopUser);
+		ShopUserExample sue = new ShopUserExample();
+		sue.or().andUserNicknameEqualTo("1");
+		List<ShopUser> list= shopUserMapper.selectByExample(sue);
 	}
 
 }
