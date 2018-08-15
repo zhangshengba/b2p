@@ -39,14 +39,13 @@ public class SysUserController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String  login(HttpServletResponse response,HttpServletRequest request,Model model,SysUser sysUser) {
-		System.out.println(model.containsAttribute("sysUser"));
+	public String  login(HttpServletResponse response,HttpServletRequest request,SysUser sysUser) {
+		ModelAndView model=new ModelAndView();
 		/*
 		Model层
 		在注入对象时，首先会将其加载到Model层；再到传入目标处理方法中
 		*/
 		SysUser user=sysUserService.findSysUser(sysUser);
-		ModelAndView modelAndView=new ModelAndView();
 		if(user!=null) {
 			SysLogWithBLOBs sysLog=new SysLogWithBLOBs();
 			sysLog.setLogRemoteAddr(request.getRemoteAddr());
@@ -56,14 +55,14 @@ public class SysUserController extends BaseController{
 			//登录成功，记录登录日志
 			//将用户保存到Session中
 			request.getSession().setAttribute("SYSUSER", user);
-			modelAndView.addObject("register", "register");
+			model.addObject("Message", "index");
 			return renderString(response, model);
 		}
 		//表示账号或邮箱密码错误
 		//map.put("error", "login");
 		
-		modelAndView.addObject("error", "login");
-		return renderString(response, modelAndView);
+		model.addObject("Message", "error");
+		return renderString(response, model);
 	}
 	/**
 	 * @desc 用户【管理员】注册处理
@@ -76,13 +75,19 @@ public class SysUserController extends BaseController{
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(HttpServletResponse response,SysUser sysUser) {
 		ModelAndView model=new ModelAndView();
+		System.out.println("注册信息:"+sysUser);
+		
+		if(sysUser.getUserImage()==null||sysUser.getUserImage()=="") {
+			sysUser.setUserImage("../dist/img/user2-160x160.jpg");
+		}
+		System.out.println("注册信息:"+sysUser);
 		int count = sysUserService.addSysUser(sysUser);
 		if(count!=0) {
-			model.addObject("index", "index");
+			model.addObject("Message", "index");
 			return renderString(response, model);
 		}
-		//表示表示注册信息错误
-		model.addObject("error","register");
+		//表示表示注册信息失败
+		model.addObject("Message","error");
 		return renderString(response, model);
 	}
 	/**

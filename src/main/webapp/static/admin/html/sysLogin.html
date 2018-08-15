@@ -28,15 +28,15 @@
   	function login(){
   		var username=document.loginForm.userName.value;
   		var password=document.loginForm.userPassword.value;
-  		if(username==""){
-  			document.loginForm.userName.focus();
+  		if(username==""||username.length<11){
+  			document.loginForm.username.focus();
   			$("#warn-username").html("账号有误");
   			return;
   		}
   		else{
   			$("#warn-username").hide();
   		}
-  		if(password==""){
+  		if(password==""||password.length<11){
   			document.loginForm.userPassword.focus();
   			$("#warn-password").html("密码有误");
   			return ;
@@ -56,16 +56,21 @@
 		dataType:"json",
 		async:true,
 		success:function(data){ 
-			alert(data.model.error);
 			/*data是想服务器请求的数据--->alert("数据：" + data);alert(typeof data);*/
-			if(data.model.error=="login"){
+			if(data.model.Message=="index"){
+				$("#warn-username").hide();
 				/*先假设...*/
 				window.location.href="index.html";
-				flag=false;
+				flag=true;
+			}
+			else if(data.model.Message=="error"){
+				alert(data.model.Message);
+				$("#warn").append("账号或密码错误！");
+				return  false;
 			}
 			else{
-				flag=true;
-			}	
+				return false;
+			}
 
 		}
 	});
@@ -80,7 +85,7 @@
   
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
-
+	<p style="color:red" id="warn"><p>
     <form name="loginForm" method="post">
       <div class="form-group has-feedback">
         <input type="text" id="username" class="form-control" placeholder="Account / Email" name="userName"
