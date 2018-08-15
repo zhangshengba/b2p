@@ -53,6 +53,11 @@ public class SysLog implements Serializable {
      */
     private Date createDate;
 
+    /**
+     * 操作提交的数据
+     */
+    private String logParams;
+
     private static final long serialVersionUID = 1L;
 
     public String getId() {
@@ -127,6 +132,14 @@ public class SysLog implements Serializable {
         this.createDate = createDate;
     }
 
+    public String getLogParams() {
+        return logParams;
+    }
+
+    public void setLogParams(String logParams) {
+        this.logParams = logParams;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -147,7 +160,8 @@ public class SysLog implements Serializable {
             && (this.getLogRequestUri() == null ? other.getLogRequestUri() == null : this.getLogRequestUri().equals(other.getLogRequestUri()))
             && (this.getLogMethod() == null ? other.getLogMethod() == null : this.getLogMethod().equals(other.getLogMethod()))
             && (this.getCreateBy() == null ? other.getCreateBy() == null : this.getCreateBy().equals(other.getCreateBy()))
-            && (this.getCreateDate() == null ? other.getCreateDate() == null : this.getCreateDate().equals(other.getCreateDate()));
+            && (this.getCreateDate() == null ? other.getCreateDate() == null : this.getCreateDate().equals(other.getCreateDate()))
+            && (this.getLogParams() == null ? other.getLogParams() == null : this.getLogParams().equals(other.getLogParams()));
     }
 
     @Override
@@ -163,6 +177,7 @@ public class SysLog implements Serializable {
         result = prime * result + ((getLogMethod() == null) ? 0 : getLogMethod().hashCode());
         result = prime * result + ((getCreateBy() == null) ? 0 : getCreateBy().hashCode());
         result = prime * result + ((getCreateDate() == null) ? 0 : getCreateDate().hashCode());
+        result = prime * result + ((getLogParams() == null) ? 0 : getLogParams().hashCode());
         return result;
     }
 
@@ -181,6 +196,7 @@ public class SysLog implements Serializable {
         sb.append(", logMethod=").append(logMethod);
         sb.append(", createBy=").append(createBy);
         sb.append(", createDate=").append(createDate);
+        sb.append(", logParams=").append(logParams);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -3,7 +3,6 @@ package com.cdut.b2p.modules.sys.mapper;
 import com.cdut.b2p.common.po.annotation.MyBatisMapper;
 import com.cdut.b2p.modules.sys.po.SysLog;
 import com.cdut.b2p.modules.sys.po.SysLogExample;
-import com.cdut.b2p.modules.sys.po.SysLogWithBLOBs;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,25 +14,25 @@ public interface SysLogMapper {
 
     int deleteByPrimaryKey(String id);
 
-    int insert(SysLogWithBLOBs record);
+    int insert(SysLog record);
 
-    int insertSelective(SysLogWithBLOBs record);
+    int insertSelective(SysLog record);
 
-    List<SysLogWithBLOBs> selectByExampleWithBLOBs(SysLogExample example);
+    List<SysLog> selectByExampleWithBLOBs(SysLogExample example);
 
     List<SysLog> selectByExample(SysLogExample example);
 
-    SysLogWithBLOBs selectByPrimaryKey(String id);
+    SysLog selectByPrimaryKey(String id);
 
-    int updateByExampleSelective(@Param("record") SysLogWithBLOBs record, @Param("example") SysLogExample example);
+    int updateByExampleSelective(@Param("record") SysLog record, @Param("example") SysLogExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") SysLogWithBLOBs record, @Param("example") SysLogExample example);
+    int updateByExampleWithBLOBs(@Param("record") SysLog record, @Param("example") SysLogExample example);
 
     int updateByExample(@Param("record") SysLog record, @Param("example") SysLogExample example);
 
-    int updateByPrimaryKeySelective(SysLogWithBLOBs record);
+    int updateByPrimaryKeySelective(SysLog record);
 
-    int updateByPrimaryKeyWithBLOBs(SysLogWithBLOBs record);
+    int updateByPrimaryKeyWithBLOBs(SysLog record);
 
     int updateByPrimaryKey(SysLog record);
 }

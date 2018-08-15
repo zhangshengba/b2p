@@ -1,5 +1,6 @@
 package com.cdut.b2p.modules.sys.po;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -485,52 +486,52 @@ public class SysDictExample {
             return (Criteria) this;
         }
 
-        public Criteria andDictSortEqualTo(Long value) {
+        public Criteria andDictSortEqualTo(BigDecimal value) {
             addCriterion("dict_sort =", value, "dictSort");
             return (Criteria) this;
         }
 
-        public Criteria andDictSortNotEqualTo(Long value) {
+        public Criteria andDictSortNotEqualTo(BigDecimal value) {
             addCriterion("dict_sort <>", value, "dictSort");
             return (Criteria) this;
         }
 
-        public Criteria andDictSortGreaterThan(Long value) {
+        public Criteria andDictSortGreaterThan(BigDecimal value) {
             addCriterion("dict_sort >", value, "dictSort");
             return (Criteria) this;
         }
 
-        public Criteria andDictSortGreaterThanOrEqualTo(Long value) {
+        public Criteria andDictSortGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("dict_sort >=", value, "dictSort");
             return (Criteria) this;
         }
 
-        public Criteria andDictSortLessThan(Long value) {
+        public Criteria andDictSortLessThan(BigDecimal value) {
             addCriterion("dict_sort <", value, "dictSort");
             return (Criteria) this;
         }
 
-        public Criteria andDictSortLessThanOrEqualTo(Long value) {
+        public Criteria andDictSortLessThanOrEqualTo(BigDecimal value) {
             addCriterion("dict_sort <=", value, "dictSort");
             return (Criteria) this;
         }
 
-        public Criteria andDictSortIn(List<Long> values) {
+        public Criteria andDictSortIn(List<BigDecimal> values) {
             addCriterion("dict_sort in", values, "dictSort");
             return (Criteria) this;
         }
 
-        public Criteria andDictSortNotIn(List<Long> values) {
+        public Criteria andDictSortNotIn(List<BigDecimal> values) {
             addCriterion("dict_sort not in", values, "dictSort");
             return (Criteria) this;
         }
 
-        public Criteria andDictSortBetween(Long value1, Long value2) {
+        public Criteria andDictSortBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("dict_sort between", value1, value2, "dictSort");
             return (Criteria) this;
         }
 
-        public Criteria andDictSortNotBetween(Long value1, Long value2) {
+        public Criteria andDictSortNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("dict_sort not between", value1, value2, "dictSort");
             return (Criteria) this;
         }

@@ -1,6 +1,7 @@
 package com.cdut.b2p.modules.sys.po;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -36,7 +37,7 @@ public class SysDict implements Serializable {
     /**
      * 排序（升序）
      */
-    private Long dictSort;
+    private BigDecimal dictSort;
 
     /**
      * 父级编号
@@ -115,11 +116,11 @@ public class SysDict implements Serializable {
         this.dictDescription = dictDescription;
     }
 
-    public Long getDictSort() {
+    public BigDecimal getDictSort() {
         return dictSort;
     }
 
-    public void setDictSort(Long dictSort) {
+    public void setDictSort(BigDecimal dictSort) {
         this.dictSort = dictSort;
     }
 

@@ -1,6 +1,7 @@
 package com.cdut.b2p.common.utils;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -162,4 +163,30 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		return (afterTime - beforeTime) / (1000 * 60 * 60 * 24);
 	}
 	
+	/**
+	   * 得到几天前的时间
+	   * @param d
+	   * @param day
+	   * @return
+	   */
+	  public static Date getDateBefore(Date d,int day){
+	   Calendar now =Calendar.getInstance();
+	   now.setTime(d);
+	   now.set(Calendar.DATE,now.get(Calendar.DATE)-day);
+	   return now.getTime();
+	  }
+	  
+	  /**
+	   * 得到几天后的时间
+	   * @param d
+	   * @param day
+	   * @return
+	   */
+	  public static Date getDateAfter(Date d,int day){
+	   Calendar now =Calendar.getInstance();
+	   now.setTime(d);
+	   now.set(Calendar.DATE,now.get(Calendar.DATE)+day);
+	   return now.getTime();
+	  }
+
 }
