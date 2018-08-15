@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+	<title>用户登录-平安二手</title> 
+	<script src="./common/js/jquery.js"></script> 
+	<script src="./common/js/jquery.validate.min.js"></script> 
+	<script src="./common/js/messages_zh.js"></script> 
+	<script src="./common/js/pc_reg.js"></script> 
+	<!-- <link rel="stylesheet" href="./common/css/pclogin.css" />  -->
+	<link rel="stylesheet" href="./common/css/pcregister.css" /> 
+</head> 
+
+<body> 
+	<img src="./common/img/reg-bg.png" alt="" width="100%" height="100%" class="bg-img" style=";" /> 
+	<div id="overlay"></div> 
+	<div id="loginContent">
+	
+	<!-- 离开登陆界面 --> 
+	<div id="outregBox">
+		<div id="backtoindex">
+			<a href="" onclick="">返回首页</a>
+		</div>
+		<div id="goReg">
+			没有账户？
+			<a href="#" onclick="">去注册</a>
+		</div>
+	</div>
+	
+	<!-- 登陆界面内容 -->
+	<div class="wrap">
+		<!-- 登陆窗口 -->
+		<div id="loginBox" class="loginBox ">
+			<!-- 登陆窗口标题 -->
+			<ul class="clear login-box-title" id="loginBoxTitle">
+				<li class="active" onclick="">
+					<a href="javascript:;">账号注册</a>
+				</li>
+			</ul>
+		
+			<!-- 登陆内容 -->
+			<div class="login-content" id="loginWrap">
+				<div id="userPwdLogin" class="userpwd-login">
+				<form name="submitForm_new" method="post" action="#" id="submitForm_new" target="formSubmitFrame_new">
+				
+					<ul id="userlogin_ul" class="formInput">
+					<!--邮箱-->
+					<li class="emailliUser">
+						<span class="logpic_new" style="display: none;">邮箱</span>
+						<input type="text" id="emailUser" autocomplete="off" name="email" size="20" class="passport-login-input email_new inputNull" maxlength="20" placeholder="邮箱" email/>
+						<input type="button" id="regGetcodeBtn" class="regGetcodeBtn" onclick="checkemail()" value="获取动态码">
+						<span id="emailTip" class="wrong1 errorTip"></span>
+					</li>
+
+					<!--验证码-->
+					<li class="emailcodeliUser">
+						<span class="logpic_new" style="display: none;">验证码</span>
+						<input type="text" id="emailcodeUser" autocomplete="off" name="emailcode" size="20" class="passport-login-input emailcode_new inputNull" minlength="4" maxlength="4" placeholder="验证码" required/>
+						<span id="emailcodeTip" class="wrong1 errorTip"></span>
+					</li>
+					<!--手机号-->
+					<li class="mobileliUser">
+						<span class="logpic_new" style="display: none;">手机号码</span>
+						<input type="text" id="mobileUser" autocomplete="off" name="mobile" size="20" class="passport-login-input mobile_new inputNull"  minlength="11" maxlength="11" placeholder="手机号" required/>
+						<span id="mobileTip" class="wrong1 errorTip"></span>
+					</li>
+					<!--用户名-->
+					<li class="usernameliUser">
+						<span class="logpic_new" style="display: none;">用户名</span>
+						<input type="text" id="usernameUser" autocomplete="off" name="username" size="20" class="passport-login-input username_new inputNull"  minlength="6" maxlength="16" placeholder="用户名" required/>
+						<span id="usernameTip" class="wrong1 errorTip"></span>
+					</li>
+					<!--设置密码-->
+					<li class="passwordliUser">
+						<span class="logpic_new" style="display: none;">密码</span>
+						<input type="password" id="passwordUser" autocomplete="off" name="password" size="20" class="passport-login-input password_new inputNull" minlength="6" maxlength="16" placeholder="密码" style="display: inline-block;" required/>
+						<span id="passwordTip" class="wrong1 errorTip"></span>
+					</li>
+					<!--确认密码-->
+					<li class="repasswordliUser">
+						<span class="logpic_new" style="display: none;">确认密码</span>
+						<input type="text" id="repasswordUser" autocomplete="off" name="repassword" size="20" class="passport-login-input repassword_new inputNull" minlength="6" maxlength="16" placeholder="密码" style="display: inline-block;" required/>
+						<span id="repasswordTip" class="wrong1 errorTip"></span>
+					</li>
+					<!--提交-->
+					<li class="submit_new"><input type="submit" id="btnSubmitUser" class="submit" name="btnSubmit" value="登录" accesskey="l" />
+					</li>
+					</ul>
+				
+				</form>
+				</div>
+			</div>
+		
+		</div>
+    
+	</div>
+	
+	</div>
+	
+	<!-- 登陆底部 -->
+	<div class="login-footer">
+	    <a onclick="" href="" target="_blank">平安二手</a>
+		<span>|</span>
+		<a onclick="" href="" target="_blank">联系客服</a>
+		<span>|</span>
+		<a href="" target="_blank">帮助</a>
+	</div>
+<script>
+  function checkemail()
+  {
+    var email=document.getElementById("emailUser").value;
+    if(email==""){
+      alert("电子邮件不能为空");
+      return false;
+    }
+    else
+    {
+      reg=/^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/gi;
+      if(!reg.test(email)){
+          alert("非法的电子邮件");
+          return false;
+      }
+    }
+  }
+</script>
+</body>
+</html>

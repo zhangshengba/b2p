@@ -20,25 +20,19 @@ import com.cdut.b2p.modules.shop.service.impl.TestService;
 import com.cdut.b2p.modules.shop.utils.ShopCacheUtils;
 
 @Controller
+@RequestMapping("${shopPath}/")
 public class ShopUserController extends BaseController{
 
 	@Autowired
 	private ShopUserService shopUserService;
-	
-	@Autowired
-	private TestService testService;
+
 	/**
 	 * 用户登录
 	 */
-	@RequestMapping(value = "${shopPath}/login", method = RequestMethod.GET)
+	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String login(HttpServletRequest request, HttpServletResponse response, Model model
 			) {
-
 		
-		
-		
-		//model.addAttribute("1","1");
-		testService.start();
 		return renderString(response, model);
 
 	}

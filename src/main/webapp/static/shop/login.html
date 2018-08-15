@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+	<title>用户登录-平安二手</title> 
+	<script src="./common/js/jquery.js"></script> 
+	<script src="./common/js/jquery.validate.min.js"></script> 
+	<script src="./common/js/messages_zh.js"></script> 
+	<script src="./common/js/pc_login.js"></script> 
+	<link rel="stylesheet" href="./common/css/pclogin.css" /> 
+	
+</head> 
+
+<body> 
+	<img src="./common/img/reg-bg.png" alt="" width="100%" height="100%" class="bg-img" style=";" /> 
+	<div id="overlay"></div> 
+	<div id="loginContent">
+	<!-- 离开登陆界面 -->
+	
+	<div id="outregBox">
+		<div id="backtoindex">
+			<a href="" onclick="">返回首页</a>
+		</div>
+		<div id="goReg">
+			没有账户？
+			<a href="#" onclick="">去注册</a>
+		</div>
+	</div>
+	
+	<!-- 登陆界面内容 -->
+	<div class="wrap">
+		
+		<!-- 登陆窗口 -->
+		<div id="loginBox" class="loginBox ">
+			<!-- 登陆窗口标题 -->
+			<ul class="clear login-box-title" id="loginBoxTitle">
+				<li class="active" onclick="">
+					<a href="javascript:;">账户密码登录</a>
+				</li>
+				<input type="hidden" value="0" id="selectValue" />
+			</ul>
+		
+			<!-- 登陆内容 -->
+			<div class="login-content" id="loginWrap">
+				<div id="userPwdLogin" class="userpwd-login">
+				<form name="submitForm_new" method="post" action="#" id="submitForm_new" target="formSubmitFrame_new">
+				
+					<ul id="userlogin_ul" class="formInput">
+					<!--用户名-->
+					<li class="usernameliUser">
+						<span class="logpic_new" style="display: none;">用户名</span>
+						<input type="text" value="" id="usernameUser" autocomplete="off" name="username" size="20" class="passport-login-input username_new inputNull"  minlength="6" maxlength="16" placeholder="手机号/账户名/邮箱" required/>
+						<span id="usernameTip" class="wrong1 errorTip"></span>
+					</li>
+					<!--密码-->
+					<li class="passwordliUser">
+						<span class="logpic_new" style="display: none;">密码</span>
+						<input class="passport-login-input password_new inputNull" type="password" autocomplete="off" name="" id="passwordUser" name="password" size="20" minlength="6" maxlength="16" placeholder="密码" style="display: inline-block;" required/>
+						<span id="passwordTip" class="wrong1 errorTip"></span>
+					</li>
+					<!--提示-->
+					<li class="commitcode_new">
+						<a href="#" class="passwordonclick=" onclick="">忘记密码</a>
+						<input type="checkbox" id="isremember_id_new" />
+						<span>下次自动登录</span>
+					</li>
+					<!--提交-->
+					<li class="submit_new"><input type="submit" id="btnSubmitUser" class="submit" name="btnSubmit" value="登录" accesskey="l" />
+					</li>
+					</ul>
+				
+				</form>
+				</div>
+			</div>
+		
+		</div>
+    </div>
+	
+	</div>
+	
+	<!-- 登陆底部 -->
+	<div class="login-footer">
+	    <a onclick="" href="" target="_blank">平安二手</a>
+		<span>|</span>
+		<a onclick="" href="" target="_blank">联系客服</a>
+		<span>|</span>
+		<a href="" target="_blank">帮助</a>
+	</div>
+	
+</body>
+</html>

@@ -1,10 +1,12 @@
 package com.cdut.b2p.modules.sys.mapper;
 
+import com.cdut.b2p.common.po.annotation.MyBatisMapper;
 import com.cdut.b2p.modules.sys.po.SysLog;
 import com.cdut.b2p.modules.sys.po.SysLogExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
+@MyBatisMapper
 public interface SysLogMapper {
     long countByExample(SysLogExample example);
 
