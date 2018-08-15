@@ -10,7 +10,7 @@ import java.util.Properties;
 /**
  * JavaMail 版本: 1.6.0 JDK 版本: JDK 1.7 以上（必须）
  */
-public class MailUtils {
+public class EmailUtils {
 	
 	public static String myEmailAccount = "17713536440@163.com";
 	public static String myEmailPassword = "duanao123";
