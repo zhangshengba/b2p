@@ -1,5 +1,12 @@
 package com.cdut.b2p.modules.sys.service.impl;
 
+/**
+ * @title  SysDictServiceImpl
+ * @desc   SysDictServiceImpl是SysDictService服务接口的实现类
+ * @author zsb
+ * @Date   2018/8/14
+ *
+ */
 import java.util.Date;
 import java.util.List;
 
@@ -63,5 +70,4 @@ public class SysDictServiceImpl implements SysDictService{
 		sde.or().andDictTypeEqualTo(type);
 		return sysDictMapper.selectByExample(sde).get(0).getId();
 	}
-
 }
