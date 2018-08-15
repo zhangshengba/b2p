@@ -11,9 +11,8 @@
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.cdut.b2p.modules.shop.po.ShopLogWithBLOBs">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.cdut.b2p.modules.shop.po.ShopLog">
     <result column="log_params" jdbcType="LONGVARCHAR" property="logParams" />
-    <result column="log_exception" jdbcType="LONGVARCHAR" property="logException" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -78,7 +77,7 @@
     update_date
   </sql>
   <sql id="Blob_Column_List">
-    log_params, log_exception
+    log_params
   </sql>
   <select id="selectByExampleWithBLOBs" parameterType="com.cdut.b2p.modules.shop.po.ShopLogExample" resultMap="ResultMapWithBLOBs">
     select
@@ -144,17 +143,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.cdut.b2p.modules.shop.po.ShopLogWithBLOBs">
+  <insert id="insert" parameterType="com.cdut.b2p.modules.shop.po.ShopLog">
     insert into shop_log (id, log_remote_addr, log_user_agent, 
       log_request_uri, log_method, create_by, 
-      create_date, update_date, log_params, 
-      log_exception)
+      create_date, update_date, log_params
+      )
     values (#{id,jdbcType=VARCHAR}, #{logRemoteAddr,jdbcType=VARCHAR}, #{logUserAgent,jdbcType=VARCHAR}, 
       #{logRequestUri,jdbcType=VARCHAR}, #{logMethod,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{logParams,jdbcType=LONGVARCHAR}, 
-      #{logException,jdbcType=LONGVARCHAR})
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{logParams,jdbcType=LONGVARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.cdut.b2p.modules.shop.po.ShopLogWithBLOBs">
+  <insert id="insertSelective" parameterType="com.cdut.b2p.modules.shop.po.ShopLog">
     insert into shop_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -184,9 +183,6 @@
       <if test="logParams != null">
         log_params,
       </if>
-      <if test="logException != null">
-        log_exception,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -215,9 +211,6 @@
       </if>
       <if test="logParams != null">
         #{logParams,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="logException != null">
-        #{logException,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -257,9 +250,6 @@
       <if test="record.logParams != null">
         log_params = #{record.logParams,jdbcType=LONGVARCHAR},
       </if>
-      <if test="record.logException != null">
-        log_exception = #{record.logException,jdbcType=LONGVARCHAR},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -275,8 +265,7 @@
       create_by = #{record.createBy,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
       update_date = #{record.updateDate,jdbcType=TIMESTAMP},
-      log_params = #{record.logParams,jdbcType=LONGVARCHAR},
-      log_exception = #{record.logException,jdbcType=LONGVARCHAR}
+      log_params = #{record.logParams,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -295,7 +284,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cdut.b2p.modules.shop.po.ShopLogWithBLOBs">
+  <update id="updateByPrimaryKeySelective" parameterType="com.cdut.b2p.modules.shop.po.ShopLog">
     update shop_log
     <set>
       <if test="logRemoteAddr != null">
@@ -322,13 +311,10 @@
       <if test="logParams != null">
         log_params = #{logParams,jdbcType=LONGVARCHAR},
       </if>
-      <if test="logException != null">
-        log_exception = #{logException,jdbcType=LONGVARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cdut.b2p.modules.shop.po.ShopLogWithBLOBs">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cdut.b2p.modules.shop.po.ShopLog">
     update shop_log
     set log_remote_addr = #{logRemoteAddr,jdbcType=VARCHAR},
       log_user_agent = #{logUserAgent,jdbcType=VARCHAR},
@@ -337,8 +323,7 @@
       create_by = #{createBy,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},
       update_date = #{updateDate,jdbcType=TIMESTAMP},
-      log_params = #{logParams,jdbcType=LONGVARCHAR},
-      log_exception = #{logException,jdbcType=LONGVARCHAR}
+      log_params = #{logParams,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cdut.b2p.modules.shop.po.ShopLog">

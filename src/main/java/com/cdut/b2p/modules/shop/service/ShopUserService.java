@@ -1,10 +1,12 @@
 package com.cdut.b2p.modules.shop.service;
 
 import com.cdut.b2p.modules.shop.po.ShopUser;
+import com.cdut.b2p.modules.shop.po.ShopWallet;
 
 public interface ShopUserService {
 	
 	public void saveUser(ShopUser shopUser);
+
 	/**
 	 * @desc 查询上一个月增加的用户数
 	 * @author zsb
@@ -17,4 +19,12 @@ public interface ShopUserService {
 	 * @return
 	 */
 	public Integer addVistorCountByMonth();
+
+	
+	public void saveWallet(ShopWallet shopWallet);
+	
+	public ShopUser findUserByUsername(String username);
+
+
+
 }

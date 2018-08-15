@@ -1,6 +1,7 @@
 package com.cdut.b2p.modules.sys.po;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -31,7 +32,7 @@ public class SysArea implements Serializable {
     /**
      * 排序
      */
-    private Long areaSort;
+    private BigDecimal areaSort;
 
     /**
      * 区域编码
@@ -107,11 +108,11 @@ public class SysArea implements Serializable {
         this.areaName = areaName;
     }
 
-    public Long getAreaSort() {
+    public BigDecimal getAreaSort() {
         return areaSort;
     }
 
-    public void setAreaSort(Long areaSort) {
+    public void setAreaSort(BigDecimal areaSort) {
         this.areaSort = areaSort;
     }
 

@@ -1,5 +1,6 @@
 package com.cdut.b2p.modules.sys.po;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -415,52 +416,52 @@ public class SysAreaExample {
             return (Criteria) this;
         }
 
-        public Criteria andAreaSortEqualTo(Long value) {
+        public Criteria andAreaSortEqualTo(BigDecimal value) {
             addCriterion("area_sort =", value, "areaSort");
             return (Criteria) this;
         }
 
-        public Criteria andAreaSortNotEqualTo(Long value) {
+        public Criteria andAreaSortNotEqualTo(BigDecimal value) {
             addCriterion("area_sort <>", value, "areaSort");
             return (Criteria) this;
         }
 
-        public Criteria andAreaSortGreaterThan(Long value) {
+        public Criteria andAreaSortGreaterThan(BigDecimal value) {
             addCriterion("area_sort >", value, "areaSort");
             return (Criteria) this;
         }
 
-        public Criteria andAreaSortGreaterThanOrEqualTo(Long value) {
+        public Criteria andAreaSortGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("area_sort >=", value, "areaSort");
             return (Criteria) this;
         }
 
-        public Criteria andAreaSortLessThan(Long value) {
+        public Criteria andAreaSortLessThan(BigDecimal value) {
             addCriterion("area_sort <", value, "areaSort");
             return (Criteria) this;
         }
 
-        public Criteria andAreaSortLessThanOrEqualTo(Long value) {
+        public Criteria andAreaSortLessThanOrEqualTo(BigDecimal value) {
             addCriterion("area_sort <=", value, "areaSort");
             return (Criteria) this;
         }
 
-        public Criteria andAreaSortIn(List<Long> values) {
+        public Criteria andAreaSortIn(List<BigDecimal> values) {
             addCriterion("area_sort in", values, "areaSort");
             return (Criteria) this;
         }
 
-        public Criteria andAreaSortNotIn(List<Long> values) {
+        public Criteria andAreaSortNotIn(List<BigDecimal> values) {
             addCriterion("area_sort not in", values, "areaSort");
             return (Criteria) this;
         }
 
-        public Criteria andAreaSortBetween(Long value1, Long value2) {
+        public Criteria andAreaSortBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("area_sort between", value1, value2, "areaSort");
             return (Criteria) this;
         }
 
-        public Criteria andAreaSortNotBetween(Long value1, Long value2) {
+        public Criteria andAreaSortNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("area_sort not between", value1, value2, "areaSort");
             return (Criteria) this;
         }
