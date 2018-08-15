@@ -1,5 +1,7 @@
 package com.cdut.b2p.modules.sys.service.impl;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +45,28 @@ public class SysUserServiceImpl implements SysUserService {
 		return null;
 	}
 	/**
-	 * @desc 根据用户注册信息，进行添加用户
+	 * @desc 根据用户注册信息，进行添加用户[密码进行加密]
 	 */
 	@Override
 	public int addSysUser(SysUser sysUser) {
+		
 		if(sysUser==null) {
 			return 0;
 		}
+		if(sysUser.getUserImage()==null||sysUser.getUserImage().equals("")) {
+			sysUser.setUserImage("../dist/img/user2-160x160.jpg");
+		}
+		/*设置ID，用户状态(D[死亡],A[活])*/
 		sysUser.setId(IdUtils.randomBase62(64));
+		sysUser.setUserStatus("A");
+		sysUser.setCreateDate(new Date());
+		sysUser.setCreateBy("");
+		sysUser.setUpdateBy("");
+		sysUser.setUpdateDate(new Date());
+		sysUser.setDelFlag("F");
+		System.out.println("插入前夕的SysUser："+sysUser);
 		return sysUserMapper.insert(sysUser);
 	}
+	
 
 }

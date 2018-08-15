@@ -24,4 +24,5 @@ public interface SysUserService {
 	 * @return 用户总数
 	 */
 	public int addSysUser(SysUser sysUser);
+
 }

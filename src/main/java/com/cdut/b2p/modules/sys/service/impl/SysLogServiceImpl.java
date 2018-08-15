@@ -1,5 +1,7 @@
 package com.cdut.b2p.modules.sys.service.impl;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,13 +27,24 @@ public class SysLogServiceImpl implements SysLogService{
 	private SysLogMapper sysLogMapper;
 	/**
 	 * @desc 添加一条管理员登录日志记录
-	 * @param sysLog
+	 * @param 请求url地址
+	 * @param remoteAddr请求地址
 	 * @return
 	 */
 	@Override
-	public int addSysLog(SysLogWithBLOBs sysLog) {
+	public int addSysLog(String url,String remoteAddr) {
+		SysLogWithBLOBs sysLog=new SysLogWithBLOBs();
+		sysLog.setLogRemoteAddr(remoteAddr);
+		sysLog.setLogRequestUri(url);
+		sysLog.setCreateDate(new Date());
 		sysLog.setId(IdUtils.randomBase62(64));
-		return sysLogMapper.insert(sysLog);
+		//sysLog.setCreateBy("");
+		//sysLog.setLogException("");
+		sysLog.setLogMethod("POST");
+		//sysLog.setLogParams("");
+		//sysLog.setLogTitle("");
+		//sysLog.setLogType("");
+		return sysLogMapper.insertSelective(sysLog);
 	}
 
 }

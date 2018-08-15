@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cdut.b2p.common.controller.BaseController;
+import com.cdut.b2p.modules.shop.po.ShopGoods;
+import com.cdut.b2p.modules.shop.po.ShopUser;
+import com.cdut.b2p.modules.shop.service.ShopGoodsService;
+import com.cdut.b2p.modules.shop.service.ShopOrderService;
+import com.cdut.b2p.modules.shop.service.ShopUserService;
 import com.cdut.b2p.modules.sys.po.SysLogWithBLOBs;
 import com.cdut.b2p.modules.sys.po.SysUser;
 import com.cdut.b2p.modules.sys.service.SysLogService;
@@ -30,7 +35,14 @@ public class SysUserController extends BaseController{
 	@Autowired
 	private SysUserService sysUserService;//管理员用户服务接口
 	@Autowired
+	private ShopUserService shopUserService;//外部用户服务接口
+	@Autowired
+	private ShopGoodsService shopGoodsService;//商品服务接口
+	@Autowired
+	private ShopOrderService shopOrderService;//订单服务接口
+	@Autowired
 	private SysLogService sysLogService;//管理员日志服务接口
+	
 	/**
 	 * @desc 用户【管理员】登录处理
 	 * @param response
@@ -47,15 +59,20 @@ public class SysUserController extends BaseController{
 		*/
 		SysUser user=sysUserService.findSysUser(sysUser);
 		if(user!=null) {
+			/*
 			SysLogWithBLOBs sysLog=new SysLogWithBLOBs();
 			sysLog.setLogRemoteAddr(request.getRemoteAddr());
 			sysLog.setLogRequestUri(request.getRequestURL().toString());
 			sysLog.setCreateDate(new Date());
-			 sysLogService.addSysLog(sysLog);
+			*/
+			String url=request.getRequestURL().toString();
+			String remoteAddr=request.getRemoteAddr();
+			sysLogService.addSysLog(url,remoteAddr);
 			//登录成功，记录登录日志
 			//将用户保存到Session中
 			request.getSession().setAttribute("SYSUSER", user);
 			model.addObject("Message", "index");
+			System.out.println("login success");
 			return renderString(response, model);
 		}
 		//表示账号或邮箱密码错误
@@ -76,11 +93,6 @@ public class SysUserController extends BaseController{
 	public String register(HttpServletResponse response,SysUser sysUser) {
 		ModelAndView model=new ModelAndView();
 		System.out.println("注册信息:"+sysUser);
-		
-		if(sysUser.getUserImage()==null||sysUser.getUserImage()=="") {
-			sysUser.setUserImage("../dist/img/user2-160x160.jpg");
-		}
-		System.out.println("注册信息:"+sysUser);
 		int count = sysUserService.addSysUser(sysUser);
 		if(count!=0) {
 			model.addObject("Message", "index");
@@ -88,6 +100,7 @@ public class SysUserController extends BaseController{
 		}
 		//表示表示注册信息失败
 		model.addObject("Message","error");
+		System.out.println("返回error");
 		return renderString(response, model);
 	}
 	/**
@@ -103,16 +116,24 @@ public class SysUserController extends BaseController{
 	 */
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String Index(HttpServletResponse response,HttpServletRequest request) {
-		ModelAndView modelAndView=new ModelAndView();
+		ModelAndView model=new ModelAndView();
 		//取出该回话过程中的用户信息
 		SysUser user=(SysUser) request.getSession().getAttribute("SYSUSER");
-		modelAndView.addObject("User", user);
-		//查询新增的用户数
-		//查询新增的商品数
-		//查询新增的订单数
-		//查询新增的浏览用户数
-		//统计价格趋势表
-		return renderString(response, modelAndView);
+		model.addObject("User", user);
+		//查询新增的用户数[一个月时间之内]
+		Integer increUsers=shopUserService.addUserCountByMonth();
+		//查询新增的商品数[一个月时间之内]
+		Integer increGoods=shopGoodsService.addGoodsCountByMonth();
+		//查询新增的订单数[一个月时间之内]
+		Integer increOrders=shopOrderService.addOrdersCountByMonth();
+		//查询新增的浏览用户数[一个月时间之内,即没有上传商品或者购买商品]
+		Integer increVisitors=shopUserService.addVistorCountByMonth();
+		//统计商品趋势表[一个月时间之内]
+		model.addObject("IncreUsers", increUsers);
+		model.addObject("IncreGoods", increGoods);
+		model.addObject("IncreOrders", increOrders);
+		model.addObject("IncreVisitors", increVisitors);
+		return renderString(response, model);
 	}
 	/**s
 	 * @desc 测试用例

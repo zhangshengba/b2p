@@ -22,17 +22,17 @@
   <![endif]-->
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <script src="../js/jquery.js"></script>
   <script src="text/javascript">
-	  $(function(){
-	      initData();
-	  });
 	  function initData(){
+          alert(1);
 		  $.ajax({
 	            type:'GET',
 	            dataType: "json",
+                
 	            url:"/b2p/sys/admin/index",
 	            success:function(data){
-	               
+	               alert(data.model.User);
 	            },
 	            error:function(){
 	            	//发生错误，跳转到404页面
@@ -42,7 +42,7 @@
 	  }
   </script>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini" onload="initData()">
 <div class="wrapper">
  
   <header class="main-header">

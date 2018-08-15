@@ -32,6 +32,13 @@
   		var userNickname=registerForm.userNickname.value;
   		var userImage=registerForm.userImage.value;
   		var userPassword=registerForm.userPassword.value;
+  		/*
+  		alert(isUserName());
+  		alert(isUserEmail());
+  		alert(isUserNickname());
+  		alert(isUserPassword());
+  		alert(isPassword());
+  		*/
   		if(isUserName()&&isUserEmail()&&isUserNickname()&&isUserPassword()&&isPassword()){
   			var param={};
   	  		param.userName=userName;
@@ -69,8 +76,8 @@
   	/*即判断用户名注册的是否合法*/
   	function isUserName(){
   		var userName=registerForm.userName.value;
-        var p=/^[0-9][a-zA-Z]+/;
         /*
+  		var p=/^[0-9][a-zA-Z]+/;
   		设置正则匹配式，对用户名进行匹配(只包含英文和数字，或有特殊符号)
   		([a-z][0-9a-zA-zZ]+)|([A-Z][0-9a-zA-zZ]+)/;
         */
@@ -78,12 +85,13 @@
   			$("#warn-userName").html("账号长度 >10！");
   			return false;
   		}
+        /*
   		if(p.test(userName)==false){
   			$("#warn-userName").hide();
   			$("#warn-userName").html("必须包含字母和数字！");
   			return false;
   		}
-
+		*/
   		$("#warn-userName").hide();
   		return true;
   	}
@@ -94,14 +102,14 @@
   			$("#warn-userEmail").html("邮箱不能为空！");
             return false;
   		}
-  		/*使用邮箱的正则匹配式*/
+  		/*使用邮箱的正则匹配式
   		var filter=/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
   		if(filter.test(userEmail)){
   			$("#warn-userEmail").hide();
   			$("#warn-userEmail").html("邮箱格式有误！");
   			return false;
   		}
-
+  		*/
   		$("#warn-userEmail").hide();
   		return true;	
   	}
