@@ -72,7 +72,6 @@ public class SecurityUtils {
 	 */
 	public static byte[] generateSalt(int numBytes) {
 		Validate.isTrue(numBytes > 0, "numBytes argument must be a positive integer (1 or larger)", numBytes);
-
 		byte[] bytes = new byte[numBytes];
 		random.nextBytes(bytes);
 		return bytes;

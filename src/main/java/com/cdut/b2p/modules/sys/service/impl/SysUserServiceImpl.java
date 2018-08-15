@@ -1,5 +1,6 @@
 package com.cdut.b2p.modules.sys.service.impl;
 
+import java.security.Security;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdut.b2p.common.utils.IdUtils;
+import com.cdut.b2p.common.utils.SecurityUtils;
 import com.cdut.b2p.modules.sys.mapper.SysUserMapper;
 import com.cdut.b2p.modules.sys.po.SysUser;
 import com.cdut.b2p.modules.sys.po.SysUserExample;
@@ -49,15 +51,17 @@ public class SysUserServiceImpl implements SysUserService {
 	 */
 	@Override
 	public int addSysUser(SysUser sysUser) {
-		
 		if(sysUser==null) {
 			return 0;
 		}
 		if(sysUser.getUserImage()==null||sysUser.getUserImage().equals("")) {
 			sysUser.setUserImage("../dist/img/user2-160x160.jpg");
 		}
+		/*密码--加密*/
+		String pwd=sysUser.getUserPassword();
+		//String pwd1=SecurityUtils.md5(pwd.getBytes());
 		/*设置ID，用户状态(D[死亡],A[活])*/
-		sysUser.setId(IdUtils.randomBase62(64));
+	    sysUser.setId(IdUtils.uuid());
 		sysUser.setUserStatus("A");
 		sysUser.setCreateDate(new Date());
 		sysUser.setCreateBy("");
