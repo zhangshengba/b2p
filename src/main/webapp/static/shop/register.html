@@ -121,6 +121,19 @@
           return false;
       }
     }
+	 $.ajax({
+             type: "POST",
+             url: "./shop/reg/validateEmail",
+             data: {email:$("#emailUser").val()},
+             dataType: "json",
+             success: function(data){  
+                         alert()
+                      },
+					  
+             error: function(data){  
+                         alert()
+                      }
+         });
   }
 </script>
 </body>

@@ -5,9 +5,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.cdut.b2p.modules.sys.po.SysLog;
-import com.cdut.b2p.modules.sys.po.SysLogWithBLOBs;
 
 /**
  * @title SysLogService

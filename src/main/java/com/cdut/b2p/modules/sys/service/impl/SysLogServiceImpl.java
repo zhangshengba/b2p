@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cdut.b2p.common.utils.IdUtils;
 import com.cdut.b2p.modules.sys.mapper.SysLogMapper;
 import com.cdut.b2p.modules.sys.po.SysLog;
-import com.cdut.b2p.modules.sys.po.SysLogWithBLOBs;
 import com.cdut.b2p.modules.sys.service.SysLogService;
 
 /**
@@ -33,7 +32,7 @@ public class SysLogServiceImpl implements SysLogService{
 	 */
 	@Override
 	public int addSysLog(String url,String remoteAddr) {
-		SysLogWithBLOBs sysLog=new SysLogWithBLOBs();
+		SysLog sysLog=new SysLog();
 		sysLog.setLogRemoteAddr(remoteAddr);
 		sysLog.setLogRequestUri(url);
 		sysLog.setCreateDate(new Date());

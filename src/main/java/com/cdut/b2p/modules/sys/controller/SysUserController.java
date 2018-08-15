@@ -18,7 +18,6 @@ import com.cdut.b2p.modules.shop.po.ShopUser;
 import com.cdut.b2p.modules.shop.service.ShopGoodsService;
 import com.cdut.b2p.modules.shop.service.ShopOrderService;
 import com.cdut.b2p.modules.shop.service.ShopUserService;
-import com.cdut.b2p.modules.sys.po.SysLogWithBLOBs;
 import com.cdut.b2p.modules.sys.po.SysUser;
 import com.cdut.b2p.modules.sys.service.SysLogService;
 import com.cdut.b2p.modules.sys.service.SysUserService;

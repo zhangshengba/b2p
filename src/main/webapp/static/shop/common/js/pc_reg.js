@@ -1,6 +1,22 @@
 $.validator.setDefaults({
     submitHandler: function() {
-      //alert("提交事件!");
+	  $.ajax({
+             type: "POST",
+             url: "./shop/reg",
+             data: {username:$("#username").val(), password:$("#password").val()},
+             dataType: "json",
+             success: function(data){  
+                         alert()
+                      },
+					  
+             error: function(data){  
+                         alert()
+                      }
+         });
+	  
+	  
+	  
+	  
     },
 	errorPlacement: function(error, element) { 
 	    for(var i= 0;i<element.length;i++){
