@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.cdut.b2p.common.controller.BaseController;
+import com.cdut.b2p.common.security.annotation.Auth;
 import com.cdut.b2p.common.utils.EmailUtils;
 import com.cdut.b2p.modules.shop.po.ShopUser;
 import com.cdut.b2p.modules.shop.service.ShopUserService;
@@ -29,8 +30,19 @@ public class ShopUserController extends BaseController{
 	 * 用户登录
 	 */
 
-	@RequestMapping(value = "login", method = RequestMethod.POST)
+	@RequestMapping(value = "user/login", method = RequestMethod.POST)
 	public String login(HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		return renderString(response, model);
+
+	}
+	
+	/**
+	 * 用户信息
+	 */
+
+	@RequestMapping(value = "user/info", method = RequestMethod.POST)
+	public String info(HttpServletRequest request, HttpServletResponse response, Model model) {
 		
 		return renderString(response, model);
 
@@ -39,7 +51,7 @@ public class ShopUserController extends BaseController{
 	/**
 	 * 用户注册
 	 */
-	@RequestMapping(value = "reg", method = RequestMethod.POST)
+	@RequestMapping(value = "user/reg", method = RequestMethod.POST)
 	public String reg(HttpServletRequest request, HttpServletResponse response, Model model) {
 		
 		return renderString(response, model);
@@ -49,7 +61,8 @@ public class ShopUserController extends BaseController{
 	/**
 	 * 用户注册时邮箱验证
 	 */
-	@RequestMapping(value = "reg/validateEmail", method = RequestMethod.POST)
+	@Auth
+	@RequestMapping(value = "user/validateEmail", method = RequestMethod.POST)
 	public String validateEmail(HttpServletRequest request, HttpServletResponse response, Model model,
 			String email) {
 		
