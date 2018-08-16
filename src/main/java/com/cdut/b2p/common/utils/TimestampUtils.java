@@ -8,12 +8,12 @@ public class TimestampUtils {
     }
 	
 	public static Long timeAfter(long time){
-        return System.currentTimeMillis() + time * 60;
+        return System.currentTimeMillis() + time;
     }
 	
 	
 	public static boolean IsAfter(Long time) {
-		Long s = time -System.currentTimeMillis();
-		return s > 0;
+		Long s = time - System.currentTimeMillis();
+		return s < 0;
 	}
 }

@@ -20,6 +20,7 @@ import com.cdut.b2p.common.utils.NetWorkUtils;
 import com.cdut.b2p.common.utils.StringUtils;
 import com.cdut.b2p.common.utils.TimestampUtils;
 import com.cdut.b2p.common.utils.ValidateUtils;
+import com.cdut.b2p.modules.shop.po.ShopUser;
 import com.cdut.b2p.modules.shop.security.annotation.ShopAuth;
 import com.cdut.b2p.modules.shop.service.ShopUserService;
 
@@ -58,16 +59,31 @@ public class ShopUserController extends BaseController {
 	public String reg(HttpServletRequest request, HttpServletResponse response, 
 			String emailcode, String email, String username
 			, String password, String nickname) {
+		
+		ShopUser u = shopUserService.findUserByUsername(username);
+		if(u != null && !StringUtils.isBlank(u.getUserName())) {
+			return renderErrorString(response, "用户名已被注册"); 
+		}
+		ShopUser u1 = shopUserService.findUserByNickname(nickname);
+		if(u1 != null && !StringUtils.isBlank(u1.getUserNickname())) {
+			return renderErrorString(response, "昵称已被注册"); 
+		}
+		
 		try {
 			String mac = MacUtils.getMac();
 			String ip = NetWorkUtils.getIpAddress(request);
 			String id = ip + mac + "regEmailCode";
 			String code = (String) CacheUtils.get(id);
 			if (code != null && code.equals(emailcode)
-					&&ValidateUtils.validateUsername(username) 
+					&& ValidateUtils.validateUsername(username) 
 					&& ValidateUtils.validatePwd(password)
-					&& ValidateUtils.validateText(nickname,2,10)) {
+					&& ValidateUtils.validateText(nickname,2,8)
+					&& ValidateUtils.validateEamil(email)) {
+				
+				CacheUtils.remove(id);
 				shopUserService.regUser(username,password,nickname,email);
+			}else {
+				return renderErrorString(response, "注册失败,请检查");
 			}
 
 		} catch (Exception e) {
@@ -82,6 +98,10 @@ public class ShopUserController extends BaseController {
 	@RequestMapping(value = "user/reg/sendEmail", method = RequestMethod.POST)
 	public String sendEmail(HttpServletRequest request, HttpServletResponse response,
 			String email) {
+		ShopUser u = shopUserService.findUserByEmail(email);
+		if(u != null && !StringUtils.isBlank(u.getUserEmail())) {
+			return renderErrorString(response, "该邮箱已被注册"); 
+		}
 		try {
 			String mac = MacUtils.getMac();
 			String ip = NetWorkUtils.getIpAddress(request);
@@ -90,14 +110,14 @@ public class ShopUserController extends BaseController {
 			if (code != null && !StringUtils.isBlank(code)) {
 				Long t =  (Long) CacheUtils.get(id + "time");
 				if(!TimestampUtils.IsAfter(t)) {
-					return renderErrorString(response, "已经发送邮件,请等待五分钟");
+					return renderErrorString(response, "已经发送邮件,请等待五分钟后在发送");
 				}
 			}
 			String regEmailCode = StringUtils.genRandomStringOfInt(6);
-			Long time = TimestampUtils.timeAfter(5);
+			Long time = TimestampUtils.timeAfter(5 * 60 * 1000);
 			CacheUtils.put(id, regEmailCode);
 			CacheUtils.put(id + "time", time);
-			EmailUtils.Send(email, StringUtils.genRandomStringOfInt(6), "注册验证码");
+			EmailUtils.Send(email, regEmailCode, "注册验证码");
 
 		} catch (Exception e) {
 			return renderErrorString(response, "发送邮件失败");

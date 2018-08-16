@@ -36,11 +36,17 @@ public class SysDictServiceImpl implements SysDictService{
 		if (sysDict.getId() == null || StringUtils.isBlank(sysDict.getId())) {
 			sysDict.setId(IdUtils.uuid());
 		}
+		SysUser user;
 		Map<Object,Object> map = SysUserUtils.getMap();
-		SysUser user = (SysUser) map.get("user");
-		if(user == null) {
+		if(map != null) {
+			user = (SysUser) map.get("user");
+			if(user == null) {
+				user = new SysUser();
+			}
+		}else {
 			user = new SysUser();
 		}
+		
 		if (StringUtils.isNotBlank(user.getId())) {
 			sysDict.setUpdateBy(user.getId());
 			sysDict.setCreateBy(user.getId());

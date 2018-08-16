@@ -36,11 +36,17 @@ public class ShopUserServiceImpl implements ShopUserService{
 		if (shopWallet.getId() == null || StringUtils.isBlank(shopWallet.getId())) {
 			shopWallet.setId(IdUtils.uuid());
 		}
+		ShopUser user;
 		Map<Object,Object> map = ShopUserUtils.getMap();
-		ShopUser user = (ShopUser) map.get("user");
-		if(user == null) {
+		if(map != null) {
+			user = (ShopUser) map.get("user");
+			if(user == null) {
+				user = new ShopUser();
+			}
+		}else {
 			user = new ShopUser();
 		}
+		
 		if (StringUtils.isNotBlank(user.getId())) {
 			shopWallet.setUpdateBy(user.getId());
 			shopWallet.setCreateBy(user.getId());
@@ -53,11 +59,17 @@ public class ShopUserServiceImpl implements ShopUserService{
 		if (shopUser.getId() == null || StringUtils.isBlank(shopUser.getId())) {
 			shopUser.setId(IdUtils.uuid());
 		}
+		ShopUser user;
 		Map<Object,Object> map = ShopUserUtils.getMap();
-		ShopUser user = (ShopUser) map.get("user");
-		if(user == null) {
+		if(map != null) {
+			user = (ShopUser) map.get("user");
+			if(user == null) {
+				user = new ShopUser();
+			}
+		}else {
 			user = new ShopUser();
 		}
+		
 		if (StringUtils.isNotBlank(user.getId())) {
 			shopUser.setUpdateBy(user.getId());
 			shopUser.setCreateBy(user.getId());
@@ -85,8 +97,28 @@ public class ShopUserServiceImpl implements ShopUserService{
 	public ShopUser findUserByUsername(String username) {
 		ShopUserExample sue = new ShopUserExample();
 		sue.or().andUserNameEqualTo(username);
-		return shopUserMapper.selectByExample(sue).get(0);
+		List<ShopUser> list = shopUserMapper.selectByExample(sue);
+		return (list == null || list.isEmpty()) ? null : shopUserMapper.selectByExample(sue).get(0);
 	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public ShopUser findUserByEmail(String email) {
+		ShopUserExample sue = new ShopUserExample();
+		sue.or().andUserEmailEqualTo(email);
+		List<ShopUser> list = shopUserMapper.selectByExample(sue);
+		return (list == null || list.isEmpty()) ? null : shopUserMapper.selectByExample(sue).get(0);
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public ShopUser findUserByNickname(String nickname) {
+		ShopUserExample sue = new ShopUserExample();
+		sue.or().andUserNicknameEqualTo(nickname);
+		List<ShopUser> list = shopUserMapper.selectByExample(sue);
+		return (list == null || list.isEmpty()) ? null : shopUserMapper.selectByExample(sue).get(0);
+	}
+	
 	/**
 	 * @desc 查询上一个月增加的用户数
 	 */

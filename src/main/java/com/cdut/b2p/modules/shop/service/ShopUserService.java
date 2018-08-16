@@ -26,6 +26,10 @@ public interface ShopUserService {
 	public void saveWallet(ShopWallet shopWallet);
 	
 	public ShopUser findUserByUsername(String username);
+	
+	public ShopUser findUserByEmail(String email);
+	
+	public ShopUser findUserByNickname(String nickname);
 
 
 

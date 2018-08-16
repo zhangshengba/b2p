@@ -121,7 +121,7 @@ public class ValidateUtils {
           if (StringUtils.isEmpty(text)){
               return Boolean.FALSE;
           }
-          String TEXT_PATTERN="^(?!.*\\s).{"+ min +","+ max +"}$   ";
+          String TEXT_PATTERN="^.{"+ min +","+ max +"}$";
           return Pattern.matches(TEXT_PATTERN, text);
       }
     
