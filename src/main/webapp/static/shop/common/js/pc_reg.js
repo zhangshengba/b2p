@@ -2,7 +2,7 @@ $.validator.setDefaults({
     submitHandler: function() {
 	  $.ajax({
              type: "POST",
-             url: "./shop/reg",
+             url: getPath() + "/shop/user/reg",
              data: {username:$("#username").val(), password:$("#password").val()},
              dataType: "json",
              success: function(data){  
@@ -28,6 +28,8 @@ $.validator.setDefaults({
 				$('#mobileTip').html(error);
 			}else if(element[i].id == "usernameUser"){
 				$('#usernameTip').html(error);
+			}else if(element[i].id == "nicknameUser"){
+				$('#nicknameTip').html(error);
 			}else if(element[i].id == "passwordUser"){
 				$('#passwordTip').html(error);
 			}else if(element[i].id == "repasswordUser"){

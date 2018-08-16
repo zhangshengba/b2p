@@ -6,6 +6,8 @@ import com.cdut.b2p.modules.shop.po.ShopWallet;
 public interface ShopUserService {
 	
 	public void saveUser(ShopUser shopUser);
+	
+	public void regUser(String username, String password, String nickname, String email);
 
 	/**
 	 * @desc 查询上一个月增加的用户数

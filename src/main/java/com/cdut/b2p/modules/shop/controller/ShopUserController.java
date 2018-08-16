@@ -19,12 +19,14 @@ import com.cdut.b2p.common.utils.MacUtils;
 import com.cdut.b2p.common.utils.NetWorkUtils;
 import com.cdut.b2p.common.utils.StringUtils;
 import com.cdut.b2p.common.utils.TimestampUtils;
+import com.cdut.b2p.common.utils.ValidateUtils;
 import com.cdut.b2p.modules.shop.security.annotation.ShopAuth;
 import com.cdut.b2p.modules.shop.service.ShopUserService;
 
 @Controller
 @RequestMapping("${shopPath}/")
 public class ShopUserController extends BaseController {
+	
 	@Autowired
 	private ShopUserService shopUserService;
 
@@ -44,7 +46,7 @@ public class ShopUserController extends BaseController {
 	 */
 	@RequestMapping(value = "user/login", method = RequestMethod.POST)
 	public String login(HttpServletRequest request, HttpServletResponse response, Model model) {
-
+		
 		return renderString(response, model);
 
 	}
@@ -54,18 +56,19 @@ public class ShopUserController extends BaseController {
 	 */
 	@RequestMapping(value = "user/reg", method = RequestMethod.POST)
 	public String reg(HttpServletRequest request, HttpServletResponse response, 
-			String emailcode, String username, String password) {
+			String emailcode, String email, String username
+			, String password, String nickname) {
 		try {
 			String mac = MacUtils.getMac();
 			String ip = NetWorkUtils.getIpAddress(request);
 			String id = ip + mac + "regEmailCode";
 			String code = (String) CacheUtils.get(id);
-			if (code != null && code.equals(emailcode)) {
-				
-				
+			if (code != null && code.equals(emailcode)
+					&&ValidateUtils.validateUsername(username) 
+					&& ValidateUtils.validatePwd(password)
+					&& ValidateUtils.validateText(nickname,2,10)) {
+				shopUserService.regUser(username,password,nickname,email);
 			}
-			
-			
 
 		} catch (Exception e) {
 			return renderErrorString(response, "注册失败");
