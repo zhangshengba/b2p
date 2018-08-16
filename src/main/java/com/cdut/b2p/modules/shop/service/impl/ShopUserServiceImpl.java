@@ -86,6 +86,7 @@ public class ShopUserServiceImpl implements ShopUserService{
 	}
 	/**
 	 * @desc 查询上一个月增加的用户数
+	 * @author zsb
 	 */
 	@Override
 	public Integer addUserCountByMonth() {
@@ -121,6 +122,50 @@ public class ShopUserServiceImpl implements ShopUserService{
 		//进行查询(仔细思考)
 		
 		return 100;
+	}
+	/**
+	 * @desc 某段时间内，注册的用户
+	 * @author zsb
+	 * @return List<User>
+	 */
+	@Override
+	public List<ShopUser> findSysUserByDate(Date startDate, Date endDate) {
+		ShopUserExample example=new ShopUserExample();
+		example.or().andCreateDateBetween(startDate, endDate);
+		List<ShopUser> list=shopUserMapper.selectByExample(example);
+		return list;
+	}
+    /**
+     * @desc 查询所有的注册用户
+     * @author zsb
+     * @return List<ShopUser>
+     */
+	@Override
+	public List<ShopUser> findAllUser() {
+		ShopUserExample example=new ShopUserExample();
+		List<ShopUser> list=shopUserMapper.selectByExample(example);
+		return list;
+	}
+    /**
+     * @desc 根据id，更新相应的用户信息
+     * @author zsb
+     * @return boolean
+     */
+	@Override
+	public boolean updateUser(ShopUser shopUser) {
+		Integer count=shopUserMapper.updateByPrimaryKeySelective(shopUser);
+		if(count>0) {
+			return true;
+		}
+		return false;
+	}
+    /**
+     * @desc 根据id，删除某一用户
+     */
+	@Override
+	public boolean deleteUser(String id) {
+		shopUserMapper.deleteByPrimaryKey(id);
+		return true;
 	}
 
 }

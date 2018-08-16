@@ -1,26 +1,28 @@
 package com.cdut.b2p.modules.sys.controller;
 
-
 import java.util.Date;
+
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cdut.b2p.common.controller.BaseController;
-import com.cdut.b2p.modules.shop.po.ShopGoods;
-import com.cdut.b2p.modules.shop.po.ShopUser;
 import com.cdut.b2p.modules.shop.service.ShopGoodsService;
 import com.cdut.b2p.modules.shop.service.ShopOrderService;
 import com.cdut.b2p.modules.shop.service.ShopUserService;
 import com.cdut.b2p.modules.sys.po.SysUser;
 import com.cdut.b2p.modules.sys.service.SysLogService;
 import com.cdut.b2p.modules.sys.service.SysUserService;
+import com.sun.org.apache.bcel.internal.generic.Select;
 
 /**
  * @desc   有关管理员用户的处理类
@@ -70,8 +72,21 @@ public class SysUserController extends BaseController{
 			//登录成功，记录登录日志
 			//将用户保存到Session中
 			request.getSession().setAttribute("SYSUSER", user);
+			model.addObject("SYSUSER", user);
 			model.addObject("Message", "index");
 			System.out.println("login success");
+			System.out.println("sessionId:"+request.getSession().getId());
+			System.out.println(request.getSession().getAttribute("SYSUSER"));
+			
+			response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+			response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+			response.setHeader("Access-Control-Max-Age", "3600");
+			response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
+			response.setHeader("Access-Control-Allow-Credentials", "true"); // 是否支持cookie跨域
+			
+			
+			
+			
 			return renderString(response, model);
 		}
 		//表示账号或邮箱密码错误
@@ -89,12 +104,15 @@ public class SysUserController extends BaseController{
 	 */
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String register(HttpServletResponse response,SysUser sysUser) {
+	public String register(HttpServletResponse response,HttpSession session,SysUser sysUser) {
 		ModelAndView model=new ModelAndView();
 		System.out.println("注册信息:"+sysUser);
 		int count = sysUserService.addSysUser(sysUser);
 		if(count!=0) {
+			session.setAttribute("SYSUSER",sysUser);
 			model.addObject("Message", "index");
+			//输出sessionid
+			System.out.println(session.getId());
 			return renderString(response, model);
 		}
 		//表示表示注册信息失败
@@ -115,6 +133,9 @@ public class SysUserController extends BaseController{
 	 */
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String Index(HttpServletResponse response,HttpServletRequest request) {
+		System.out.println("sessionId:"+request.getSession().getId());
+		System.out.println(request.getSession().getAttribute("SYSUSER"));
+		
 		ModelAndView model=new ModelAndView();
 		//取出该回话过程中的用户信息
 		SysUser user=(SysUser) request.getSession().getAttribute("SYSUSER");
@@ -134,10 +155,42 @@ public class SysUserController extends BaseController{
 		model.addObject("IncreVisitors", increVisitors);
 		return renderString(response, model);
 	}
+	/**
+	 * @desc 通过时间段查询注册用户信息
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/selectByDate", method = RequestMethod.POST)
+	public String selectByDate(HttpServletResponse response,HttpServletRequest request) {
+		Date startDate=new Date((String)request.getAttribute("startDate"));
+		Date enDate=new Date((String)request.getAttribute("endDate"));
+		
+		return null;
+	}
+	/**
+	 * @desc 根据用户的详细信息查询某个用户
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/selectByUser", method = RequestMethod.POST)
+	public String selectByUser(HttpServletResponse response) {
+		return null;
+	}
+	
+	
+	
+	
+	@RequestMapping(value="/exit",method = RequestMethod.GET)
+	public String exit(HttpServletResponse response ,HttpServletRequest request,Model model) {
+		/*清空Session中缓存的数据*/
+		request.getSession().invalidate();
+		model.addAttribute("Message", "exit");
+		return renderString(response, model);
+	}
 	/**s
 	 * @desc 测试用例
 	 */
-	@RequestMapping("/test")
+	@RequestMapping(value="test",method = RequestMethod.GET)
 	public String test() {
 		System.out.println("测试成功！");
 		return null;

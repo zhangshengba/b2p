@@ -53,8 +53,13 @@
   				dataType:"json",
   				async:true,
   				success:function(data){ 
-  					alert(data.model.Message);
+  					//alert(data.model.Message);
   					if(data.model.Message=="index"){
+  						var dialog=confirm("进入首页");
+  						if(dialog==false){
+  							window.location.href="sysLogin.html";
+  	  						flag=true;
+  						}
   						/*表示注册成功，进入系统首页*/
   						window.location.href="index.html";
   						flag=true;

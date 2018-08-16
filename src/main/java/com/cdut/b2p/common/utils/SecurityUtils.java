@@ -15,5 +15,9 @@ public class SecurityUtils {
 	    	throw new UtilsException();
 	    }
 	}
+	
+	public static String getMD5(String str){
+	    return getOneMD5(getOneMD5(str));
+	}
 
 }

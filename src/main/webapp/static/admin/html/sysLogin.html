@@ -52,6 +52,9 @@
   		$.ajax({
 		type:"POST",
 		url:"/b2p/sys/admin/login",
+		 xhrFields: {
+	           withCredentials: true
+	       },
 		data:param,
 		dataType:"json",
 		async:true,
@@ -59,12 +62,13 @@
 			/*data是想服务器请求的数据--->alert("数据：" + data);alert(typeof data);*/
 			if(data.model.Message=="index"){
 				$("#warn-username").hide();
+				alert(data.model.Message);
 				/*先假设...*/
 				window.location.href="index.html";
 				flag=true;
 			}
 			else if(data.model.Message=="error"){
-				alert(data.model.Message);
+				//alert(data.model.Message);
 				$("#warn").append("账号或密码错误！");
 				return  false;
 			}

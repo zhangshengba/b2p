@@ -1,7 +1,5 @@
 package com.cdut.b2p.modules.sys.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.cdut.b2p.modules.sys.po.SysDict;
 /**
  * @title  SysDictService
@@ -17,6 +15,5 @@ public interface SysDictService {
 	public SysDict findByLabel(String label,String type);
 	
 	public String findIdByType(String type);
-
 
 }

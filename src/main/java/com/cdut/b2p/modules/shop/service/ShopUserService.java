@@ -1,5 +1,8 @@
 package com.cdut.b2p.modules.shop.service;
 
+import java.util.Date;
+import java.util.List;
+
 import com.cdut.b2p.modules.shop.po.ShopUser;
 import com.cdut.b2p.modules.shop.po.ShopWallet;
 
@@ -19,8 +22,36 @@ public interface ShopUserService {
 	 * @return
 	 */
 	public Integer addVistorCountByMonth();
-
+	/**
+	 * @desc 查询某一时间段内，注册的用户
+	 * @author zsb
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public List<ShopUser> findSysUserByDate(Date startDate,Date endDate);
+	/**
+	 * @desc 查询所有的用户
+	 * @author zsb
+	 * @return
+	 */
+	public List<ShopUser> findAllUser();
+	/**
+	 * @desc 更新某个用户的信息
+	 * @author zsb
+	 * @param sysUser
+	 * @return
+	 */
+	public boolean updateUser(ShopUser shopUser);
+	/**
+	 * @desc  根id删除某个用户
+	 * @author zsb
+	 * @param id
+	 * @return
+	 */
+	public boolean deleteUser(String id);
 	
+
 	public void saveWallet(ShopWallet shopWallet);
 	
 	public ShopUser findUserByUsername(String username);
