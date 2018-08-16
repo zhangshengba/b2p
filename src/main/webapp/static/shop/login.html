@@ -3,10 +3,15 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
 	<title>用户登录-平安二手</title> 
+	<script src="./common/js/token.js"></script> 
+	<script src="./common/js/path.js"></script> 
 	<script src="./common/js/jquery.js"></script> 
 	<script src="./common/js/jquery.validate.min.js"></script> 
 	<script src="./common/js/messages_zh.js"></script> 
 	<script src="./common/js/pc_login.js"></script> 
+	<script src="./layer/layer.js"></script> 
+	<script src="./common/js/jquery.cookie.js"></script> 
+
 	<link rel="stylesheet" href="./common/css/pclogin.css" /> 
 	
 </head> 
@@ -61,7 +66,7 @@
 					<!--提示-->
 					<li class="commitcode_new">
 						<a href="#" class="passwordonclick=" onclick="">忘记密码</a>
-						<input type="checkbox" id="isremember_id_new" />
+						<input type="checkbox" id="isremember" />
 						<span>下次自动登录</span>
 					</li>
 					<!--提交-->

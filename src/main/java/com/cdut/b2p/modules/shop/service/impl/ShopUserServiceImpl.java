@@ -1,13 +1,16 @@
 package com.cdut.b2p.modules.shop.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdut.b2p.common.utils.IdUtils;
+import com.cdut.b2p.common.utils.SecurityUtils;
 import com.cdut.b2p.common.utils.StringUtils;
 import com.cdut.b2p.modules.shop.mapper.ShopUserMapper;
 import com.cdut.b2p.modules.shop.mapper.ShopWalletMapper;
@@ -15,12 +18,9 @@ import com.cdut.b2p.modules.shop.po.ShopUser;
 import com.cdut.b2p.modules.shop.po.ShopUserExample;
 import com.cdut.b2p.modules.shop.po.ShopWallet;
 import com.cdut.b2p.modules.shop.service.ShopUserService;
-import com.cdut.b2p.modules.shop.utils.ShopUserUtils;
 import com.cdut.b2p.modules.sys.po.SysDict;
 import com.cdut.b2p.modules.sys.po.SysDictExample;
 import com.cdut.b2p.modules.sys.po.SysUser;
-import com.cdut.b2p.modules.sys.utils.SysUserUtils;
-
 
 @Service
 @Transactional
@@ -32,33 +32,11 @@ public class ShopUserServiceImpl implements ShopUserService{
 	private ShopWalletMapper shopWalletMapper;
 	
 	private void preInsertWallet(ShopWallet shopWallet) {
-		if (shopWallet.getId() == null || StringUtils.isBlank(shopWallet.getId())) {
-			shopWallet.setId(IdUtils.uuid());
-		}
-		ShopUser user = ShopUserUtils.getUser();
-		if(user == null) {
-			user = new ShopUser();
-		}
-		if (StringUtils.isNotBlank(user.getId())) {
-			shopWallet.setUpdateBy(user.getId());
-			shopWallet.setCreateBy(user.getId());
-		}
 		shopWallet.setUpdateDate(new Date());
 		shopWallet.setCreateDate(shopWallet.getUpdateDate());
 	}
 	
 	private void preInsertUser(ShopUser shopUser) {
-		if (shopUser.getId() == null || StringUtils.isBlank(shopUser.getId())) {
-			shopUser.setId(IdUtils.uuid());
-		}
-		ShopUser user = ShopUserUtils.getUser();
-		if(user == null) {
-			user = new ShopUser();
-		}
-		if (StringUtils.isNotBlank(user.getId())) {
-			shopUser.setUpdateBy(user.getId());
-			shopUser.setCreateBy(user.getId());
-		}
 		shopUser.setUpdateDate(new Date());
 		shopUser.setCreateDate(shopUser.getUpdateDate());
 	}
@@ -82,8 +60,28 @@ public class ShopUserServiceImpl implements ShopUserService{
 	public ShopUser findUserByUsername(String username) {
 		ShopUserExample sue = new ShopUserExample();
 		sue.or().andUserNameEqualTo(username);
-		return shopUserMapper.selectByExample(sue).get(0);
+		List<ShopUser> list = shopUserMapper.selectByExample(sue);
+		return (list == null || list.isEmpty()) ? null : shopUserMapper.selectByExample(sue).get(0);
 	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public ShopUser findUserByEmail(String email) {
+		ShopUserExample sue = new ShopUserExample();
+		sue.or().andUserEmailEqualTo(email);
+		List<ShopUser> list = shopUserMapper.selectByExample(sue);
+		return (list == null || list.isEmpty()) ? null : shopUserMapper.selectByExample(sue).get(0);
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public ShopUser findUserByNickname(String nickname) {
+		ShopUserExample sue = new ShopUserExample();
+		sue.or().andUserNicknameEqualTo(nickname);
+		List<ShopUser> list = shopUserMapper.selectByExample(sue);
+		return (list == null || list.isEmpty()) ? null : shopUserMapper.selectByExample(sue).get(0);
+	}
+	
 	/**
 	 * @desc 查询上一个月增加的用户数
 	 * @author zsb
@@ -166,6 +164,30 @@ public class ShopUserServiceImpl implements ShopUserService{
 	public boolean deleteUser(String id) {
 		shopUserMapper.deleteByPrimaryKey(id);
 		return true;
+	}
+
+	@Transactional(readOnly = false)
+	@Override
+	public void regUser(String username, String password, String nickname, String email) {
+		String uid = IdUtils.uuid();
+		ShopWallet wallet = new ShopWallet();
+		ShopUser user = new ShopUser();
+		wallet.setAccount(IdUtils.uuid());
+		wallet.setId(uid);
+		wallet.setBalance(new BigDecimal(10000));
+		saveWallet(wallet);
+		
+		user.setId(IdUtils.uuid());
+		user.setUserName(username);
+		user.setUserEmail(email);
+		user.setUserPassword(SecurityUtils.getMD5(password));
+		user.setUserImage("/userfiles/user/0000001534320708940.jpg");
+		user.setUserNickname(nickname);
+		user.setUserScore(0);
+		user.setUserStatus("0");
+		user.setUserWalletId(uid);
+		saveUser(user);
+		
 	}
 
 }
