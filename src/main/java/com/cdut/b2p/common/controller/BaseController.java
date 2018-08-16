@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cdut.b2p.common.utils.JsonUtils;
+import com.cdut.b2p.common.security.TokenManger;
 import com.cdut.b2p.common.utils.DateUtils;
 
 public abstract class BaseController {
@@ -96,6 +97,20 @@ public abstract class BaseController {
 		map.clear();
 		map.put("msg", msg);
 		map.put("success", true);
+		return renderString(response, JsonUtils.toJsonString(map), "application/json");
+	}
+	
+	/**
+	 * 客户端返回JSON字符串
+	 * @param response
+	 * @param object
+	 * @return
+	 */
+	protected String renderTokenString(HttpServletResponse response, String uid, String msg){
+		map.clear();
+		map.put("msg", msg);
+		map.put("success", true);
+		map.put("token", TokenManger.createToken(uid));
 		return renderString(response, JsonUtils.toJsonString(map), "application/json");
 	}
 	

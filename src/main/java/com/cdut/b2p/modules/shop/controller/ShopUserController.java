@@ -1,6 +1,8 @@
 package com.cdut.b2p.modules.shop.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +19,7 @@ import com.cdut.b2p.common.utils.CacheUtils;
 import com.cdut.b2p.common.utils.EmailUtils;
 import com.cdut.b2p.common.utils.MacUtils;
 import com.cdut.b2p.common.utils.NetWorkUtils;
+import com.cdut.b2p.common.utils.SecurityUtils;
 import com.cdut.b2p.common.utils.StringUtils;
 import com.cdut.b2p.common.utils.TimestampUtils;
 import com.cdut.b2p.common.utils.ValidateUtils;
@@ -37,18 +40,34 @@ public class ShopUserController extends BaseController {
     @ShopAuth
 	@RequestMapping(value = "user/info", method = RequestMethod.POST)
 	public String info(HttpServletRequest request, HttpServletResponse response, Model model) {
-
-		return renderString(response, model);
+    	String uid = (String) request.getAttribute("uid");
+    	return renderSuccessString(response, "登陆成功" + uid);
 
 	}
+    
+    @ShopAuth
+   	@RequestMapping(value = "user/islogin", method = RequestMethod.POST)
+   	public String isLogin(HttpServletRequest request, HttpServletResponse response, Model model) {
+       	String uid = (String) request.getAttribute("uid");
+       	return renderSuccessString(response, "已经登陆");
+
+   	}
 
 	/**
 	 * 用户登录
 	 */
 	@RequestMapping(value = "user/login", method = RequestMethod.POST)
-	public String login(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String login(HttpServletRequest request, HttpServletResponse response
+			, String username, String password) {
 		
-		return renderString(response, model);
+		ShopUser u = shopUserService.findUserByUsername(username);
+		if(u == null) {
+			return renderErrorString(response, "用户名不存在"); 
+		}
+		if(!u.getUserPassword().equals(SecurityUtils.getMD5(password))) {
+			return renderErrorString(response, "密码错误"); 
+		}
+		return renderTokenString(response,u.getId(),"登陆成功");
 
 	}
 

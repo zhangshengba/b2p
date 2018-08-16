@@ -17,9 +17,8 @@ import com.cdut.b2p.modules.shop.mapper.ShopUserMapper;
 import com.cdut.b2p.modules.shop.po.ShopGoods;
 import com.cdut.b2p.modules.shop.po.ShopUser;
 import com.cdut.b2p.modules.shop.service.ShopGoodsService;
-import com.cdut.b2p.modules.shop.utils.ShopUserUtils;
 import com.cdut.b2p.modules.sys.po.SysUser;
-import com.cdut.b2p.modules.sys.utils.SysUserUtils;
+
 
 @Service
 @Transactional
@@ -49,18 +48,6 @@ public class ShopGoodsServiceImpl implements ShopGoodsService{
   }
 	
 	private void preInsert(ShopGoods shopGoods) {
-		if (shopGoods.getId() == null || StringUtils.isBlank(shopGoods.getId())) {
-			shopGoods.setId(IdUtils.uuid());
-		}
-		Map<Object,Object> map = ShopUserUtils.getMap();
-		ShopUser user = (ShopUser) map.get("user");
-		if(user == null) {
-			user = new ShopUser();
-		}
-		if (StringUtils.isNotBlank(user.getId())) {
-			shopGoods.setUpdateBy(user.getId());
-			shopGoods.setCreateBy(user.getId());
-		}
 		shopGoods.setUpdateDate(new Date());
 		shopGoods.setCreateDate(shopGoods.getUpdateDate());
 	}

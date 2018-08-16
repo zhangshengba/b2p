@@ -23,7 +23,6 @@ import com.cdut.b2p.modules.sys.po.SysDict;
 import com.cdut.b2p.modules.sys.po.SysDictExample;
 import com.cdut.b2p.modules.sys.po.SysUser;
 import com.cdut.b2p.modules.sys.service.SysDictService;
-import com.cdut.b2p.modules.sys.utils.SysUserUtils;
 
 @Service
 @Transactional
@@ -33,24 +32,6 @@ public class SysDictServiceImpl implements SysDictService{
 	private SysDictMapper sysDictMapper;
 	
 	private void preInsert(SysDict sysDict) {
-		if (sysDict.getId() == null || StringUtils.isBlank(sysDict.getId())) {
-			sysDict.setId(IdUtils.uuid());
-		}
-		SysUser user;
-		Map<Object,Object> map = SysUserUtils.getMap();
-		if(map != null) {
-			user = (SysUser) map.get("user");
-			if(user == null) {
-				user = new SysUser();
-			}
-		}else {
-			user = new SysUser();
-		}
-		
-		if (StringUtils.isNotBlank(user.getId())) {
-			sysDict.setUpdateBy(user.getId());
-			sysDict.setCreateBy(user.getId());
-		}
 		sysDict.setUpdateDate(new Date());
 		sysDict.setCreateDate(sysDict.getUpdateDate());
 	}
