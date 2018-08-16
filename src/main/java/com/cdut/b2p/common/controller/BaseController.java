@@ -3,7 +3,7 @@ package com.cdut.b2p.common.controller;
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.util.Date;
-
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
@@ -48,6 +48,7 @@ public abstract class BaseController {
 	@Value("${urlSuffix}")
 	protected String urlSuffix;
 	
+	protected HashMap<Object,Object> map = new HashMap<Object,Object>();
 	/**
 	 * 添加Model消息
 	 * @param message
@@ -70,6 +71,32 @@ public abstract class BaseController {
 			sb.append(message).append(messages.length>1?"<br/>":"");
 		}
 		redirectAttributes.addFlashAttribute("message", sb.toString());
+	}
+	
+	/**
+	 * 客户端返回JSON字符串
+	 * @param response
+	 * @param object
+	 * @return
+	 */
+	protected String renderErrorString(HttpServletResponse response, String msg) {
+		map.clear();
+		map.put("msg", msg);
+		map.put("success", false);
+		return renderString(response, JsonUtils.toJsonString(map), "application/json");
+	}
+	
+	/**
+	 * 客户端返回JSON字符串
+	 * @param response
+	 * @param object
+	 * @return
+	 */
+	protected String renderSuccessString(HttpServletResponse response, String msg) {
+		map.clear();
+		map.put("msg", msg);
+		map.put("success", true);
+		return renderString(response, JsonUtils.toJsonString(map), "application/json");
 	}
 	
 	/**

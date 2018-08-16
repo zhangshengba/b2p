@@ -3,10 +3,13 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
 	<title>用户登录-平安二手</title> 
+	<script src="./common/js/path.js"></script> 
 	<script src="./common/js/jquery.js"></script> 
 	<script src="./common/js/jquery.validate.min.js"></script> 
 	<script src="./common/js/messages_zh.js"></script> 
 	<script src="./common/js/pc_reg.js"></script> 
+	<script src="./layer/layer.js"></script> 
+    <script src="./common/js/jquery.cookie.js"></script> 
 	<!-- <link rel="stylesheet" href="./common/css/pclogin.css" />  -->
 	<link rel="stylesheet" href="./common/css/pcregister.css" /> 
 </head> 
@@ -58,12 +61,6 @@
 						<input type="text" id="emailcodeUser" autocomplete="off" name="emailcode" size="20" class="passport-login-input emailcode_new inputNull" minlength="4" maxlength="4" placeholder="验证码" required/>
 						<span id="emailcodeTip" class="wrong1 errorTip"></span>
 					</li>
-					<!--手机号-->
-					<li class="mobileliUser">
-						<span class="logpic_new" style="display: none;">手机号码</span>
-						<input type="text" id="mobileUser" autocomplete="off" name="mobile" size="20" class="passport-login-input mobile_new inputNull"  minlength="11" maxlength="11" placeholder="手机号" required/>
-						<span id="mobileTip" class="wrong1 errorTip"></span>
-					</li>
 					<!--用户名-->
 					<li class="usernameliUser">
 						<span class="logpic_new" style="display: none;">用户名</span>
@@ -110,28 +107,35 @@
   {
     var email=document.getElementById("emailUser").value;
     if(email==""){
-      alert("电子邮件不能为空");
+      layer.alert("电子邮件不能为空");
       return false;
     }
     else
     {
       reg=/^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/gi;
       if(!reg.test(email)){
-          alert("非法的电子邮件");
+          layer.alert("非法的电子邮件");
           return false;
       }
     }
 	 $.ajax({
              type: "POST",
-             url: "./shop/reg/validateEmail",
+             url: getPath() + "shop/user/reg/sendEmail",
              data: {email:$("#emailUser").val()},
              dataType: "json",
              success: function(data){  
-                         alert()
+                         if(data['success']){
+						    $('#regGetcodeBtn').attr('disabled',"true");
+							$('#regGetcodeBtn').attr('value',"已发送");
+							$('#regGetcodeBtn').attr('class',"regGetcodeBtn1");
+							layer.alert(data['msg']);
+						 }else{
+						    layer.alert(data['msg']);
+						 }
                       },
 					  
              error: function(data){  
-                         alert()
+                         layer.alert('系统错误');
                       }
          });
   }

@@ -1,4 +1,5 @@
-package com.cdut.b2p.common.security.annotation;
+package com.cdut.b2p.modules.sys.security.annotation;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -10,6 +11,6 @@ import java.lang.annotation.Target;
 @Inherited
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Auth {
+public @interface SysAuth {
     boolean validate() default true;
 }

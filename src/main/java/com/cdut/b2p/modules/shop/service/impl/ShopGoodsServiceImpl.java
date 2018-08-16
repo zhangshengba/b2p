@@ -2,6 +2,8 @@ package com.cdut.b2p.modules.shop.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,8 @@ import com.cdut.b2p.modules.shop.po.ShopGoods;
 import com.cdut.b2p.modules.shop.po.ShopUser;
 import com.cdut.b2p.modules.shop.service.ShopGoodsService;
 import com.cdut.b2p.modules.shop.utils.ShopUserUtils;
+import com.cdut.b2p.modules.sys.po.SysUser;
+import com.cdut.b2p.modules.sys.utils.SysUserUtils;
 
 @Service
 @Transactional
@@ -48,7 +52,8 @@ public class ShopGoodsServiceImpl implements ShopGoodsService{
 		if (shopGoods.getId() == null || StringUtils.isBlank(shopGoods.getId())) {
 			shopGoods.setId(IdUtils.uuid());
 		}
-		ShopUser user = ShopUserUtils.getUser();
+		Map<Object,Object> map = ShopUserUtils.getMap();
+		ShopUser user = (ShopUser) map.get("user");
 		if(user == null) {
 			user = new ShopUser();
 		}

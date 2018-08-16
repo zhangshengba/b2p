@@ -9,6 +9,7 @@ package com.cdut.b2p.modules.sys.service.impl;
  */
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,8 @@ public class SysDictServiceImpl implements SysDictService{
 		if (sysDict.getId() == null || StringUtils.isBlank(sysDict.getId())) {
 			sysDict.setId(IdUtils.uuid());
 		}
-		SysUser user = SysUserUtils.getUser();
+		Map<Object,Object> map = SysUserUtils.getMap();
+		SysUser user = (SysUser) map.get("user");
 		if(user == null) {
 			user = new SysUser();
 		}

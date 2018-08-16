@@ -1,22 +1,21 @@
 package com.cdut.b2p.modules.shop.utils;
 
-import java.io.Serializable;
+import java.util.Map;
 
-import com.cdut.b2p.modules.shop.po.ShopUser;
-
-public class ShopUserUtils implements Serializable {
+public class ShopUserUtils {
 	private static final long serialVersionUID = 1L;
-	private static ThreadLocal<ShopUser> shopUserThreadLocal = new ThreadLocal<>();
+	private static ThreadLocal<Map<Object,Object>> shopMapThreadLocal=new ThreadLocal<>();
     
-	public static ShopUser getUser() {
-        return shopUserThreadLocal.get();
+	public static Map<Object,Object> getMap() {
+        return shopMapThreadLocal.get();
     }
  
-    public static void setUser(ShopUser entity) {
-    	shopUserThreadLocal.set(entity);
+    public static void setMap(Map<Object,Object> entity) {
+    	shopMapThreadLocal.set(entity);
     }
  
-    public static void removeUser() {
-    	shopUserThreadLocal.remove();
+    public static void removeMap() {
+    	shopMapThreadLocal.remove();
     }
+
 }

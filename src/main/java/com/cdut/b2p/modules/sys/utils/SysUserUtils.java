@@ -1,22 +1,21 @@
 package com.cdut.b2p.modules.sys.utils;
 
-import java.io.Serializable;
+import java.util.Map;
 
-import com.cdut.b2p.modules.sys.po.SysUser;
-
-public class SysUserUtils implements Serializable {
+public class SysUserUtils {
 	private static final long serialVersionUID = 1L;
-	private static ThreadLocal<SysUser> sysUserThreadLocal=new ThreadLocal<>();
+	private static ThreadLocal<Map<Object,Object>> sysMapThreadLocal=new ThreadLocal<>();
     
-	public static SysUser getUser() {
-        return sysUserThreadLocal.get();
+	public static Map<Object,Object> getMap() {
+        return sysMapThreadLocal.get();
     }
  
-    public static void setUser(SysUser entity) {
-    	sysUserThreadLocal.set(entity);
+    public static void setMap(Map<Object,Object> map) {
+    	sysMapThreadLocal.set(map);
     }
  
-    public static void removeUser() {
-    	sysUserThreadLocal.remove();
+    public static void removeMap() {
+    	sysMapThreadLocal.remove();
     }
+
 }
