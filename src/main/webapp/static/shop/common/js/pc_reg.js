@@ -1,16 +1,30 @@
 $.validator.setDefaults({
     submitHandler: function() {
+	  if($('#regGetcodeBtn').attr('disabled') == null || $('#regGetcodeBtn').attr('disabled') == "false"){
+		  return;
+	  }
 	  $.ajax({
              type: "POST",
              url: getPath() + "/shop/user/reg",
-             data: {username:$("#username").val(), password:$("#password").val()},
+             data:{emailcode:$("#emailcodeUser").val(),username:$("#usernameUser").val(),
+ 			   password:$("#passwordUser").val(),nickname:$("#nicknameUser").val(),
+			   email:$("#emailUser").val()
+			 },
              dataType: "json",
              success: function(data){  
-                         alert()
+                         if(data['success']){
+							layer.alert(data['msg']);
+							var t=setTimeout(function(){
+								window.location.href = "./login.html";
+							},5000);
+							
+						 }else{
+						    layer.alert(data['msg']);
+						 }
                       },
 					  
              error: function(data){  
-                         alert()
+                         layer.alert('系统错误');
                       }
          });
 	  
