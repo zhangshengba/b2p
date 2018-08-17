@@ -19,7 +19,7 @@ public class SecurityUtils {
 	}
 	
 	public static String getMD5(String str){
-		return getOneMD5(getOneMD5(str));
+	    return getOneMD5(getOneMD5(str));
 	}
 	
 }
