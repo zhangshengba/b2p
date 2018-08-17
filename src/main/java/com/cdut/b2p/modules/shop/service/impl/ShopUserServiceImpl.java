@@ -61,7 +61,7 @@ public class ShopUserServiceImpl implements ShopUserService{
 		ShopUserExample sue = new ShopUserExample();
 		sue.or().andUserNameEqualTo(username);
 		List<ShopUser> list = shopUserMapper.selectByExample(sue);
-		return (list == null || list.isEmpty()) ? null : shopUserMapper.selectByExample(sue).get(0);
+		return (list == null || list.isEmpty()) ? null : list.get(0);
 	}
 	
 	@Transactional(readOnly = true)
@@ -70,7 +70,7 @@ public class ShopUserServiceImpl implements ShopUserService{
 		ShopUserExample sue = new ShopUserExample();
 		sue.or().andUserEmailEqualTo(email);
 		List<ShopUser> list = shopUserMapper.selectByExample(sue);
-		return (list == null || list.isEmpty()) ? null : shopUserMapper.selectByExample(sue).get(0);
+		return (list == null || list.isEmpty()) ? null : list.get(0);
 	}
 	
 	@Transactional(readOnly = true)
@@ -79,7 +79,7 @@ public class ShopUserServiceImpl implements ShopUserService{
 		ShopUserExample sue = new ShopUserExample();
 		sue.or().andUserNicknameEqualTo(nickname);
 		List<ShopUser> list = shopUserMapper.selectByExample(sue);
-		return (list == null || list.isEmpty()) ? null : shopUserMapper.selectByExample(sue).get(0);
+		return (list == null || list.isEmpty()) ? null : list.get(0);
 	}
 	
 	/**

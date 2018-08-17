@@ -15,10 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cdut.b2p.common.utils.CacheUtils;
 import com.cdut.b2p.common.utils.IdUtils;
 import com.cdut.b2p.common.utils.StringUtils;
 import com.cdut.b2p.modules.shop.po.ShopUser;
 import com.cdut.b2p.modules.sys.mapper.SysDictMapper;
+import com.cdut.b2p.modules.sys.po.SysArea;
 import com.cdut.b2p.modules.sys.po.SysDict;
 import com.cdut.b2p.modules.sys.po.SysDictExample;
 import com.cdut.b2p.modules.sys.po.SysUser;
@@ -42,6 +44,7 @@ public class SysDictServiceImpl implements SysDictService{
 		
 		preInsert(sysDict);
 		sysDictMapper.insertSelective(sysDict);
+		CacheUtils.get("dictList");
 	}
 
 	@Transactional(readOnly = true)
@@ -49,7 +52,8 @@ public class SysDictServiceImpl implements SysDictService{
 	public SysDict findByLabel(String label,String type) {
 		SysDictExample sde = new SysDictExample();
 		sde.or().andDictLabelEqualTo(label).andDictTypeEqualTo(type);
-		return sysDictMapper.selectByExample(sde).get(0);
+		List<SysDict> list = sysDictMapper.selectByExample(sde);
+		return (list == null || list.isEmpty()) ? null : list.get(0);
 	}
 	
 	@Transactional(readOnly = true)
@@ -57,6 +61,7 @@ public class SysDictServiceImpl implements SysDictService{
 	public String findIdByType(String type) {
 		SysDictExample sde = new SysDictExample();
 		sde.or().andDictTypeEqualTo(type);
-		return sysDictMapper.selectByExample(sde).get(0).getId();
+		List<SysDict> list = sysDictMapper.selectByExample(sde);
+		return (list == null || list.isEmpty()) ? null : list.get(0).getId();
 	}
 }
