@@ -217,18 +217,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService{
 		
 		return pages;
 	}
-	/**
-	 * @desc 查询所有的商品
-	 * @author zsb
-	 * @return List<ShopGoods>
-	 */
-	@Transactional(readOnly = true)
-	@Override
-	public List<ShopGoods> findAllGoods() {
-		ShopGoodsExample example=new  ShopGoodsExample();
-		List<ShopGoods> list=shopGoodsMapper.selectByExample(example);
-		return list;
-	}
+	
 	/**
 	 * @desc 查询某一时间段内，上架的商品
 	 * @author zsb

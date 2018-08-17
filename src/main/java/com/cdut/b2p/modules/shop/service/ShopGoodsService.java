@@ -49,8 +49,6 @@ public interface ShopGoodsService {
 
 	public List<SysDict> findAllDict();
 	
-	public List<ShopGoods> findAllGoods();
-	
 	public Page<ShopGoodsInfo> findGoodsofOnePage(String type,String brand,
 			Integer min_price,Integer max_price,
 			String area,Integer pageNum,Integer pageSize);

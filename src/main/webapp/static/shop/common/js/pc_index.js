@@ -220,8 +220,8 @@ function renderInitGoods(data) {
 			html1 += "</tr>";
 		}
 	}
-	$('#toptbody').append(html);
-	$('#tbodt').append(html1);
+	$('#toptbody').html(html);
+	$('#tbody').html(html1);
 }
 
 function selectGoods(type, brand, min_price, max_price, area, pageNum, pageSize) {
