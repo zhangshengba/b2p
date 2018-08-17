@@ -54,6 +54,9 @@ public interface ShopCommentService {
 	 * @return
 	 */
 	public List<ShopComment> findAllComment();
+	
+	
+	
 	/**
 	 * @desc 查询某一段时间内，发表的评论
 	 * @param startDate
