@@ -1,6 +1,8 @@
 package com.cdut.b2p.modules.sys.service;
 
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.cdut.b2p.modules.sys.po.SysArea;
@@ -17,5 +19,9 @@ public interface SysAreaService {
 	public void save(SysArea sysArea);
 	
 	public String findIdbyAreaName(String name);
+	
+	public List<SysArea> findAllChildByParentId(String pid);
+	
+	public List<SysArea> findAllArea();
 
 }

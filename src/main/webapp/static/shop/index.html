@@ -1,14 +1,219 @@
-<html lang="en">
+<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
-	<title>用户登录-平安二手</title> 
-	<script src="./common/js/token.js"></script> 
-	<script src="./common/js/path.js"></script> 
-	<script src="./common/js/jquery.js"></script> 
-	<script src="./common/js/jquery.validate.min.js"></script> 
-	<script src="./common/js/messages_zh.js"></script> 
-	<script src="./common/js/pc_index.js"></script> 
-	<script src="./layer/layer.js"></script> 
-    <script src="./common/js/jquery.cookie.js"></script> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>平安二手</title>
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta name="location" content="" />
+<link type="text/css" rel="stylesheet" href="common/css/base.css"
+	tppabs="common/css/base.css" media="all" />
+<link rel="stylesheet" type="text/css" href="common/css/listzz.css"
+	tppabs="common/css/listzz.css" media="all" />
+<script src="./common/js/token.js"></script>
+<script src="./common/js/path.js"></script>
+<script src="./common/js/jquery.js"></script>
+<script src="./common/js/jquery.validate.min.js"></script>
+<script src="./common/js/messages_zh.js"></script>
+<script src="./common/js/pc_index.js"></script>
+<script src="./layer/layer.js"></script>
+<script src="./common/js/jquery.cookie.js"></script>
 
-</head> 
+</head>
+
+<body>
+
+	<!-- 网页顶部 -->
+	<div id="topbar">
+		<div class="w pos">
+			<div class="bar_left">
+				<h2>平安二手</h2>
+			</div>
+			<!-- 首页 -->
+			<div class="bar_right">
+				<div id="modify">
+					<a href="#">平安二手首页</a> <span class="gap">|</span>
+				</div>
+				<!-- 登陆注册 -->
+				<div id="login">
+					<a href="./login.html" target="_self">登录</a> <span class="gap">|</span> <a
+						href="./register.html" target="_self">注册</a>
+				</div>
+				<!-- 个人中心 -->
+				<div id="topbar_mymenu" class="haschild">
+					<a id="topbar_tomy" target="_self" href="#">平安中心</a> <span
+						class="arrow"></span>
+					<div class="hc" id="loginbox">
+						<a id="topbar_tomypost" href="#">我的发布</a> <a
+							id="topbar_tomytradebuy" href="#">买家交易</a> <a
+							id="topbar_tomytradesale" href="#">卖家交易</a> <a
+							id="topbar_toCustomerService" href="#">客户服务</a>
+					</div>
+				</div>
+				<!-- 帮助 -->
+				<div style="padding-right: 10px" class="haschild">
+					<a href="#"onclick="">帮助</a>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+
+	<header id="header">
+
+		<div class="head">
+
+<div class="zz_search" id="SearchForm">
+<form id="search_loc" action="#" method="get">
+<input type="submit" id="searchbtn" class="search_on" value=""><input class="but-wd" onclick="clickLog(&quot;from=zzlist_search&quot;)" value="请输入类别或关键字" maxlength="40" fdv="请输入类别或关键字" id="keyword1" name="b_q" para="key" autocomplete="off">
+</form>
+</div>
+<div class="logo"></div>
+</div>
+
+	</header>
+
+	<!-- 导航栏 -->
+	<div class="nav">
+		
+	</div>
+
+	<!-- 选择 -->
+	<section id="selection">
+		<div>
+			<!-- 选择品牌 -->
+			<dl class="secitem clearfix">
+				<dt>类别 ：</dt>
+				<dd id="searchbrand">
+					<a class="select" href="" >全部</a> 
+				</dd>
+			</dl>
+			<!-- 选择价格 -->
+			<dl class="secitem clearfix">
+				<dt>价格 ：</dt>
+				<dd >
+					<a class="select" href="" >全部</a> 
+					<a href="#">100元以下</a>
+					<a href="#">100-200元</a>
+					<a href="#">200-500元</a>
+					<a href="#">500-1000元</a>
+					<a href="#">1000-2000元</a>
+					<a href="#">2000-3500元</a>
+					<a href="#">3500元以上</a>
+				
+					 <span class="prifilter"> <span class="text"> <input
+							type="text" id="price_start" para="minprice" size="3" muti="1"
+							min="0" max="999999" name="b_q" autocomplete="off" />
+					</span> <span class="dev"> - </span> <span class="text"> <input
+							class="mr5" type="text" id="price_end" para="minprice" size="3"
+							muti="1" min="0" max="999999" name="b_q" autocomplete="off" />元
+					</span> <span class="btn" style="display: block"> <input
+							id="price_search" type="button" value="价格筛选" />
+					</span>
+					</span>
+				</dd>
+			</dl>
+			<dl class="secitem secitem_area clearfix">
+				<dt>省：</dt>
+				<dd id="searchtwo">
+				<a class="select" href="" >全部</a> 
+					
+				</dd>
+			</dl>
+			<dl class="secitem secitem_area clearfix">
+				<dt>市：</dt>
+				<dd id="searchthree">
+				<a class="select" href="" >全部</a> 
+					
+				</dd>
+			</dl>
+			<dl class="secitem secitem_area clearfix">
+				<dt>区域 ：</dt>
+				<dd id="searchfour">
+				<a class="select" href="" >全部</a> 
+					
+				</dd>
+			</dl>
+
+		</div>
+	</section>
+
+	<!-- 主界面 -->
+	<div id="main">
+		<!-- 主界面_左 -->
+		<div class="mainleft" id="glist">
+		<div class="check_tab">
+			<div class="tab_bar">
+			</div>	
+		</div>
+
+			<!-- 置顶 -->
+			<div class="infocon zhiding">
+				<table class="tbimg" cellspacing="0" cellpadding="0" id="zhiding">
+					<colgroup>
+						<col class="w130" />
+						<col class="w550" />
+						<col class="w100" />
+						<col class="w100" />
+						<col class="w100" />
+					</colgroup>
+
+					<tbody id="toptbody">
+						
+					</tbody>
+				</table>
+			</div>
+			<!-- 商品信息 -->
+			<div class="infocon">
+				<table class="tbimg" cellspacing="0" cellpadding="0">
+					<colgroup>
+						<col class="w130" />
+						<col class="w550" />
+						<col class="w100" />
+						<col class="w100" />
+						<col class="w100" />
+					</colgroup>
+
+					<tbody id="tbody">
+						
+
+					</tbody>
+				</table>
+			</div>
+
+			<!-- 页面跳转 -->
+			<div class="pager">
+				<strong><span>1</span></strong> <a href="index-8.htm" tppabs="#"><span>2</span></a>
+				<a href="index-9.htm" tppabs="#"><span>3</span></a> <a
+					href="index-10.htm" tppabs="#"><span>4</span></a> <a
+					href="index-11.htm" tppabs="#"><span>5</span></a> <a
+					href="index-12.htm" tppabs="#"><span>6</span></a> <a
+					href="index-13.htm" tppabs="#"><span>7</span></a> <a
+					href="index-14.htm" tppabs="#"><span>8</span></a> <a
+					href="index-15.htm" tppabs="#"><span>9</span></a> <a
+					href="index-16.htm" tppabs="#"><span>10</span></a> <a
+					href="index-17.htm" tppabs="#"><span>11</span></a> <a
+					href="index-18.htm" tppabs="#"><span>12</span></a> <a class="next"
+					href="index-8.htm" tppabs="#pn2/"><span>下一页</span></a>
+			</div>
+
+			<!-- 统计 -->
+			<div id="infocont" class="infocont">
+				共 <span style="color: red"><b>48667</b></span> 条信息
+
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<footer id="footer" class="footer">
+		<p class="copyright">
+			&copy; 平安二手 <a id="askicon" target="_blank" title="有问题请与平安客服进行对话"
+				rel="nofollow" href="javascript:if(confirm('#'))window.location='#'"
+				tppabs="#">帮助中心</a>
+		</p>
+	</footer>
+
+
+</body>
+</html>

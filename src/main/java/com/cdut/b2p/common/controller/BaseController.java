@@ -106,6 +106,20 @@ public abstract class BaseController {
 	 * @param object
 	 * @return
 	 */
+	protected String renderSuccessString(HttpServletResponse response, String msg, Object data) {
+		map.clear();
+		map.put("data", data);
+		map.put("msg", msg);
+		map.put("success", true);
+		return renderString(response, JsonUtils.toJsonString(map), "application/json");
+	}
+	
+	/**
+	 * 客户端返回JSON字符串
+	 * @param response
+	 * @param object
+	 * @return
+	 */
 	protected String renderTokenString(HttpServletResponse response, String uid, String msg){
 		map.clear();
 		map.put("msg", msg);

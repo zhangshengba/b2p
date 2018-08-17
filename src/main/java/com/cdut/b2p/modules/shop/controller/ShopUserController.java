@@ -61,7 +61,8 @@ public class ShopUserController extends BaseController {
 			, String username, String password) {
 		
 		ShopUser u = shopUserService.findUserByUsername(username);
-		if(u == null) {
+		if(u == null ||  !ValidateUtils.validateUsername(username)
+				|| !ValidateUtils.validatePwd(password)) {
 			return renderErrorString(response, "用户名不存在"); 
 		}
 		if(!u.getUserPassword().equals(SecurityUtils.getMD5(password))) {
@@ -93,7 +94,9 @@ public class ShopUserController extends BaseController {
 			String ip = NetWorkUtils.getIpAddress(request);
 			String id = ip + mac + "regEmailCode";
 			String code = (String) CacheUtils.get(id);
+			String p_email = (String) CacheUtils.get(id + "email");
 			if (code != null && code.equals(emailcode)
+					&& email.equals(p_email)
 					&& ValidateUtils.validateUsername(username) 
 					&& ValidateUtils.validatePwd(password)
 					&& ValidateUtils.validateText(nickname,2,8)
@@ -117,6 +120,9 @@ public class ShopUserController extends BaseController {
 	@RequestMapping(value = "user/reg/sendEmail", method = RequestMethod.POST)
 	public String sendEmail(HttpServletRequest request, HttpServletResponse response,
 			String email) {
+		if(!ValidateUtils.validateEamil(email)) {
+			return renderErrorString(response, "该邮箱已被注册"); 
+		}
 		ShopUser u = shopUserService.findUserByEmail(email);
 		if(u != null && !StringUtils.isBlank(u.getUserEmail())) {
 			return renderErrorString(response, "该邮箱已被注册"); 
@@ -136,6 +142,7 @@ public class ShopUserController extends BaseController {
 			Long time = TimestampUtils.timeAfter(5 * 60 * 1000);
 			CacheUtils.put(id, regEmailCode);
 			CacheUtils.put(id + "time", time);
+			CacheUtils.put(id + "email", email);
 			EmailUtils.Send(email, regEmailCode, "注册验证码");
 
 		} catch (Exception e) {

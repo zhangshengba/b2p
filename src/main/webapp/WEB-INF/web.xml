@@ -51,14 +51,16 @@
     <servlet-name>DruidStatView</servlet-name>
     <url-pattern>/druid/*</url-pattern>
   </servlet-mapping>
-  <servlet>
+  
+  <!--  <servlet>
     <servlet-name>UserfilesDownloadServlet</servlet-name>
     <servlet-class>com.cdut.b2p.common.servlet.UserfilesDownloadServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>UserfilesDownloadServlet</servlet-name>
     <url-pattern>/userfiles/*</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
+  
   <servlet>
     <servlet-name>ValidateCodeServlet</servlet-name>
     <servlet-class>com.cdut.b2p.common.servlet.ValidateCodeServlet</servlet-class>
