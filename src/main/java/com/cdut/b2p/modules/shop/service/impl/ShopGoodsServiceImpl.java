@@ -137,9 +137,10 @@ public class ShopGoodsServiceImpl implements ShopGoodsService{
 		}
 		
 		ShopGoodsExample sge = new ShopGoodsExample();
+		ShopGoodsExample.Criteria cri = sge.createCriteria();
 		sge.setLimit(pageSize);
 		sge.setOffset(pageNum.equals(0) ? 0 : (long) ((pageNum - 1) * pageSize));
-		sge.or().andGoodsCategoryIdEqualTo(type);
+		cri.andGoodsCategoryIdEqualTo(type);
 		
 		if(area != null && !StringUtils.isBlank(area)) {
 			List<SysArea> arealist = sysAreaService.findAllChildByParentId(area);
@@ -147,16 +148,16 @@ public class ShopGoodsServiceImpl implements ShopGoodsService{
 			for(SysArea sa : arealist) {
 				areaIdList.add(sa.getId());
 			}
-			sge.or().andGoodsAreaIdIn(areaIdList);
+			cri.andGoodsAreaIdIn(areaIdList);
 		}
 		if(brand != null && !StringUtils.isBlank(brand)) {
-			sge.or().andGoodsBrandIdEqualTo(brand);
+			cri.andGoodsBrandIdEqualTo(brand);
 		}
 		if(min_price != null) {
-			sge.or().andGoodsPresentPriceGreaterThanOrEqualTo(new BigDecimal(min_price));
+			cri.andGoodsPresentPriceGreaterThanOrEqualTo(new BigDecimal(min_price));
 		}
 		if(max_price != null) {
-			sge.or().andGoodsPresentPriceLessThanOrEqualTo(new BigDecimal(max_price));
+			cri.andGoodsPresentPriceLessThanOrEqualTo(new BigDecimal(max_price));
 		}
 		
 		List<ShopGoods> goodslist = shopGoodsMapper.selectByExampleWithBLOBs(sge);
@@ -178,7 +179,12 @@ public class ShopGoodsServiceImpl implements ShopGoodsService{
 			info.setGoodsTitle(goods.getGoodsTitle());
 			info.setGoodsNums(size);
 			info.setGoodsStatus(goods.getGoodsStatus());
-			info.setGoodsDesc(goods.getGoodsDiscrible());
+			if(goods.getGoodsDiscrible().length() > 120) {
+				info.setGoodsDesc(goods.getGoodsDiscrible().substring(0,120) + "...");
+			}else {
+				info.setGoodsDesc(goods.getGoodsDiscrible());
+			}
+			
 			
 			ShopUser seller = shopUserMapper.selectByPrimaryKey(goods.getGoodsSellerId());
 			info.setGoodsSellerNickname(seller.getUserNickname());

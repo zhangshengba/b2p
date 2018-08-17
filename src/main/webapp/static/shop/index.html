@@ -26,7 +26,7 @@
 	<div id="topbar">
 		<div class="w pos">
 			<div class="bar_left">
-				<h2>平安二手</h2>
+				
 			</div>
 			<!-- 首页 -->
 			<div class="bar_right">
@@ -85,21 +85,21 @@
 			<dl class="secitem clearfix">
 				<dt>类别 ：</dt>
 				<dd id="searchbrand">
-					<a class="select" href="" >全部</a> 
+					
 				</dd>
 			</dl>
 			<!-- 选择价格 -->
 			<dl class="secitem clearfix">
 				<dt>价格 ：</dt>
 				<dd >
-					<a class="select" href="" >全部</a> 
-					<a href="#">100元以下</a>
-					<a href="#">100-200元</a>
-					<a href="#">200-500元</a>
-					<a href="#">500-1000元</a>
-					<a href="#">1000-2000元</a>
-					<a href="#">2000-3500元</a>
-					<a href="#">3500元以上</a>
+					<a class="select" href="#" id="price_all" onclick="setPrice('all')">全部</a> 
+					<a href="#" id="price_1" onclick="setPrice(1)">100元以下</a>
+					<a href="#" id="price_2" onclick="setPrice(2)">100-200元</a>
+					<a href="#" id="price_3" onclick="setPrice(3)">200-500元</a>
+					<a href="#" id="price_4" onclick="setPrice(4)">500-1000元</a>
+					<a href="#" id="price_5" onclick="setPrice(5)">1000-2000元</a>
+					<a href="#" id="price_6" onclick="setPrice(6)">2000-3500元</a>
+					<a href="#" id="price_7" onclick="setPrice(7)">3500元以上</a>
 				
 					 <span class="prifilter"> <span class="text"> <input
 							type="text" id="price_start" para="minprice" size="3" muti="1"
@@ -108,7 +108,7 @@
 							class="mr5" type="text" id="price_end" para="minprice" size="3"
 							muti="1" min="0" max="999999" name="b_q" autocomplete="off" />元
 					</span> <span class="btn" style="display: block"> <input
-							id="price_search" type="button" value="价格筛选" />
+							id="price_search" type="button" onclick="setOPrice()" value="价格筛选" />
 					</span>
 					</span>
 				</dd>
@@ -116,21 +116,20 @@
 			<dl class="secitem secitem_area clearfix">
 				<dt>省：</dt>
 				<dd id="searchtwo">
-				<a class="select" href="" >全部</a> 
 					
 				</dd>
 			</dl>
 			<dl class="secitem secitem_area clearfix">
 				<dt>市：</dt>
 				<dd id="searchthree">
-				<a class="select" href="" >全部</a> 
+				
 					
 				</dd>
 			</dl>
 			<dl class="secitem secitem_area clearfix">
 				<dt>区域 ：</dt>
 				<dd id="searchfour">
-				<a class="select" href="" >全部</a> 
+				
 					
 				</dd>
 			</dl>
@@ -182,24 +181,13 @@
 			</div>
 
 			<!-- 页面跳转 -->
-			<div class="pager">
-				<strong><span>1</span></strong> <a href="index-8.htm" tppabs="#"><span>2</span></a>
-				<a href="index-9.htm" tppabs="#"><span>3</span></a> <a
-					href="index-10.htm" tppabs="#"><span>4</span></a> <a
-					href="index-11.htm" tppabs="#"><span>5</span></a> <a
-					href="index-12.htm" tppabs="#"><span>6</span></a> <a
-					href="index-13.htm" tppabs="#"><span>7</span></a> <a
-					href="index-14.htm" tppabs="#"><span>8</span></a> <a
-					href="index-15.htm" tppabs="#"><span>9</span></a> <a
-					href="index-16.htm" tppabs="#"><span>10</span></a> <a
-					href="index-17.htm" tppabs="#"><span>11</span></a> <a
-					href="index-18.htm" tppabs="#"><span>12</span></a> <a class="next"
-					href="index-8.htm" tppabs="#pn2/"><span>下一页</span></a>
+			<div class="pager" id="pager">
+				
 			</div>
 
 			<!-- 统计 -->
 			<div id="infocont" class="infocont">
-				共 <span style="color: red"><b>48667</b></span> 条信息
+				共 <span style="color: red"><b id="all_goods_nums"></b></span> 条信息
 
 			</div>
 		</div>

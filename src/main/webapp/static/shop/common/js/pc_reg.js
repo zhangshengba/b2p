@@ -16,7 +16,7 @@ $.validator.setDefaults({
 							layer.alert(data['msg']);
 							var t=setTimeout(function(){
 								window.location.href = "./login.html";
-							},5000);
+							},2000);
 							
 						 }else{
 						    layer.alert(data['msg']);
