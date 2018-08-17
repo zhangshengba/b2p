@@ -22,6 +22,12 @@ public interface SysUserService {
 	 */
 	public SysUser findSysUser(SysUser sysUser);
 	/**
+	 * @desc 通过用户id，查询指定用户信息
+	 * @param id
+	 * @return SysUser
+	 */
+	public SysUser findSysUserById(String id);
+	/**
 	 * @desc 查询某一时间段内，注册的用户
 	 * @param startDate
 	 * @param endDate

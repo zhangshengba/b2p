@@ -30,11 +30,12 @@ public class ShopGoodsServiceImpl implements ShopGoodsService{
 	 * @author zsb
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	@Transactional(readOnly = true)
 	@Override
 	public Integer addGoodsCountByMonth() {
 		Date date=new Date();
-		int year=date.getYear()>100?2000+date.getYear()%100:date.getYear();
+		int year=date.getYear();
 		int month=date.getMonth();
 		int day=date.getDate();
 		//上一月的开始时间[默认为每月的时间为31天]

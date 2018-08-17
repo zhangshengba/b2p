@@ -104,6 +104,16 @@ public class SysUserServiceImpl implements SysUserService {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	/**
+	 * @desc 通过用户id，查询指定用户信息
+	 * @param id
+	 * @return SysUser
+	 */
+	@Override
+	public SysUser findSysUserById(String id) {
+		SysUser sysUser=sysUserMapper.selectByPrimaryKey(id);
+		return sysUser;
+	}
 	
 
 }

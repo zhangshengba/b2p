@@ -31,7 +31,7 @@ public interface ShopUserService {
 	 * @param endDate
 	 * @return
 	 */
-	public List<ShopUser> findSysUserByDate(Date startDate,Date endDate);
+	public List<ShopUser> findUserByDate(Date startDate,Date endDate);
 	/**
 	 * @desc 查询所有的用户
 	 * @author zsb

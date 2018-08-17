@@ -59,10 +59,20 @@
 		dataType:"json",
 		async:true,
 		success:function(data){ 
+			alert(data.msg);
 			/*data是想服务器请求的数据--->alert("数据：" + data);alert(typeof data);*/
-			if(data.model.Message=="index"){
+			if(data.msg=="index"){
 				$("#warn-username").hide();
-				alert(data.model.Message);
+				 /*登录成功，则保存数据在客户端*/
+				var isChecked = $('#isremember').is(':checked');
+				if(isChecked){
+					//$.cookie("cdutb2p_shop_token",data['token'],{expires:7});
+					localStorage.cdutb2p_sys_token = data['token'];
+				}else{
+					//$.cookie("cdutb2p_shop_token",data['token']);
+					sessionStorage.cdutb2p_sys_token = data['token'];
+				}
+
 				/*先假设...*/
 				window.location.href="index.html";
 				flag=true;
@@ -109,7 +119,7 @@
         <div class="col-xs-8">
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox"> Remember Me
+              <input type="checkbox" id="isremember"> Remember Me
             </label>
           </div>
         </div>

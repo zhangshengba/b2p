@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>B2P Admin|Index </title>
+  <title>B2P Admin|Chat </title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -53,8 +53,60 @@
     <script src="../dist/js/pages/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="../dist/js/demo.js"></script>
-    <script src="../js/jquery.js"></script></head>
+    <script src="../js/token.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/index.js"></script>
     <script>
+        function selectByDate(){
+            var startDate=$("#startDate").val();
+            var endDate=$("#endDate").val();
+            alert(startDate);
+            alert(endDate);
+            var param={};
+            param.startDate=startDate;
+            param.endDate=endDate;
+            $.ajax({
+                type:"POST",
+                dataType: "json",
+                url:"/b2p/sys/admin/selectByDate",
+                data: param,
+                success:function(data){
+                    alert(data.model.UserList2.length);
+                    $('#tbody').hide();
+                    //展示查询出的数据
+                    //进行数据展示
+                    $.each(data.model.UserList2, function(index, item) {
+                       $('#tbody2').append('<tr>'+
+                                '<td>'+index+'</td>'+
+                                '<td>'+item.userName+'</td>'+
+                                '<td>'+item.userNickname+'</td>'+
+                                '<td>'+item.userEmail+'</td>'+
+                                '<td>'+item.userRealName+'</td>'+
+                                '<td>'+item.userIdcard+'</td>'+
+                                '<td>'+item.userAddress+'</td>'+
+                                '<td>'+item.userTelphone+'</td>'+
+                                '<td>'+item.createDate+'</td>'+
+                                '<td>'+item.userStatus+'</td>'+
+                                '<td>'+
+                                '<button class="btn btn-primary" onclick="update()">修改</button>'+
+                                '<button class="btn btn-primary" style="background:red" onclick="del()">删除</button>'+
+                                '</td>'+
+                                '</tr>');
+                    });
+
+                },
+                error:function(data){
+                    alert(data);
+                    //发生错误，跳转到404页面
+                    alert("发生错误");
+                }
+            });
+        }
+
+
+
+
+
         function update(){
             var r=confirm("确定修改");
             if(r==true){//弹出修改表单
@@ -95,9 +147,7 @@
 
             }
         }
-        function form(){//弹出一个表单框
 
-        }
     </script>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -160,7 +210,7 @@
                   <li>
                     <a href="#">
                       <div class="pull-left">
-                        <img src="../img/user4-128x128.jpg" class="img-circle" alt="User Image">
+                        <img src="../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                       </div>
                       <h4>
                         Developers
@@ -324,14 +374,14 @@
 		  <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="../img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="../dist/img/user2-160x160.jpg" class="user-image" id="userImage" alt="User Image">
 			  <!--管理员的账号-->
-              <span class="hidden-xs">My Account</span>
+              <span class="hidden-xs" id="userNickname">My Account</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="../img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="../dist/img/user2-160x160.jpg" class="img-circle" id="userImage2" alt="User Image">
 				<!--对管理员的信息进行展示-->
                 <p>
                   Alexander Pierce - Web Developer
@@ -340,14 +390,14 @@
               </li>
 
               <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">修改个人信息</a>
-                </div>
-                <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">登出</a>
-                </div>
-              </li>
+                <li class="user-footer">
+                    <div class="pull-left">
+                        <a href="#" class="btn btn-default btn-flat">修改个人信息</a>
+                    </div>
+                    <div class="pull-right">
+                        <button class="btn btn-default btn-flat" onclick="exit()">登出</button>
+                    </div>
+                </li>
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
@@ -367,7 +417,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="../img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="../dist/img/user2-160x160.jpg" class="img-circle" id="userImage3" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>My Account</p>
@@ -479,7 +529,7 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>150</h3>
+              <h3 id="newOrders">150</h3>
               <p>New Orders</p>
             </div>
             <div class="icon">
@@ -494,7 +544,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
+              <h3 id="newGoods">53<sup style="font-size: 20px">%</sup></h3>
               <p>New  Goods</p>
             </div>
             <div class="icon">
@@ -509,7 +559,7 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>44</h3>
+              <h3 id="newUsers">44</h3>
 
               <p>User Registrations</p>
             </div>
@@ -525,7 +575,7 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>65</h3>
+              <h3 id="newVisitors">65</h3>
 
               <p>Unique Visitors</p>
             </div>
@@ -545,9 +595,10 @@
 			<p>时间查询<p>
 				<form class="navbar-form navbar-left">
 					<ul class="nav  navbar-nav" style="text-align: center">
-						<li>开始时间:<input type="date" name="startDate" style="width:120px;height:30px;margin-right:10px"></li>
-						<li>结束时间:<input type="date" name="endDate" style="width:120px;height:30px;"></li>
-						<li><button type="button" class="btn btn-primary" style="height:30px;">搜索</button></li>
+						<li>开始时间:<input type="date" id="startDate" name="startDate" style="width:120px;height:30px;margin-right:10px"></li>
+						<li>结束时间:<input type="date" id="endDate" name="endDate" style="width:120px;height:30px;"></li>
+						<li><button type="button" class="btn btn-primary" style="height:30px;"
+                        onclick="selectByDate()">搜索</button></li>
 					</ul>
 				</form>
 			</div>
@@ -557,7 +608,6 @@
 			<p>详细查询</p>
 				<form class="navbar-form navbar-left">
 					<ul class="nav  navbar-nav" style="text-align: center">
-						<li>&emsp;&emsp;编号:<input type="text" style="width:120px;height:30px;margin-right:10px"></li>
 						<li>用户姓名:<input type="text" style="width:120px;height:30px;margin-right:10px"></li>
 						<li>地区:<input type="text" style="width:120px;height:30px;"></li>
 						<li>
@@ -570,43 +620,15 @@
 	<!--查询出的内容-->
 	<section class="content" id="content">
 		<div class="container" style="width:100%">
-		<table class="table table-striped">
+		<table class="table table-striped" id="table">
 		<thead>
 			<tr>
-				<th>编号</th>
-				<th>账号</th>
-				<th>姓名</th>
-				<th>操作</th>
+               
 			</tr>
 		</thead>
-		<tbody>
-			<tr>
-				<td>1</td>
-				<td>18456789860</td>
-				<td>张三</td>
-				<td>
-                <button class="btn btn-primary" onclick="update()">修改</button>
-                <button class="btn btn-primary" style="background:red" onclick="del()">删除</button>
-				</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>18456789861</td>
-				<td>李四</td>
-				<td>
-                <button class="btn btn-primary" onclick="update()">修改</button>
-                <button class="btn btn-primary" style="background:red" onclick="del()">删除</button>
-                </td>
-			</tr>
-			<tr>
-				<td>3</td>
-				<td>18456789862</td>
-				<td>王五</td>
-				<td>
-				<button class="btn btn-primary" onclick="update()">修改</button>
-				<button class="btn btn-primary" style="background:red" onclick="del()">删除</button>
-				</td>
-			</tr>
+		<tbody id="tbody"><!--展示所有的用户-->
+        <tbody id="tbody2"><!--展示某一段时间内的用户-->
+        <tbody id="tbody3"><!--通过模糊查询的用户-->
 		</tbody>
 	</table>
 		</div>

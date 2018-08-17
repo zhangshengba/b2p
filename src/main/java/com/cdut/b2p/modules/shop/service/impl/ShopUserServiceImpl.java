@@ -86,17 +86,19 @@ public class ShopUserServiceImpl implements ShopUserService{
 	 * @desc 查询上一个月增加的用户数
 	 * @author zsb
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public Integer addUserCountByMonth() {
 		Date date=new Date();
-		int year=date.getYear()>100?2000+date.getYear()%100:date.getYear();
+		System.out.println(date.getYear()+" "+date.getMonth());
+		int year=date.getYear();
 		int month=date.getMonth();
-		int day=date.getDate();
 		//上一月的开始时间[默认为每月的时间为31天]
 		Date startDate=new Date(year,month,1);
 		//上一月的结束时间
 		Date endDate=new Date(year,month,31);
 		//
+		System.out.println(startDate+"        "+endDate);
 		ShopUserExample example=new ShopUserExample();
 		example.or().andCreateDateBetween(startDate, endDate);
 		List<ShopUser> list=shopUserMapper.selectByExample(example);
@@ -107,12 +109,12 @@ public class ShopUserServiceImpl implements ShopUserService{
 	 * @author zsb
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public Integer addVistorCountByMonth() {
 		Date date=new Date();
-		int year=date.getYear()>100?2000+date.getYear()%100:date.getYear();
+		int year=date.getYear();
 		int month=date.getMonth();
-		int day=date.getDate();
 		//上一月的开始时间[默认为每月的时间为31天]
 		Date startDate=new Date(year,month,1);
 		//上一月的结束时间
@@ -127,7 +129,7 @@ public class ShopUserServiceImpl implements ShopUserService{
 	 * @return List<User>
 	 */
 	@Override
-	public List<ShopUser> findSysUserByDate(Date startDate, Date endDate) {
+	public List<ShopUser> findUserByDate(Date startDate, Date endDate) {
 		ShopUserExample example=new ShopUserExample();
 		example.or().andCreateDateBetween(startDate, endDate);
 		List<ShopUser> list=shopUserMapper.selectByExample(example);
