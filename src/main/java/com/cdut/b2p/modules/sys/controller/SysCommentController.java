@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  */
 @Controller
-@RequestMapping("${sysPath}/admin")
+@RequestMapping("${sysPath}/admin/comment")
 public class SysCommentController {
-
+	
 }
