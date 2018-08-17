@@ -17,6 +17,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.cdut.b2p.common.utils.CacheUtils;
 import com.cdut.b2p.common.utils.IdUtils;
 import com.cdut.b2p.common.utils.StringUtils;
 import com.cdut.b2p.modules.shop.po.ShopUser;
@@ -81,6 +83,7 @@ public class SysAreaServiceImpl implements SysAreaService {
 				sysAreaMapper.updateByPrimaryKeySelective(e);
 			}
 		}
+		CacheUtils.remove("areaList");
 
 	}
 
@@ -89,6 +92,29 @@ public class SysAreaServiceImpl implements SysAreaService {
 	public String findIdbyAreaName(String name) {
 		SysAreaExample sae = new SysAreaExample();
 		sae.or().andAreaNameEqualTo(name);
-		return sysAreaMapper.selectByExample(sae).get(0).getId();
+		List<SysArea> list = sysAreaMapper.selectByExample(sae);
+		return (list == null || list.isEmpty()) ? null : list.get(0).getId();
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<SysArea> findAllArea() {
+		List<SysArea> areaList = (List<SysArea>)CacheUtils.get("areaList");
+		if (areaList == null){
+			SysAreaExample sae = new SysAreaExample();
+			sae.or();
+			areaList = sysAreaMapper.selectByExample(sae);
+			CacheUtils.put("areaList", areaList);
+		}	
+		return areaList;
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public List<SysArea> findAllChildByParentId(String pid) {
+		SysAreaExample sae = new SysAreaExample();
+		sae.or().andAreaParentIdsLike(pid);
+		List<SysArea> list = sysAreaMapper.selectByExample(sae);
+		return list;
 	}
 }
