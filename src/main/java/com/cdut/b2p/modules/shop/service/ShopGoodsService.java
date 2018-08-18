@@ -16,7 +16,7 @@ public interface ShopGoodsService {
 	public Integer addGoodsCountByMonth();
 
 	public void save(ShopGoods shopGoods);
-
+	
 	/**
 	 * @desc 查询所有的商品
 	 * @author zsb
@@ -43,7 +43,12 @@ public interface ShopGoodsService {
 	 * @return
 	 */
 	public boolean deleteGoods(String id);
-	
+	/**
+	 * @desc 根据商品id，发现卖家id
+	 * @param id
+	 * @return
+	 */
+	public String findSellerId(String id);
 	
 	public List<SysDict> findAllBrandByGoodsType(String goods_type);
 

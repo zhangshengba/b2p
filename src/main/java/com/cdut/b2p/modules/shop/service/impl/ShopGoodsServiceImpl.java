@@ -269,8 +269,14 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 	@Transactional(readOnly = false)
 	@Override
 	public boolean deleteGoods(String id) {
-		int count = shopGoodsMapper.deleteByPrimaryKey(id);
-		return true;
+		ShopGoods shopGoods=new ShopGoods();
+		shopGoods.setId(id);
+		shopGoods.setDelFlag("1");
+		int count = shopGoodsMapper.updateByPrimaryKeySelective(shopGoods);
+		if(count>0) {
+			return true;
+		}
+		return false;
 	}
 
 	@Transactional(readOnly = true)
@@ -357,6 +363,17 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		}
 		return list1;
 
+	}
+	/**
+	 * @desc 根据商品id,查询卖家id
+	 */
+	@Override
+	public String findSellerId(String id) {
+		ShopGoods shopGoods=shopGoodsMapper.selectByPrimaryKey(id);
+		if(shopGoods!=null) {
+			return shopGoods.getGoodsSellerId();
+		}
+		return null;
 	}
 
 }
