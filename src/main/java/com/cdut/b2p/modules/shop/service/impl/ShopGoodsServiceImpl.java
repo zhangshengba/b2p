@@ -85,14 +85,16 @@ public class ShopGoodsServiceImpl implements ShopGoodsService{
 	@Transactional(readOnly = true)
 	@Override
 	public List<SysDict> findAllBrandByGoodsType(String goods_type) {
-		List<SysDict> dictlist = findAllDict();
-		List<SysDict> rs = new ArrayList<SysDict>();
-		for(SysDict dict : dictlist) {
-			if(dict.getDictType().equals(goods_type)) {
-				rs.add(dict);
+		List<SysDict> dictList = (List<SysDict>)CacheUtils.get(goods_type + "dictList");
+		if (dictList == null){
+			SysDictExample sde = new SysDictExample();
+			sde.or().andDictTypeEqualTo(goods_type);
+			dictList = sysDictMapper.selectByExample(sde);
+			if(dictList.size() > 0) {
+				CacheUtils.put(goods_type + "dictList",dictList);
 			}
-		}
-		return rs;
+		}	
+		return dictList;
 		
 	}
 	
@@ -143,20 +145,24 @@ public class ShopGoodsServiceImpl implements ShopGoodsService{
 		cri.andGoodsCategoryIdEqualTo(type);
 		
 		if(area != null && !StringUtils.isBlank(area)) {
-			List<SysArea> arealist = sysAreaService.findAllChildByParentId(area);
+			List<SysArea> arealist = sysAreaService.findAllChildrenByParentId(area);
 			List<String> areaIdList = new ArrayList<String>();
 			for(SysArea sa : arealist) {
 				areaIdList.add(sa.getId());
 			}
-			cri.andGoodsAreaIdIn(areaIdList);
+			if(areaIdList != null && !areaIdList.isEmpty()) {
+				cri.andGoodsAreaIdIn(areaIdList);
+			}else {
+				cri.andGoodsAreaIdEqualTo(area);
+			}
 		}
 		if(brand != null && !StringUtils.isBlank(brand)) {
 			cri.andGoodsBrandIdEqualTo(brand);
 		}
-		if(min_price != null) {
+		if(min_price != null && min_price > 0) {
 			cri.andGoodsPresentPriceGreaterThanOrEqualTo(new BigDecimal(min_price));
 		}
-		if(max_price != null) {
+		if(max_price != null && max_price > 0)  {
 			cri.andGoodsPresentPriceLessThanOrEqualTo(new BigDecimal(max_price));
 		}
 		

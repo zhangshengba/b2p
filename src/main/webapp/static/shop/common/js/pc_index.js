@@ -12,6 +12,8 @@ var city_s = "all";
 var area_s = "all";
 var brand_s = "all";
 var price_s = "all";
+var areaDict = null;
+var G_t = 0;
 
 function logout() {
 	localStorage.cdutb2p_shop_token = ""
@@ -38,17 +40,32 @@ function genUserInfo() {
 
 	});
 }
+function isPositiveInteger(s){//是否为正整数
+     var re = /^[0-9]+$/ ;
+     return re.test(s)
+ }  
 function setOPrice(){
 	G_min_price = $('#price_start').val();
-	G_max_price$ = $('#price_end').val();
+	G_max_price = $('#price_end').val();
+	if(!isPositiveInteger(G_min_price) || !isPositiveInteger(G_max_price) || G_min_price > G_max_price) {
+		alert('输入错误');
+		G_max_price = null;
+		G_max_price = null;
+		return;
+	}
 	$('#price_' + price_s).attr("class","");
 	$('#price_search').attr("class","select");
+	price_s = "button";
 	pageOChange(1);
 }
 
 function setPrice(x){
 	if(x == price_s){
 		return;
+	}
+	if(x == "all"){
+		G_max_price = null;
+		G_max_price = null;
 	}
 	if(x == 1){
 		G_max_price = 100;
@@ -98,9 +115,17 @@ function setProvince(x){
 		return;
 	}
 	$('#province_' + province_s).attr("class","");
+	$('#city_' + city_s).attr("class","");
+	$('#city_all').attr("class","select");
+	$('#area_' + area_s).attr("class","");
+	$('#area_all').attr("class","select");
+	city_s = "all";
+	area_s = "all";
 	x != "all" ? province_s = x : province_s = "all";
 	G_area = x == "all" ? null : x;
 	$('#province_' + province_s).attr("class","select");
+	G_t = 2;
+	genOSearch(G_area);
 	pageOChange(1);
 }
 
@@ -109,9 +134,14 @@ function setCity(x){
 		return;
 	}
 	$('#city_' + city_s).attr("class","");
+	$('#area_' + area_s).attr("class","");
+	$('#area_all').attr("class","select");
+	area_s = "all";
 	x != "all" ? city_s = x : city_s = "all";
 	G_area = x == "all" ? null : x;
 	$('#city_' + city_s).attr("class","select");
+	G_t = 3;
+	genOSearch(G_area);
 	pageOChange(1);
 }
 
@@ -132,8 +162,30 @@ function genSearch() {
 		headers : {
 			cdutb2p_shop_token : GLOBAL_TOKEN
 		},
-		url : getPath() + "/shop/goods/area",
+		url : getPath() + "/shop/goods/area/list",
 		data : {},
+		dataType : "json",
+		success : function(data) {
+			if (data['success']) {
+				renderSearch(data['data']);
+			}
+		},
+		error : function(data) {
+			layer.alert('系统错误');
+		}
+
+	});
+}
+function genOSearch(areaid) {
+	$.ajax({
+		type : "POST",
+		headers : {
+			cdutb2p_shop_token : GLOBAL_TOKEN
+		},
+		url : getPath() + "/shop/goods/area",
+		data : {
+			areaid:areaid,
+		},
 		dataType : "json",
 		success : function(data) {
 			if (data['success']) {
@@ -151,36 +203,65 @@ function renderSearch(data) {
 	two = []
 	three = []
 	four = []
-	for ( var a in data) {
-		one.push(data[a])
-		for ( var b in data[a]['children']) {
-			two.push(data[a]['children'][b]);
-			for ( var c in data[a]['children'][b]['children']) {
-				three.push(data[a]['children'][b]['children'][c]);
-				for ( var d in data[a]['children'][b]['children'][c]['children']) {
-					four.push(data[a]['children'][b]['children'][c]['children'][d]);
-				}
-			}
+	var p;
+	var c;
+	var a;
+	if(G_t == 0){
+		one.push(data[0]);
+		for(var i in data[0]['children']){
+			two.push(data[0]['children'][i]);
 		}
+		p = true;
+		c = true;
+		a = true;
 	}
+	if(G_t == 2){
+		for ( var i in data) {
+			three.push(data[i]);
+		}
+		p = false;
+		c = true;
+		a = true;
+		
+	}
+	if(G_t == 3){
+		for ( var i in data) {
+			four.push(data[i]);
+		}
+		p = false;
+		c = false;
+		a = true;
+		
+	}
+	
 	html = ""
-	html += "<a class=\"select\" onclick=\"setProvince(\'all\')\" id=\"province_all\" href=\"#\" >全部</a>";
-	for ( var i in two) {
-		html += "<a href=\"#\" onclick=\"setProvince(\'"+two[i]['id']+"\')\" id=\"province_"+two[i]['id']+"\">" + two[i]['areaName'] + "</a>";
+	if(p){
+		html += "<a class=\"select\" onclick=\"setProvince(\'all\')\" id=\"province_all\" href=\"#\" >全部</a>";
+		for ( var i in two) {
+			html += "<a href=\"#\" onclick=\"setProvince(\'"+two[i]['id']+"\')\" id=\"province_"+two[i]['id']+"\">" + two[i]['areaName'] + "</a>";
+		}
+		$('#searchtwo').html(html);
 	}
-	$('#searchtwo').html(html);
+	
+	
 	html = ""
-	html += "<a class=\"select\" onclick=\"setCity(\'all\')\" id=\"city_all\" href=\"#\" >全部</a>";
-	for ( var j in three) {
-		html += "<a href=\"#\" onclick=\"setCity(\'"+three[j]['id']+"\')\" id=\"city_"+three[j]['id']+"\">" + three[j]['areaName'] + "</a>";
+	if(c){
+		html += "<a class=\"select\" onclick=\"setCity(\'all\')\" id=\"city_all\" href=\"#\" >全部</a>";
+		for ( var j in three) {
+			html += "<a href=\"#\" onclick=\"setCity(\'"+three[j]['id']+"\')\" id=\"city_"+three[j]['id']+"\">" + three[j]['areaName'] + "</a>";
+		}
+		$('#searchthree').html(html);
 	}
-	$('#searchthree').html(html);
+	
+	
 	html = ""
-	html += "<a class=\"select\" onclick=\"setArea(\'all\')\" id=\"area_all\" href=\"#\" >全部</a>";
-	for ( var k in four) {
-		html += "<a href=\"#\" onclick=\"setArea(\'"+four[k]['id']+"\')\" id=\"area_"+four[k]['id']+"\">" + four[k]['areaName'] + "</a>";
+	if(a){
+		html += "<a class=\"select\" onclick=\"setArea(\'all\')\" id=\"area_all\" href=\"#\" >全部</a>";
+		for ( var k in four) {
+			html += "<a href=\"#\" onclick=\"setArea(\'"+four[k]['id']+"\')\" id=\"area_"+four[k]['id']+"\">" + four[k]['areaName'] + "</a>";
+		}
+		$('#searchfour').html(html);
 	}
-	$('#searchfour').html(html);
 }
 
 function genBrand() {

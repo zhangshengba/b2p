@@ -91,13 +91,13 @@ public class AreaUtils {
 
 	}
 
-	public static List<TreeNode> bulid(List<TreeNode> treeNodes) {
+	public static List<TreeNode> bulid(List<TreeNode> treeNodes,String topid) {
 		 
         List<TreeNode> trees = new ArrayList<TreeNode>();
  
         for (TreeNode treeNode : treeNodes) {
  
-            if ("0".equals(treeNode.getAreaParentId())) {
+            if (topid.equals(treeNode.getAreaParentId())) {
                 trees.add(treeNode);
             }
  
@@ -113,7 +113,7 @@ public class AreaUtils {
         return trees;
 	}
 	
-	public static List<TreeNode> parseArea(List<SysArea> list) {
+	public static List<TreeNode> parseArea(List<SysArea> list,String topid) {
 		List<TreeNode> nodelist = new ArrayList<TreeNode>();
 		for(SysArea area : list) {
 			TreeNode node = new TreeNode();
@@ -125,8 +125,10 @@ public class AreaUtils {
 			node.setAreaType(area.getAreaType());
 			nodelist.add(node);
 		}
-		return AreaUtils.bulid(nodelist);
+		return AreaUtils.bulid(nodelist,topid);
 		
 	}
+	
+	
 
 }

@@ -58,10 +58,20 @@ public class ShopCustomerController extends BaseController{
 	/**
 	 * 获取地区
 	 */
-	@RequestMapping(value = "goods/area", method = RequestMethod.POST)
+	@RequestMapping(value = "goods/area/list", method = RequestMethod.POST)
 	public String area(HttpServletRequest request, HttpServletResponse response) {
 		List<SysArea> list = sysAreaService.findAllArea();
-		List<TreeNode> list1 = AreaUtils.parseArea(list);
+		List<TreeNode> list1 = AreaUtils.parseArea(list,"0");
+		return renderSuccessString(response, "获取地区数据成功", list1);
+	}
+	
+	/**
+	 * 获取地区
+	 */
+	@RequestMapping(value = "goods/area", method = RequestMethod.POST)
+	public String area1(HttpServletRequest request, HttpServletResponse response,String areaid) {
+		List<SysArea> list = sysAreaService.findAllChildrenByParentId(areaid);
+		List<TreeNode> list1 = AreaUtils.parseArea(list,areaid);
 		return renderSuccessString(response, "获取地区数据成功", list1);
 	}
 	
