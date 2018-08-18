@@ -22,6 +22,8 @@ public interface SysAreaService {
 	
 	public List<SysArea> findAllChildByParentId(String pid);
 	
+	public List<SysArea> findAllChildrenByParentId(String pid);
+	
 	public List<SysArea> findAllArea();
 
 }

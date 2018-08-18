@@ -16,9 +16,9 @@ $.validator.setDefaults({
 								sessionStorage.cdutb2p_shop_token = data['token'];
 							}
 							layer.alert(data['msg']);
-//							var t=setTimeout(function(){
-//								window.location.href = "./index.html";
-//							},5000);
+							var t=setTimeout(function(){
+								window.location.href = "./index.html";
+							},2000);
 							
 							
 						 }else{

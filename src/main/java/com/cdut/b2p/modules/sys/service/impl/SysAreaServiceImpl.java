@@ -113,7 +113,16 @@ public class SysAreaServiceImpl implements SysAreaService {
 	@Override
 	public List<SysArea> findAllChildByParentId(String pid) {
 		SysAreaExample sae = new SysAreaExample();
-		sae.or().andAreaParentIdsLike(pid);
+		sae.or().andAreaParentIdLike("%"+pid+"%");
+		List<SysArea> list = sysAreaMapper.selectByExample(sae);
+		return list;
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public List<SysArea> findAllChildrenByParentId(String pid) {
+		SysAreaExample sae = new SysAreaExample();
+		sae.or().andAreaParentIdsLike("%"+pid+"%");
 		List<SysArea> list = sysAreaMapper.selectByExample(sae);
 		return list;
 	}
