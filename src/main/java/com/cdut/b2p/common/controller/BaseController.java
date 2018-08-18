@@ -49,7 +49,7 @@ public abstract class BaseController {
 	@Value("${urlSuffix}")
 	protected String urlSuffix;
 	
-	protected HashMap<Object,Object> map = new HashMap<Object,Object>();
+	
 	/**
 	 * 添加Model消息
 	 * @param message
@@ -81,6 +81,7 @@ public abstract class BaseController {
 	 * @return
 	 */
 	protected String renderErrorString(HttpServletResponse response, String msg) {
+		HashMap<Object,Object> map = new HashMap<Object,Object>();
 		map.clear();
 		map.put("msg", msg);
 		map.put("success", false);
@@ -94,6 +95,7 @@ public abstract class BaseController {
 	 * @return
 	 */
 	protected String renderSuccessString(HttpServletResponse response, String msg) {
+		HashMap<Object,Object> map = new HashMap<Object,Object>();
 		map.clear();
 		map.put("msg", msg);
 		map.put("success", true);
@@ -107,6 +109,7 @@ public abstract class BaseController {
 	 * @return
 	 */
 	protected String renderSuccessString(HttpServletResponse response, String msg, Object data) {
+		HashMap<Object,Object> map = new HashMap<Object,Object>();
 		map.clear();
 		map.put("data", data);
 		map.put("msg", msg);
@@ -121,6 +124,7 @@ public abstract class BaseController {
 	 * @return
 	 */
 	protected String renderTokenString(HttpServletResponse response, String uid, String msg){
+		HashMap<Object,Object> map = new HashMap<Object,Object>();
 		map.clear();
 		map.put("msg", msg);
 		map.put("success", true);
