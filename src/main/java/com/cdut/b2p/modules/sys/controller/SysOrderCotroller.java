@@ -24,7 +24,7 @@ import com.cdut.b2p.modules.shop.service.ShopOrderService;
  *
  */
 @Controller
-@RequestMapping("${sysPath}/admin/orders")
+@RequestMapping("${sysPath}/admin/order")
 public class SysOrderCotroller extends BaseController{
 	@Autowired
 	private ShopOrderService shopOrderService;
@@ -40,6 +40,13 @@ public class SysOrderCotroller extends BaseController{
 		model.addObject("OrderList", list);
 		return renderString(response, model);
 	}
+	/**
+	 * @desc 查询某段时间内的订单
+	 * @param response
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/selectByDate",method=RequestMethod.POST)
 	public String getOrderByDate(HttpServletResponse response,HttpServletRequest request) {
 		ModelAndView model=new ModelAndView();
 		Date startDate=DateUtils.parseDate(request.getParameter("startDate"));
