@@ -192,4 +192,10 @@ public class ShopUserServiceImpl implements ShopUserService{
 		
 	}
 
+	@Override
+	public ShopUser findUserById(String uid) {
+		ShopUser u = shopUserMapper.selectByPrimaryKey(uid);
+		return u;
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.cdut.b2p.modules.shop.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import com.cdut.b2p.modules.shop.po.ShopChat;
 import com.cdut.b2p.modules.shop.po.ShopChatExample;
 import com.cdut.b2p.modules.shop.po.ShopComment;
 import com.cdut.b2p.modules.shop.service.ShopChatService;
+import com.cdut.b2p.modules.shop.websocket.po.Message;
 
 @Service
 @Transactional
@@ -70,7 +72,7 @@ public class ShopChatServiceImpl implements ShopChatService{
 	public ShopChat findChatById(String id) {
 		ShopChatExample example=new ShopChatExample();
 		example.or().andIdEqualTo(id);
-		List<ShopChat> list=shopChatMapper.selectByExample(example);
+		List<ShopChat> list=shopChatMapper.selectByExampleWithBLOBs(example);
 		if(list!=null) {
 			return list.get(0);
 		}
@@ -85,23 +87,11 @@ public class ShopChatServiceImpl implements ShopChatService{
 	@Override
 	public List<ShopChat> findChatByUser(String uid) {
 		ShopChatExample example=new ShopChatExample();
-		example.or().andChatUserIdEqualTo(uid);
-		List<ShopChat> list=shopChatMapper.selectByExample(example);
+		example.or().andChatFromIdEqualTo(uid);
+		List<ShopChat> list=shopChatMapper.selectByExampleWithBLOBs(example);
 		return list;
 	}
-	/**
-	 * @desc 根据商品id，查询其被发表的交流
-	 * @param gid
-	 * @return
-	 */
-	@Transactional(readOnly=true)
-	@Override
-	public List<ShopChat> findChatByGoods(String gid) {
-		ShopChatExample example=new ShopChatExample();
-		example.or().andChatGoodsIdEqualTo(gid);
-		List<ShopChat> list=shopChatMapper.selectByExample(example);
-		return list;
-	}
+
 	/**
 	 * @desc 查询所有的交流记录
 	 * @return
@@ -110,7 +100,7 @@ public class ShopChatServiceImpl implements ShopChatService{
 	@Override
 	public List<ShopChat> findAllChat() {
 		ShopChatExample example=new ShopChatExample();
-		List<ShopChat> list=shopChatMapper.selectByExample(example);
+		List<ShopChat> list=shopChatMapper.selectByExampleWithBLOBs(example);
 		return list;
 	}
 	/**
@@ -124,8 +114,43 @@ public class ShopChatServiceImpl implements ShopChatService{
 	public List<ShopChat> findChatByDate(Date startDate, Date endDate) {
 		ShopChatExample example=new ShopChatExample();
 		example.or().andCreateDateBetween(startDate, endDate);
-		List<ShopChat> list=shopChatMapper.selectByExample(example);
+		List<ShopChat> list=shopChatMapper.selectByExampleWithBLOBs(example);
 		return list;
 	}
+	@Transactional(readOnly=true)
+	@Override
+	public List<ShopChat> findChatByFromTo(String from_id, String to_id) {
+		ShopChatExample example=new ShopChatExample();
+		example.or().andChatFromIdEqualTo(from_id).andChatToIdEqualTo(to_id);
+		List<ShopChat> list = shopChatMapper.selectByExampleWithBLOBs(example);
+		return list;
+	}
+	@Transactional(readOnly=true)
+	@Override
+	public List<String> findChatByFromOrTo(String uid) {
+		
+		ShopChatExample example=new ShopChatExample();
+		ShopChatExample.Criteria cri1 = example.createCriteria();
+		cri1.andChatFromIdEqualTo(uid);
+		
+		ShopChatExample.Criteria cri2 = example.createCriteria();
+		cri2.andChatToIdEqualTo(uid);
+	
+		example.or(cri2);
+		
+		List<ShopChat> list = shopChatMapper.selectByExample(example);
+		
+		List<String> list1 = new ArrayList<String>();
+		for(ShopChat chat : list) {
+			if(!list1.contains(chat.getChatFromId())) {
+				list1.add(chat.getChatFromId());
+			}
+			if(!list1.contains(chat.getChatToId())) {
+				list1.add(chat.getChatToId());
+			}
+		}
+		return list1;
+	}
+	
 
 }

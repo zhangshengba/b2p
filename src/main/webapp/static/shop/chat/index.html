@@ -2,7 +2,7 @@
     <div class="chatBtn">
         <i class="iconfont icon-xiaoxi1"></i>
     </div>
-    <div class="chat-message-num">10</div>
+    <div class="chat-message-num">0</div>
     <div class="chatBox" ref="chatBox">
         <div class="chatBox-head">
             <div class="chatBox-head-one">
@@ -13,51 +13,21 @@
                 <div class="chat-return">返回</div>
                 <div class="chat-people">
                     <div class="ChatInfoHead">
-                        <img src="" alt="头像"/>
+                        <img src="" alt="头像" id="chat_user_img"/>
                     </div>
-                    <div class="ChatInfoName">这是用户的名字，看看名字到底能有多长</div>
+                    <div class="ChatInfoName" id="chat_user_name"></div>
                 </div>
                 <div class="chat-close">关闭</div>
             </div>
         </div>
         <div class="chatBox-info">
             <div class="chatBox-list" ref="chatBoxlist">
-                <div class="chat-list-people">
-                    <div><img src="img/icon01.png" alt="头像"/></div>
-                    <div class="chat-name">
-                        <p>自酌一杯酒</p>
-                    </div>
-                    <div class="message-num">10</div>
-                </div>
+                
 
             </div>
             <div class="chatBox-kuang" ref="chatBoxkuang">
-                <div class="chatBox-content">
-                    <div class="chatBox-content-demo" id="chatBox-content-demo">
-
-                        <div class="clearfloat">
-                            <div class="author-name">
-                                <small class="chat-date">2017-12-02 14:26:58</small>
-                            </div>
-                            <div class="left">
-                                <div class="chat-avatars"><img src="img/icon01.png" alt="头像"/></div>
-                                <div class="chat-message">
-                                    给你看张图
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="clearfloat">
-                            <div class="author-name">
-                                <small class="chat-date">2017-12-02 14:26:58</small>
-                            </div>
-                            <div class="left">
-                                <div class="chat-avatars"><img src="img/icon01.png" alt="头像"/></div>
-                                <div class="chat-message">
-                                    <img src="img/1.png" alt="">
-                                </div>
-                            </div>
-                        </div>
+                <div class="chatBox-content" id="chat-content">
+					<div class="chatBox-content-demo" id="chatBox-content-demo">
                     </div>
                 </div>
                 <div class="chatBox-send">
@@ -170,28 +140,7 @@
     $(".chat-close").click(function () {
         $(".chatBox").toggle(10);
     })
-    //进聊天页面
-    $(".chat-list-people").each(function () {
-        $(this).click(function () {
-            var n = $(this).index();
-            $(".chatBox-head-one").toggle();
-            $(".chatBox-head-two").toggle();
-            $(".chatBox-list").fadeToggle();
-            $(".chatBox-kuang").fadeToggle();
-
-            //传名字
-            $(".ChatInfoName").text($(this).children(".chat-name").children("p").eq(0).html());
-
-            //传头像
-            $(".ChatInfoHead>img").attr("src", $(this).children().eq(0).children("img").attr("src"));
-
-            //聊天框默认最底部
-            $(document).ready(function () {
-                $("#chatBox-content-demo").scrollTop($("#chatBox-content-demo")[0].scrollHeight);
-            });
-        })
-    });
-
+ 
     //返回列表
     $(".chat-return").click(function () {
         $(".chatBox-head-one").toggle(1);
@@ -200,14 +149,18 @@
         $(".chatBox-kuang").fadeToggle(1);
     });
 
-    //      发送信息
+    //发送信息
     $("#chat-fasong").click(function () {
         var textContent = $(".div-textarea").html().replace(/[\n\r]/g, '<br>')
         if (textContent != "") {
-            $(".chatBox-content-demo").append("<div class=\"clearfloat\">" +
-                "<div class=\"author-name\"><small class=\"chat-date\">2017-12-02 14:26:58</small> </div> " +
-                "<div class=\"right\"> <div class=\"chat-message\"> " + textContent + " </div> " +
-                "<div class=\"chat-avatars\"><img src=\"img/icon01.png\" alt=\"头像\" /></div> </div> </div>");
+			html = "";
+			html += "<div class=\"clearfloat\">" +
+                "<div class=\"author-name\"><small class=\"chat-date\">"+formatDateTime(new Date())+"</small> </div> " +
+                "<div class=\"right\"> <div class=\"chat-message\"> " +textContent + " </div> " +
+                "<div class=\"chat-avatars\"><img src=\""+getRealPath()+img_map[to_id]+"\" alt=\"头像\" /></div> </div> </div>";
+            $("#chatBox-content-demo").append(html);
+			send_msg_to_server(to_id,textContent,1);
+			msg_map[to_id] = msg_map[to_id] + html;
             //发送后清空输入框
             $(".div-textarea").html("");
             //聊天框默认最底部
@@ -217,7 +170,7 @@
         }
     });
 
-    //      发送表情
+    //发送表情
     $("#chat-biaoqing").click(function () {
         $(".biaoqing-photo").toggle();
     });
@@ -232,10 +185,15 @@
         $(this).click(function () {
             var bq = $(this).parent().html();
             console.log(bq)
-            $(".chatBox-content-demo").append("<div class=\"clearfloat\">" +
-                "<div class=\"author-name\"><small class=\"chat-date\">2017-12-02 14:26:58</small> </div> " +
+			html = "";
+			html += "<div class=\"clearfloat\">" +
+                "<div class=\"author-name\"><small class=\"chat-date\">"+formatDateTime(new Date())+"</small> </div> " +
                 "<div class=\"right\"> <div class=\"chat-message\"> " + bq + " </div> " +
-                "<div class=\"chat-avatars\"><img src=\"img/icon01.png\" alt=\"头像\" /></div> </div> </div>");
+                "<div class=\"chat-avatars\"><img src=\""+getRealPath()+img_map[to_id]+"\" alt=\"头像\" /></div> </div> </div>";
+				
+            $(".chatBox-content-demo").append(html);
+			send_msg_to_server();
+			msg_map[to_id] = msg_map[to_id] + html;
             //发送后关闭表情框
             $(".biaoqing-photo").toggle();
             //聊天框默认最底部
@@ -253,51 +211,23 @@
         var reader = new FileReader();
         reader.onload = function (evt) {
             var images = evt.target.result;
-            $(".chatBox-content-demo").append("<div class=\"clearfloat\">" +
-                "<div class=\"author-name\"><small class=\"chat-date\">2017-12-02 14:26:58</small> </div> " +
+			html = "";
+			html += "<div class=\"clearfloat\">" +
+                "<div class=\"author-name\"><small class=\"chat-date\">"+formatDateTime(new Date())+"</small> </div> " +
                 "<div class=\"right\"> <div class=\"chat-message\"><img src=" + images + "></div> " +
-                "<div class=\"chat-avatars\"><img src=\"img/icon01.png\" alt=\"头像\" /></div> </div> </div>");
+                "<div class=\"chat-avatars\"><img src=\""+getRealPath()+img_map[to_id]+"\" alt=\"头像\" /></div> </div> </div>";
+            $(".chatBox-content-demo").append(html);
+			send_msg_to_server();
+			msg_map[to_id] = msg_map[to_id] + html;
             //聊天框默认最底部
             $(document).ready(function () {
                 $("#chatBox-content-demo").scrollTop($("#chatBox-content-demo")[0].scrollHeight);
             });
         };
         reader.readAsDataURL(pic.files[0]);
+		$('#inputImage').val(''); 
 
     }
-
-
-</script>
-
-<script>
-	var path = getRealPath();
-	var token = GLOBAL_TOKEN;
-		
-	var websocket;
-	websocket = new SockJS(path + "/sockjs/chat?token="+token);
-
-	websocket.onopen = function(event) {
-		
-	};
-	websocket.onmessage = function(event) {
-		var data=JSON.parse(event.data);
-		
-	};
-	websocket.onerror = function(event) {
-		
-	};
-	websocket.onclose = function(event) {
-		
-	}
 	
-	function send(event){
-		
-	}
-	
-	function openChat(seller_id,seller_nickname,seller_img){
-		console.log(seller_id+seller_nickname+seller_img);
-	
-	}
-
 </script>
 

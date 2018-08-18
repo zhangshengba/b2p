@@ -11,7 +11,7 @@
  Target Server Version : 50722
  File Encoding         : 65001
 
- Date: 16/08/2018 16:15:20
+ Date: 19/08/2018 00:20:22
 */
 
 SET NAMES utf8mb4;
@@ -61,9 +61,10 @@ CREATE TABLE `shop_cart`  (
 DROP TABLE IF EXISTS `shop_chat`;
 CREATE TABLE `shop_chat`  (
   `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编号',
-  `chat_user_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '聊天用户id',
-  `chat_goods_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '聊天商品id',
-  `chat_message` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '聊天内容',
+  `chat_from_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '聊天用户id',
+  `chat_to_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '聊天商品id',
+  `chat_message` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '聊天内容',
+  `chat_type` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '类别',
   `chat_status` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '状态',
   `create_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '创建者',
   `create_date` datetime(0) NOT NULL COMMENT '创建时间',
@@ -1587,6 +1588,7 @@ INSERT INTO `shop_user` VALUES ('d6445fc061504429a344f8bff19c660a', '000700', '2
 INSERT INTO `shop_user` VALUES ('d65fdb6adbe544208751b09d55773cda', '000688', '2cf625db13da4073aecb237bf5d9f790', '水花镜中月', 'cdutb2p@outlook.com', NULL, NULL, '成都-新都', NULL, '他加入平安二手222天，常居成都新都', '/userfiles/user/0006881534320750506.jpg', 'd8d02f1802d446a0bca51c9e14aae76b', 0, '0', '', '2018-08-15 16:12:31', '', '2018-08-15 16:12:31', NULL, '0');
 INSERT INTO `shop_user` VALUES ('d67d135f260d4c3681fa470e226977ea', '000631', 'b2e00bed87aa740ef9827960f628efae', '吖A夏益君', 'cdutb2p@outlook.com', NULL, NULL, '成都-青羊', NULL, '她加入平安二手105天，常居成都青羊', '/userfiles/user/0006311534320747681.jpg', 'd92496d13bf642f08c4f9a6a1a34f92a', 0, '0', '', '2018-08-15 16:12:28', '', '2018-08-15 16:12:28', NULL, '0');
 INSERT INTO `shop_user` VALUES ('d6a8ea0ddbc74425a8529d55fbeaab9f', '000265', 'c1257fedbdd1a86b649b4e2137e6fa31', '就想卖个东西而已', 'cdutb2p@outlook.com', NULL, NULL, '成都-锦江', NULL, '他加入平安二手2年，常居成都锦江', '/userfiles/user/0002651534320727866.jpg', 'd9489d3a83454357af5873813f9de1f6', 0, '0', '', '2018-08-15 16:12:08', '', '2018-08-15 16:12:08', NULL, '0');
+INSERT INTO `shop_user` VALUES ('d6af53730ef842e5a602b826e9c140ff', 'asfasfsaf', 'eb0ee10615acefc5837195b4bd9ea070', 'asfasfsa', '1032862965@qq.com', NULL, NULL, NULL, NULL, NULL, '/userfiles/user/0000001534320708940.jpg', '4177ce907a714e448ff3060069bfb1ad', 0, '0', '', '2018-08-16 21:15:27', '', '2018-08-16 21:15:27', NULL, '0');
 INSERT INTO `shop_user` VALUES ('d6bf6691b2d3492aa808a55f076b1285', '000084', '33fab7d9881214c8c36871976e675259', '默念_qoo', 'cdutb2p@outlook.com', NULL, NULL, '成都-双流', NULL, '他加入平安二手53天，常居成都双流', '/userfiles/user/0000841534320716952.jpg', 'd9551e9fc5a549caba01251e1057bd91', 0, '0', '', '2018-08-15 16:11:57', '', '2018-08-15 16:11:57', NULL, '0');
 INSERT INTO `shop_user` VALUES ('d6c43f47a63a483e9f9b81ae8afdb3ea', '000469', '6857efaf02049fd2b18f091e53b76dbb', '一口二两肉', 'cdutb2p@outlook.com', NULL, NULL, '成都-邛崃市', NULL, '他加入平安二手2年，常居成都邛崃市', '/userfiles/user/0004691534320740086.jpg', 'd98a93018d5d45ad8da7194623cd5835', 0, '0', '', '2018-08-15 16:12:20', '', '2018-08-15 16:12:20', NULL, '0');
 INSERT INTO `shop_user` VALUES ('d6e881bb57104631b5ce9a37019cdd2b', '000413', '88cf2dab1facbb2508b6de2894add4ad', '错过bah0x1kt', 'cdutb2p@outlook.com', NULL, NULL, '成都-锦江', NULL, '他加入平安二手24天，常居成都锦江', '/userfiles/user/0004131534320736562.jpg', 'da1c4f99911e4ac78408991a39a7a8fe', 0, '0', '', '2018-08-15 16:12:17', '', '2018-08-15 16:12:17', NULL, '0');
@@ -1930,6 +1932,7 @@ INSERT INTO `shop_wallet` VALUES ('4087b00f25424eb8a217a34c35a12980', '1efcfa369
 INSERT INTO `shop_wallet` VALUES ('40ca60a94a8146098bdddacbf5b5050e', '2fe643c2a2604aaeaf65806f7ef8079b', 10000.00, '', '2018-08-15 16:12:19', '', '2018-08-15 16:12:19', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('40e399d21e3d48a296d3a0bad9baf82a', '3f4a826e72584cc49282ef4e4f4aaaea', 10000.00, '', '2018-08-15 16:12:18', '', '2018-08-15 16:12:18', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('410600ca5c6a442aa6313acaa6dc91be', 'd3fbcf68cac84e65bf3ab406ca6e51b1', 10000.00, '', '2018-08-15 16:12:26', '', '2018-08-15 16:12:26', NULL, '0');
+INSERT INTO `shop_wallet` VALUES ('4177ce907a714e448ff3060069bfb1ad', '3d8c0fd3cfd843cfac5ccdc3b3198769', 10000.00, '', '2018-08-16 21:15:27', '', '2018-08-16 21:15:27', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('41c306e591bd45248621d987b5a5a209', '858c8bdef79e4b939d527afc25d12b55', 10000.00, '', '2018-08-15 16:12:21', '', '2018-08-15 16:12:21', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('42519c161e844ed984aff1648d327725', 'ad50c669a1eb4493917ad74cd5667d7c', 10000.00, '', '2018-08-15 16:12:00', '', '2018-08-15 16:12:00', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('4272be7e6a784077b4b2f06b3b3b97f8', '332b25e6577949b696b8315bcfb9efa7', 10000.00, '', '2018-08-15 16:11:59', '', '2018-08-15 16:11:59', NULL, '0');
@@ -1951,6 +1954,7 @@ INSERT INTO `shop_wallet` VALUES ('48cafbd27fce430e89bdbc964327d5d8', 'e839eb0ad
 INSERT INTO `shop_wallet` VALUES ('48eb508d45ad41509ab389c9e2ffb6d7', '6596c04d075b46a99c4e46498c044df4', 10000.00, '', '2018-08-15 16:12:07', '', '2018-08-15 16:12:07', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('4908fb8404d948cfb82a5cfe9b325267', '2e1e8341f6c245b2a234d1e2f2238077', 10000.00, '', '2018-08-15 16:12:16', '', '2018-08-15 16:12:16', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('4911039702e74541a1592824cc7d7cb2', 'ebd572b957bd47f495952648722c50a2', 10000.00, '', '2018-08-15 16:12:29', '', '2018-08-15 16:12:29', NULL, '0');
+INSERT INTO `shop_wallet` VALUES ('499a38365690464cafa7c7b1d06ecc6c', '69cd45658b364f96847d0a39a4252b64', 10000.00, '', '2018-08-16 17:06:09', '', '2018-08-16 17:06:09', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('4a28238835724cf5ae5e287b6c8db92a', '7f82495be24c47cfb817106593aaa739', 10000.00, '', '2018-08-15 16:12:23', '', '2018-08-15 16:12:23', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('4a2e811e01af49f0b161b77716164830', '98740d4161244267bc0431491bdd7598', 10000.00, '', '2018-08-15 16:12:29', '', '2018-08-15 16:12:29', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('4a40ca016aee47f9af1b2653da6ac83e', 'c66380180f5d427e9e347799c379f420', 10000.00, '', '2018-08-15 16:12:03', '', '2018-08-15 16:12:03', NULL, '0');
@@ -1987,6 +1991,7 @@ INSERT INTO `shop_wallet` VALUES ('51b599116ff9467187a34bd3663e9ae9', 'd683d8bbb
 INSERT INTO `shop_wallet` VALUES ('525ed41a812c4cb79444b845f5f5f36d', '539579f0e1844c86a69c90a0b99065e2', 10000.00, '', '2018-08-15 16:12:39', '', '2018-08-15 16:12:39', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('526f361cc74d4478ac72fa73b6b9050a', '4c49b2f24ddf41418d5a2714e036b629', 10000.00, '', '2018-08-15 16:12:06', '', '2018-08-15 16:12:06', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('527d5c7318c54918be81aec968bc0d57', 'c0c9814990c642c79f67162635c80cc7', 10000.00, '', '2018-08-15 16:12:01', '', '2018-08-15 16:12:01', NULL, '0');
+INSERT INTO `shop_wallet` VALUES ('5290d69e69f74bca906ebc5671e8143e', 'aae436c1eaad4186b77c74968768a440', 10000.00, '', '2018-08-16 16:46:49', '', '2018-08-16 16:46:49', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('52b2c06461f742b082600f2ff0ddd4b9', 'ed9ab0ea44f8464d9fd384a866a11917', 10000.00, '', '2018-08-15 16:12:12', '', '2018-08-15 16:12:12', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('52d0d2216e8242bda96c969cb6472460', '090ffb56360840a7a7ad4bf93f4564c8', 10000.00, '', '2018-08-15 16:11:58', '', '2018-08-15 16:11:58', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('532d198377374cef9a21e0828b0dd1d3', 'b706805ff47c4c67a0052d28b9bc1c42', 10000.00, '', '2018-08-15 16:12:34', '', '2018-08-15 16:12:34', NULL, '0');
@@ -2408,6 +2413,7 @@ INSERT INTO `shop_wallet` VALUES ('d408634d5863470dae3fab652598b087', '74981fae2
 INSERT INTO `shop_wallet` VALUES ('d411dd7289e34963a3b8905c84c8ba7a', 'e4967c5c7fb54ab981a0281b1706466c', 10000.00, '', '2018-08-15 16:12:16', '', '2018-08-15 16:12:16', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('d4856153a939462898bfa7bd8ca1b937', '98d07dc3740849eca9c63d3b785ae532', 10000.00, '', '2018-08-15 16:12:33', '', '2018-08-15 16:12:33', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('d4cc4a2e1169498d969a8c17e62345e4', '87d5de6c521941fa8eaee0d0ed04f1b4', 10000.00, '', '2018-08-15 16:12:10', '', '2018-08-15 16:12:10', NULL, '0');
+INSERT INTO `shop_wallet` VALUES ('d52429269ad44959b33171ed82cf4a2c', 'a97dfc92fa974953b457523d51964e9f', 10000.00, '', '2018-08-16 16:59:45', '', '2018-08-16 16:59:45', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('d53e053705b046a38e0426888e311df9', '767900c176824193a57a410e94d187cf', 10000.00, '', '2018-08-15 16:12:27', '', '2018-08-15 16:12:27', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('d571031810824f7c85be6aae1ad6e59c', '43d5869d970145c1ba8e9f0253b17ec1', 10000.00, '', '2018-08-15 16:12:15', '', '2018-08-15 16:12:15', NULL, '0');
 INSERT INTO `shop_wallet` VALUES ('d5f2a3760c0d4b39b8fac089dfba47d7', 'e72abd2f348f4bb1af942c066fdedc2a', 10000.00, '', '2018-08-15 16:12:16', '', '2018-08-15 16:12:16', NULL, '0');

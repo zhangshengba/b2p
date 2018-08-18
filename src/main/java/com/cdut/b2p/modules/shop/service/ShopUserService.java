@@ -61,6 +61,8 @@ public interface ShopUserService {
 	public ShopUser findUserByEmail(String email);
 	
 	public ShopUser findUserByNickname(String nickname);
+	
+	public ShopUser findUserById(String uid);
 
 
 

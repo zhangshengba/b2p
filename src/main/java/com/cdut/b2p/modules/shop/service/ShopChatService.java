@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.cdut.b2p.modules.shop.po.ShopChat;
 import com.cdut.b2p.modules.shop.po.ShopComment;
+import com.cdut.b2p.modules.shop.websocket.po.Message;
 
 /**
  * @title ShopChatService
@@ -44,12 +45,7 @@ public interface ShopChatService {
 	 * @return
 	 */
 	public List<ShopChat> findChatByUser(String uid);
-	/**
-	 * @desc 根据商品id，查询其被发表的交流
-	 * @param gid
-	 * @return
-	 */
-	public List<ShopChat> findChatByGoods(String gid);
+	
 	/**
 	 * @desc 查询所有的交流记录
 	 * @return
@@ -62,4 +58,8 @@ public interface ShopChatService {
 	 * @return
 	 */
 	public List<ShopChat> findChatByDate(Date startDate,Date endDate);
+	
+	public List<ShopChat> findChatByFromTo(String from_id, String to_id);
+	
+	public List<String> findChatByFromOrTo(String uid);
 }
