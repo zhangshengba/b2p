@@ -23,6 +23,7 @@ public class ShopChatServiceImpl implements ShopChatService{
 	 * @param shopChat
 	 * @return boolean
 	 */
+	@Transactional(readOnly=false)
 	@Override
 	public boolean addChat(ShopChat shopChat) {
 		int count=shopChatMapper.insert(shopChat);
@@ -36,6 +37,7 @@ public class ShopChatServiceImpl implements ShopChatService{
 	 * @param id
 	 * @return Boolean
 	 */
+	@Transactional(readOnly=false)
 	@Override
 	public boolean deleteChat(String id) {
 		int count=shopChatMapper.deleteByPrimaryKey(id);
@@ -49,6 +51,7 @@ public class ShopChatServiceImpl implements ShopChatService{
 	 * @param shopChat
 	 * @return
 	 */
+	@Transactional(readOnly=false)
 	@Override
 	public boolean updateChat(ShopChat shopChat) {
 		int count=shopChatMapper.updateByPrimaryKey(shopChat);
@@ -62,6 +65,7 @@ public class ShopChatServiceImpl implements ShopChatService{
 	 * @param id
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	@Override
 	public ShopChat findChatById(String id) {
 		ShopChatExample example=new ShopChatExample();
@@ -77,6 +81,7 @@ public class ShopChatServiceImpl implements ShopChatService{
 	 * @param id
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	@Override
 	public List<ShopChat> findChatByUser(String uid) {
 		ShopChatExample example=new ShopChatExample();
@@ -89,6 +94,7 @@ public class ShopChatServiceImpl implements ShopChatService{
 	 * @param gid
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	@Override
 	public List<ShopChat> findChatByGoods(String gid) {
 		ShopChatExample example=new ShopChatExample();
@@ -100,6 +106,7 @@ public class ShopChatServiceImpl implements ShopChatService{
 	 * @desc 查询所有的交流记录
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	@Override
 	public List<ShopChat> findAllChat() {
 		ShopChatExample example=new ShopChatExample();
@@ -112,6 +119,7 @@ public class ShopChatServiceImpl implements ShopChatService{
 	 * @param endDate
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	@Override
 	public List<ShopChat> findChatByDate(Date startDate, Date endDate) {
 		ShopChatExample example=new ShopChatExample();

@@ -26,6 +26,7 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	 * @param shopComment
 	 * @return boolean
 	 */
+	@Transactional(readOnly=false)
 	@Override
 	public boolean addComment(ShopComment shopComment) {
 		int count=shopCommentMapper.insert(shopComment);
@@ -39,6 +40,7 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	 * @param id
 	 * @return Boolean
 	 */
+	@Transactional(readOnly=false)
 	@Override
 	public boolean deleteComment(String id) {
 		int count=shopCommentMapper.deleteByPrimaryKey(id);
@@ -52,6 +54,7 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	 * @param shopComment
 	 * @return
 	 */
+	@Transactional(readOnly=false)
 	@Override
 	public boolean updateComment(ShopComment shopComment) {
 		int count=shopCommentMapper.updateByPrimaryKeySelective(shopComment);
@@ -65,6 +68,7 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	 * @param id
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	@Override
 	public ShopComment findCommentById(String id) {
 		ShopCommentExample example=new ShopCommentExample();
@@ -80,6 +84,7 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	 * @param id
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	@Override
 	public List<ShopComment> findCommentByUser(String uid) {
 		ShopCommentExample example=new ShopCommentExample();
@@ -92,6 +97,7 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	 * @param gid
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	@Override
 	public List<ShopComment> findCommentByGoods(String gid) {
 		ShopCommentExample example=new ShopCommentExample();
@@ -103,6 +109,7 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	 * @desc 查询所有的评论
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	@Override
 	public List<ShopComment> findAllComment() {
 		ShopCommentExample example=new ShopCommentExample();
@@ -115,6 +122,7 @@ public class ShopCommentServiceImpl implements ShopCommentService {
 	 * @param endDate
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	@Override
 	public List<ShopComment> findCommentByDate(Date startDate, Date endDate) {
 		ShopCommentExample example=new ShopCommentExample();

@@ -319,56 +319,56 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> 用户管理</a></li>
+            <li class="active"><a href="selectUser.html"><i class="fa fa-circle-o"></i> 用户管理</a></li>
 
           </ul>
         </li>
 		<!--商品管理-->
 		<li class="active treeview">
           <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Goods Manager</span>
+            <i class="fa fa-dashboard"></i> <span>商品管理</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Select Goods</a></li>
+            <li class="active"><a href="selectGoods.html"><i class="fa fa-circle-o"></i>查看商品</a></li>
           </ul>
         </li>
 		<!--订单管理-->
 		<li class="active treeview">
           <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Orders Manager</span>
+            <i class="fa fa-dashboard"></i> <span>订单管理</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Select Orders</a></li>
+            <li class="active"><a href="selectOrders.html"><i class="fa fa-circle-o"></i> 查看订单</a></li>
           </ul>
         </li>
 		<!--评论信息管理-->
 		<li class="active treeview">
           <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Comments Manager</span>
+            <i class="fa fa-dashboard"></i> <span>评论管理</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Select Comments</a></li>
+            <li class="active"><a href="selectComments.html"><i class="fa fa-circle-o"></i>查看评论</a></li>
           </ul>
         </li>
 		<!--咨询信息管理-->
 		<li class="active treeview">
           <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Consultations Manager</span>
+            <i class="fa fa-dashboard"></i> <span>聊天管理</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Select Consultions</a></li>
+            <li class="active"><a href="selectChat.html"><i class="fa fa-circle-o"></i>查看聊天</a></li>
           </ul>
         </li>
       </ul>
@@ -380,19 +380,18 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        Dashboard
-        <small>Control panel</small>
+       <h1>
+        统计
+        <small>信息</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="index.html"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">index</li>
       </ol>
     </section>
 	<!--主要内容-->
     <!-- Main content -->
     <section class="content" style="min-height:200px">
-      <!-- Small boxes (Stat box) -->
       <div class="row">
 		<!--关于一段时间内 新增加的订单-->
         <div class="col-lg-3 col-xs-6">
@@ -400,7 +399,7 @@
           <div class="small-box bg-aqua">
             <div class="inner">
               <h3 id="newOrders">150</h3>
-              <p>New Orders</p>
+              <p>新增订单</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
@@ -415,7 +414,7 @@
           <div class="small-box bg-green">
             <div class="inner">
               <h3 id="newGoods">53<sup style="font-size: 20px">%</sup></h3>
-              <p>New  Goods</p>
+              <p>新增商品</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
@@ -431,7 +430,7 @@
             <div class="inner">
               <h3 id="newUsers">44</h3>
 
-              <p>User Registrations</p>
+              <p>新增用户</p>
             </div>
             <div class="icon">
               <i class="ion ion-person-add"></i>
@@ -447,7 +446,7 @@
             <div class="inner">
               <h3 id="newVisitors">65</h3>
 
-              <p>Unique Visitors</p>
+              <p>新增浏览用户</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
@@ -455,7 +454,6 @@
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
-        <!-- ./col -->
       </div>
     </section>
 	<!--查询头-->
@@ -478,8 +476,8 @@
 			<p>详细查询</p>
 				<form class="navbar-form navbar-left">
 					<ul class="nav  navbar-nav" style="text-align: center">
-						<li>用户姓名:<input type="text" style="width:120px;height:30px;margin-right:10px"></li>
-						<li>地区:<input type="text" style="width:120px;height:30px;"></li>
+						<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地址:<input type="text" style="width:120px;height:30px;margin-right:10px"></li>
+						<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户:<input type="text" style="width:120px;height:30px;"></li>
 						<li>
 							<button type="button" class="btn btn-primary" style="height:30px;">搜索</button></li>
 					</ul>
@@ -491,7 +489,7 @@
 	<section class="content" id="content">
 		<div class="container" style="width:100%">
 		<table class="table table-striped" id="table">
-		<thead>
+		<thead id="thead">
 			<tr>
                 <td>序号</td>
 				<th>账号</th>
