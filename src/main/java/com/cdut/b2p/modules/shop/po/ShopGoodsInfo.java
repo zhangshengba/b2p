@@ -15,10 +15,16 @@ public class ShopGoodsInfo {
     private String goodsSellerNickname;
     
     /**
-     * 卖方nickname
+     * 卖方头像
      */
   
     private String goodsSellerImg;
+    
+    /**
+     * 卖方签名
+     */
+  
+    private String goodsSellerAutograph;
 
     /**
      * 商品省
@@ -229,6 +235,14 @@ public class ShopGoodsInfo {
 
 	public void setGoodsDesc(String goodsDesc) {
 		this.goodsDesc = goodsDesc;
+	}
+
+	public String getGoodsSellerAutograph() {
+		return goodsSellerAutograph;
+	}
+
+	public void setGoodsSellerAutograph(String goodsSellerAutograph) {
+		this.goodsSellerAutograph = goodsSellerAutograph;
 	}
     
     

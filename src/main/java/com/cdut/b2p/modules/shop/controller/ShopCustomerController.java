@@ -40,17 +40,39 @@ public class ShopCustomerController extends BaseController{
 	
 	@Autowired
 	private SysAreaService sysAreaService;
+	
+	
+	/**
+	 * 获取商品展示
+	 */
+	@RequestMapping(value = "goods/recommend", method = RequestMethod.POST)
+	public String recommend(HttpServletRequest request, HttpServletResponse response) {
+		
+		String uid = (String) request.getAttribute("uid");
+		List<ShopGoodsInfo> list = shopGoodsService.findRecommendGoods(uid);
+    	return renderSuccessString(response, "获取商品成功",list);
+	}
 
 	/**
 	 * 获取商品展示
 	 */
+	@RequestMapping(value = "goods/info", method = RequestMethod.POST)
+	public String info(HttpServletRequest request, HttpServletResponse response,String goods_id) {
+		
+		ShopGoodsInfo info = shopGoodsService.findGoodsofOnePage(goods_id);
+    	return renderSuccessString(response, "获取商品成功", info);
+	}
+	
+	/**
+	 * 获取商品列表
+	 */
 	@RequestMapping(value = "goods/list", method = RequestMethod.POST)
-	public String info(HttpServletRequest request, HttpServletResponse response,
+	public String list(HttpServletRequest request, HttpServletResponse response,
 			String type,String brand,Integer min_price,Integer max_price,
-			String area,Integer pageNum,Integer pageSize) {
+			String area,Integer pageNum,Integer pageSize,String keyword) {
 		
 		 Page<ShopGoodsInfo> pages = shopGoodsService.findGoodsofOnePage(type, brand, min_price,
-				max_price, area, pageNum, pageSize);
+				max_price, area, pageNum, pageSize,keyword);
 		 
     	return renderSuccessString(response, "获取商品成功", pages);
 	}

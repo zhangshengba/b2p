@@ -14,6 +14,7 @@ var brand_s = "all";
 var price_s = "all";
 var areaDict = null;
 var G_t = 0;
+var G_keyword = null;
 
 function logout() {
 	localStorage.cdutb2p_shop_token = ""
@@ -44,6 +45,15 @@ function isPositiveInteger(s){//是否为正整数
      var re = /^[0-9]+$/ ;
      return re.test(s)
  }  
+ 
+ function setKeyword(){
+	 G_keyword = null;
+	 var key = $('#keyword1').val();
+	 if(key != null && key != ""){
+		 G_keyword = key;
+	 }
+	 pageOChange(1);
+ }
 function setOPrice(){
 	G_min_price = $('#price_start').val();
 	G_max_price = $('#price_end').val();
@@ -300,7 +310,7 @@ function renderBrand(data) {
 
 }
 
-function initGoods(type, brand, min_price, max_price, area,pageNum, pageSize) {
+function initGoods(type, brand, min_price, max_price, area,pageNum, pageSize,keyword) {
 	$.ajax({
 		type : "POST",
 		headers : {
@@ -314,7 +324,9 @@ function initGoods(type, brand, min_price, max_price, area,pageNum, pageSize) {
 			max_price : max_price,
 			area : area,
 			pageNum : pageNum,
-			pageSize : pageSize
+			pageSize : pageSize,
+			keyword : keyword,
+			
 		},
 		dataType : "json",
 		success : function(data) {
@@ -448,18 +460,18 @@ function renderPage() {
 	$('#pager').html(html);
 }
 function pageChange(pageNum) {
-	initGoods("phone",G_brand,G_min_price,G_max_price,G_area,pageNum,30);
+	initGoods("phone",G_brand,G_min_price,G_max_price,G_area,pageNum,30,G_keyword);
 }
 
 function pageOChange(pageNum) {
 	endRow = 12;
 	startRow = 1;
-	initGoods("phone",G_brand,G_min_price,G_max_price,G_area,pageNum,30);
+	initGoods("phone",G_brand,G_min_price,G_max_price,G_area,pageNum,30,G_keyword);
 }
 
 $(document).ready(function() {
 	genUserInfo();
 	genSearch();
 	genBrand();
-	initGoods("phone",null,null,null,null,1, 30);
+	initGoods("phone",null,null,null,null,1, 30,null);
 });
