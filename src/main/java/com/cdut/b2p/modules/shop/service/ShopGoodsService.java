@@ -53,7 +53,7 @@ public interface ShopGoodsService {
 			Integer min_price,Integer max_price,
 			String area,Integer pageNum,Integer pageSize,String keyword);
 	
-	public ShopGoodsInfo findGoodsofOnePage(String goods_id);
+	public ShopGoodsInfo findGoodsByGoodsId(String goods_id);
 	
 	public List<ShopGoodsInfo> findRecommendGoods(String uid);
 

@@ -275,7 +275,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 
 	@Transactional(readOnly = true)
 	@Override
-	public ShopGoodsInfo findGoodsofOnePage(String goods_id) {
+	public ShopGoodsInfo findGoodsByGoodsId(String goods_id) {
 
 		ShopGoods goods = shopGoodsMapper.selectByPrimaryKey(goods_id);
 		ShopGoodsInfo info = new ShopGoodsInfo();
@@ -295,6 +295,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		info.setGoodsSellerNickname(seller.getUserNickname());
 		info.setGoodsSellerImg(seller.getUserImage());
 		info.setGoodsSellerAutograph(seller.getUserAutograph());
+		info.setGoodsSellerId(seller.getId());
 
 		SysDict dict = sysDictMapper.selectByPrimaryKey(goods.getGoodsBrandId());
 		info.setGoodsBrand(dict.getDictLabel());

@@ -59,7 +59,7 @@ public class ShopCustomerController extends BaseController{
 	@RequestMapping(value = "goods/info", method = RequestMethod.POST)
 	public String info(HttpServletRequest request, HttpServletResponse response,String goods_id) {
 		
-		ShopGoodsInfo info = shopGoodsService.findGoodsofOnePage(goods_id);
+		ShopGoodsInfo info = shopGoodsService.findGoodsByGoodsId(goods_id);
     	return renderSuccessString(response, "获取商品成功", info);
 	}
 	

@@ -84,6 +84,9 @@ function renderInitGoods(data) {
 		source : 'src',
 		show : true,
 	});
+	$('#contact').click(function(){
+		openChat(data['goodsSellerId'],data['goodsSellerNickname'],data['goodsSellerImg']);
+	});
 }
 function initRecommend(){
 	$.ajax({
@@ -135,5 +138,5 @@ $(document).ready(function() {
 	genUserInfo();
 	initGoods();
 	initRecommend();
-
+			
 });
