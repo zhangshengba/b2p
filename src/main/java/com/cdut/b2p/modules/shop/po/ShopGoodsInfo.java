@@ -1,8 +1,9 @@
 package com.cdut.b2p.modules.shop.po;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class ShopGoodsInfo {
+public class ShopGoodsInfo implements Serializable{
 	  /**
      * 编号
      */

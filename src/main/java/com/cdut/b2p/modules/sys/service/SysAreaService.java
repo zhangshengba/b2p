@@ -17,13 +17,13 @@ import com.cdut.b2p.modules.sys.po.SysArea;
 public interface SysAreaService {
 	
 	public void save(SysArea sysArea);
-	
-	public String findIdbyAreaName(String name);
-	
+
 	public List<SysArea> findAllChildByParentId(String pid);
 	
 	public List<SysArea> findAllChildrenByParentId(String pid);
 	
 	public List<SysArea> findAllArea();
+	
+	public SysArea findAreaById(String id);
 
 }

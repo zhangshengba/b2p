@@ -36,11 +36,11 @@
                         <button id="chat-biaoqing" class="btn-default-styles">
                             <i class="iconfont icon-biaoqing"></i>
                         </button>
-                        <label id="chat-tuxiang" title="发送图片" for="inputImage" class="btn-default-styles">
-                            <input type="file" onchange="selectImg(this)" accept="image/jpg,image/jpeg,image/png"
-                                   name="file" id="inputImage" class="hidden">
-                            <i class="iconfont icon-tuxiang"></i>
-                        </label>
+                        <!-- <label id="chat-tuxiang" title="发送图片" for="inputImage" class="btn-default-styles"> -->
+                            <!-- <input type="file" onchange="selectImg(this)" accept="image/jpg,image/jpeg,image/png" -->
+                                   <!-- name="file" id="inputImage" class="hidden"> -->
+                            <!-- <i class="iconfont icon-tuxiang"></i> -->
+                        <!-- </label> -->
                         <button id="chat-fasong" class="btn-default-styles"><i class="iconfont icon-fasong"></i>
                         </button>
                     </div>
@@ -91,6 +91,7 @@
 </div>
 
 <script>
+if(token != ""){
 	$(".chatBox").toggle(10);
     screenFuc();
     function screenFuc() {
@@ -114,7 +115,7 @@
             $(".chatBox-content-demo").css("height", 448);
             $(".chatBox-list").css("height", 495);
             $(".chatBox-kuang").css("height", 495);
-            $(".div-textarea").css("width", 260);
+            $(".div-textarea").css("width", 300);
         }
     }
     (window.onresize = function () {
@@ -192,7 +193,7 @@
                 "<div class=\"chat-avatars\"><img src=\""+getRealPath()+img_map[to_id]+"\" alt=\"头像\" /></div> </div> </div>";
 				
             $(".chatBox-content-demo").append(html);
-			send_msg_to_server();
+			send_msg_to_server(to_id,bq,2);
 			msg_map[to_id] = msg_map[to_id] + html;
             //发送后关闭表情框
             $(".biaoqing-photo").toggle();
@@ -204,30 +205,32 @@
     });
 
     //      发送图片
-    function selectImg(pic) {
-        if (!pic.files || !pic.files[0]) {
-            return;
-        }
-        var reader = new FileReader();
-        reader.onload = function (evt) {
-            var images = evt.target.result;
-			html = "";
-			html += "<div class=\"clearfloat\">" +
-                "<div class=\"author-name\"><small class=\"chat-date\">"+formatDateTime(new Date())+"</small> </div> " +
-                "<div class=\"right\"> <div class=\"chat-message\"><img src=" + images + "></div> " +
-                "<div class=\"chat-avatars\"><img src=\""+getRealPath()+img_map[to_id]+"\" alt=\"头像\" /></div> </div> </div>";
-            $(".chatBox-content-demo").append(html);
-			send_msg_to_server();
-			msg_map[to_id] = msg_map[to_id] + html;
-            //聊天框默认最底部
-            $(document).ready(function () {
-                $("#chatBox-content-demo").scrollTop($("#chatBox-content-demo")[0].scrollHeight);
-            });
-        };
-        reader.readAsDataURL(pic.files[0]);
-		$('#inputImage').val(''); 
+    <!-- function selectImg(pic) { -->
+        <!-- if (!pic.files || !pic.files[0]) { -->
+            <!-- return; -->
+        <!-- } -->
+        <!-- var reader = new FileReader(); -->
+        <!-- reader.onload = function (evt) { -->
+            <!-- var images = evt.target.result; -->
+			<!-- html = ""; -->
+			<!-- html += "<div class=\"clearfloat\">" + -->
+                <!-- "<div class=\"author-name\"><small class=\"chat-date\">"+formatDateTime(new Date())+"</small> </div> " + -->
+                <!-- "<div class=\"right\"> <div class=\"chat-message\"><img src=" + images + "></div> " + -->
+                <!-- "<div class=\"chat-avatars\"><img src=\""+getRealPath()+img_map[to_id]+"\" alt=\"头像\" /></div> </div> </div>"; -->
+            <!-- $(".chatBox-content-demo").append(html); -->
+			<!-- send_msg_to_server(to_id,images,3); -->
+			<!-- msg_map[to_id] = msg_map[to_id] + html; -->
+            <!-- //聊天框默认最底部 -->
+            <!-- $(document).ready(function () { -->
+                <!-- $("#chatBox-content-demo").scrollTop($("#chatBox-content-demo")[0].scrollHeight); -->
+            <!-- }); -->
+        <!-- }; -->
+        <!-- reader.readAsDataURL(pic.files[0]); -->
+		<!-- $('#inputImage').val('');  -->
 
-    }
-	
+    <!-- } -->
+}else{
+	$('#chat').hide()
+}
 </script>
 

@@ -1,9 +1,11 @@
 package com.cdut.b2p.modules.shop.websocket.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Message {
+public class Message implements Serializable{
 
+	private String id;
 	// 发送者
 	private String from_id;
 	// 发送者
@@ -20,6 +22,8 @@ public class Message {
 	private String msg;
 	// 发送日期
 	private Date date;
+	
+	private String status;
 	
 	private String type;
 	
@@ -76,6 +80,18 @@ public class Message {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	

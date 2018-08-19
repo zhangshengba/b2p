@@ -26,6 +26,7 @@ function genUserInfo() {
 				from_id=data['data']['id'];
 				from_name=data['data']['userNickname'];
 				from_img=data['data']['userImage'];
+				user_id = data['data']['id'];
 			}
 		},
 		error : function(data) {

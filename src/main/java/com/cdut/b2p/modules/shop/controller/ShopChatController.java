@@ -22,6 +22,7 @@ import com.cdut.b2p.modules.shop.service.ShopUserService;
 import com.cdut.b2p.modules.shop.websocket.po.Message;
 
 @Controller
+@RequestMapping("${shopPath}/")
 public class ShopChatController extends BaseController {
 	
 	@Autowired
@@ -36,37 +37,27 @@ public class ShopChatController extends BaseController {
 			from_id) {
 		
 		String uid = (String) request.getAttribute("uid");
-		List<Message> list = (List<Message>) CacheUtils.get("chat_cache_" 
-				+ from_id +"_"+ uid);
-		if(list == null) {
-			List<ShopChat> list1 = shopChatService.findChatByFromTo(from_id, uid);
-			list = new ArrayList<Message>();
-			ShopUser from = (ShopUser) CacheUtils.get("user_" + from_id);
-			if(from == null) {
-				from = shopUserService.findUserById(from_id);
+		List<Message>  list = shopChatService.findChatByFromTo(from_id, uid);
+		List<Message>  list1 = shopChatService.findChatByFromTo(uid, from_id);
+		
+		List<Message> list2 = new ArrayList<Message>();
+		
+		if(list != null && list1 != null) {
+			for(Message e : list) {
+				list2.add(e);
 			}
-			ShopUser to = (ShopUser) CacheUtils.get("user_" + uid);
-			if(to == null) {
-				to = shopUserService.findUserById(uid);
+			for(Message e : list1) {
+				list2.add(e);
 			}
-			
-			for(ShopChat chat : list1) {
-				Message msg = new Message();
-				msg.setFrom_id(from_id);
-				msg.setTo_id(uid);
-				msg.setDate(chat.getCreateDate());
-				msg.setMsg(chat.getChatMessage());
-				msg.setType(chat.getChatType());
-				msg.setFrom_img(from.getUserImage());
-				msg.setFrom_name(from.getUserNickname());
-				msg.setTo_name(to.getUserNickname());
-				msg.setTo_img(to.getUserImage());
-				
-				list.add(msg);
-			}
+			return renderSuccessString(response, "获取消息成功",list2);
 		}
-
-		return renderSuccessString(response, "获取消息成功",list);
+		else if(list == null && list1 != null) {
+			return renderSuccessString(response, "获取消息成功",list1);
+		}
+		else if(list != null && list1 == null) {
+			return renderSuccessString(response, "获取消息成功",list);
+		}
+		return renderErrorString(response, "");
 
 	}
 	
@@ -75,27 +66,20 @@ public class ShopChatController extends BaseController {
 	public String getMessage1(HttpServletRequest request, HttpServletResponse response) {
 		String uid = (String) request.getAttribute("uid");
 		
-		List<String> list = (List<String>) CacheUtils.get("chat_cache_" + uid);
-		if(list == null) {
-			list = shopChatService.findChatByFromOrTo(uid);
-		}
-		
+		ShopUser user = shopUserService.findUserById(uid);
+		List<String> list = shopChatService.findChatByFromOrTo(uid);
 		List<Message> list1 = new ArrayList<Message>();
 		for(String s : list) {
 			Message msg = new Message();
-			ShopUser u = (ShopUser) CacheUtils.get("user_" + s);
-			if(u == null) {
-				u = shopUserService.findUserById(s);
-			}
+			ShopUser u =  shopUserService.findUserById(s);
 			if(!s.equals(uid)) {
 				msg.setTo_id(s);
 				msg.setTo_img(u.getUserImage());
 				msg.setTo_name(u.getUserNickname());
+				list1.add(msg);
 			}
-			list1.add(msg);
 		}
-
-		return renderSuccessString(response, "获取列表成功",list1);
+		return renderSuccessStringAndUserId(response, "获取列表成功",list1,user);
 	}
 
 

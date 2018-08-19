@@ -1,10 +1,11 @@
 package com.cdut.b2p.common.po;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.cdut.b2p.common.config.Global;
 
-public class Page<T> {
+public class Page<T> implements Serializable{
 	private Integer pageNum;
 	private Integer pageSize;
 	private Integer size;

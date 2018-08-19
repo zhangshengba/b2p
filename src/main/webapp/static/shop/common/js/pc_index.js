@@ -16,11 +16,6 @@ var areaDict = null;
 var G_t = 0;
 var G_keyword = null;
 
-function logout() {
-	localStorage.cdutb2p_shop_token = ""
-	sessionStorage.cdutb2p_shop_token = ""
-	window.location.href = "./index.html";
-}
 function genUserInfo() {
 	$.ajax({
 		type : "POST",
@@ -36,6 +31,7 @@ function genUserInfo() {
 				from_id=data['data']['id'];
 				from_name=data['data']['userNickname'];
 				from_img=data['data']['userImage'];
+				user_id = data['data']['id'];
 			}
 		},
 		error : function(data) {
@@ -44,6 +40,12 @@ function genUserInfo() {
 
 	});
 }
+function logout() {
+	localStorage.cdutb2p_shop_token = ""
+	sessionStorage.cdutb2p_shop_token = ""
+	window.location.href = "./index.html";
+}
+
 function isPositiveInteger(s){//是否为正整数
      var re = /^[0-9]+$/ ;
      return re.test(s)

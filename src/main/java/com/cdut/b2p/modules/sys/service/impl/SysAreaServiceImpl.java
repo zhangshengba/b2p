@@ -81,19 +81,17 @@ public class SysAreaServiceImpl implements SysAreaService {
 				e.setAreaParentIds(e.getAreaParentIds().replace(oldParentIds, sysArea.getAreaParentIds()));
 				preInsert(sysArea);
 				sysAreaMapper.updateByPrimaryKeySelective(e);
+				CacheUtils.remove("area_child_" + e.getId());
+				CacheUtils.remove("area_children_" + e.getId());
+				CacheUtils.remove("area_" + e.getId());
 			}
 		}
 		CacheUtils.remove("areaList");
+		CacheUtils.remove("area_child_" + sysArea.getId());
+		CacheUtils.remove("area_children_" + sysArea.getId());
+		CacheUtils.remove("area_" + sysArea.getId());
+		
 
-	}
-
-	@Transactional(readOnly = true)
-	@Override
-	public String findIdbyAreaName(String name) {
-		SysAreaExample sae = new SysAreaExample();
-		sae.or().andAreaNameEqualTo(name);
-		List<SysArea> list = sysAreaMapper.selectByExample(sae);
-		return (list == null || list.isEmpty()) ? null : list.get(0).getId();
 	}
 
 	@Transactional(readOnly = true)
@@ -112,18 +110,38 @@ public class SysAreaServiceImpl implements SysAreaService {
 	@Transactional(readOnly = true)
 	@Override
 	public List<SysArea> findAllChildByParentId(String pid) {
-		SysAreaExample sae = new SysAreaExample();
-		sae.or().andAreaParentIdLike("%"+pid+"%");
-		List<SysArea> list = sysAreaMapper.selectByExample(sae);
+		List<SysArea> list = (List<SysArea>) CacheUtils.get("area_child_" + pid);
+		if(list == null) {
+			SysAreaExample sae = new SysAreaExample();
+			sae.or().andAreaParentIdLike("%"+pid+"%");
+			list = sysAreaMapper.selectByExample(sae);
+			CacheUtils.put("area_child_" + pid, list);
+		}
+		
 		return list;
 	}
 	
 	@Transactional(readOnly = true)
 	@Override
 	public List<SysArea> findAllChildrenByParentId(String pid) {
-		SysAreaExample sae = new SysAreaExample();
-		sae.or().andAreaParentIdsLike("%"+pid+"%");
-		List<SysArea> list = sysAreaMapper.selectByExample(sae);
+		List<SysArea> list = (List<SysArea>) CacheUtils.get("area_children_" + pid);
+		if(list == null) {
+			SysAreaExample sae = new SysAreaExample();
+			sae.or().andAreaParentIdsLike("%"+pid+"%");
+			list = sysAreaMapper.selectByExample(sae);
+			CacheUtils.put("area_children_" + pid, list);
+		}
 		return list;
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public SysArea findAreaById(String id) {
+		SysArea area = (SysArea) CacheUtils.get("area_" + id);
+		if(area == null) {
+			area = sysAreaMapper.selectByPrimaryKey(id);
+			CacheUtils.put("area_", id);
+		}
+		return area;
 	}
 }

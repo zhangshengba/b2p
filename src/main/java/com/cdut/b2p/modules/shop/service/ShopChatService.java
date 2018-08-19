@@ -20,19 +20,7 @@ public interface ShopChatService {
 	 * @param shopChat
 	 * @return boolean
 	 */
-	public boolean addChat(ShopChat shopChat);
-	/**
-	 * @desc 根据id，删除相应的聊天记录
-	 * @param id
-	 * @return Boolean
-	 */
-	public boolean deleteChat(String id);
-	/**
-	 * @desc 根据id，更新相应的聊天记录
-	 * @param shopChat
-	 * @return
-	 */
-	public boolean updateChat(ShopChat shopChat);
+	public boolean saveChat(ShopChat shopChat);
 	/**
 	 * @desc 根据id，查询相应的聊天记录
 	 * @param id
@@ -59,7 +47,10 @@ public interface ShopChatService {
 	 */
 	public List<ShopChat> findChatByDate(Date startDate,Date endDate);
 	
-	public List<ShopChat> findChatByFromTo(String from_id, String to_id);
+	public List<Message> findChatByFromTo(String from_id, String to_id);
 	
 	public List<String> findChatByFromOrTo(String uid);
+	
+	public boolean updateChatStatus(String id);
+	
 }
