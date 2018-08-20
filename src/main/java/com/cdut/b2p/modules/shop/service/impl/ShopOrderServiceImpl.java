@@ -1,14 +1,20 @@
 package com.cdut.b2p.modules.shop.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.print.DocFlavor.STRING;
 
 import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cdut.b2p.modules.shop.mapper.ShopGoodsMapper;
 import com.cdut.b2p.modules.shop.mapper.ShopOrderMapper;
+import com.cdut.b2p.modules.shop.po.ShopGoods;
+import com.cdut.b2p.modules.shop.po.ShopGoodsExample;
 import com.cdut.b2p.modules.shop.po.ShopOrder;
 import com.cdut.b2p.modules.shop.po.ShopOrderExample;
 import com.cdut.b2p.modules.shop.service.ShopOrderService;
@@ -18,6 +24,8 @@ import com.cdut.b2p.modules.shop.service.ShopOrderService;
 public class ShopOrderServiceImpl implements ShopOrderService{
 	@Autowired
 	private ShopOrderMapper shopOrderMapper;
+	@Autowired
+	private ShopGoodsMapper shopGoodsMapper;
 	/**
 	 * @desc 上一个月成交的订单数量
 	 * @author zsb
@@ -50,7 +58,7 @@ public class ShopOrderServiceImpl implements ShopOrderService{
 	@Override
 	public List<ShopOrder> findOrderByDate(Date startDate, Date enDate) {
 		ShopOrderExample example=new ShopOrderExample();
-		example.or().andCreateDateBetween(startDate, enDate);
+		example.or().andCreateDateBetween(startDate, enDate).andDelFlagEqualTo("0");
 		List<ShopOrder> list=shopOrderMapper.selectByExample(example);
 		return list;
 	}
@@ -63,6 +71,7 @@ public class ShopOrderServiceImpl implements ShopOrderService{
 	@Override
 	public List<ShopOrder> findAllOrder() {
 		ShopOrderExample example=new ShopOrderExample();
+		example.or().andDelFlagEqualTo("0");
 		List<ShopOrder> list=shopOrderMapper.selectByExample(example);
 		return list;
 	}
@@ -90,7 +99,101 @@ public class ShopOrderServiceImpl implements ShopOrderService{
 	@Transactional(readOnly=false)
 	@Override
 	public boolean deleteOrder(String id) {
-		int count=shopOrderMapper.deleteByPrimaryKey(id);
+		ShopOrder shopOrder=new ShopOrder();
+		shopOrder.setId(id);
+		shopOrder.setDelFlag("1");
+		int count=shopOrderMapper.updateByPrimaryKeySelective(shopOrder);
+		if(count>0) {
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * @desc 通过买方id，查询订单
+	 * @param id
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	@Override
+	public List<ShopOrder> findOrderByCustomer(String id) {
+		ShopOrderExample example=new ShopOrderExample();
+		example.or().andOrderBuyerIdEqualTo(id).andDelFlagEqualTo("0");
+		List<ShopOrder> list=shopOrderMapper.selectByExample(example);
+		return list;
+	}
+	/**
+	 * @desc 通过卖方id，查询订单
+	 * @param id
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	@Override
+	public List<ShopOrder> findOrderBySeller(String id) {
+		//通过卖家id，查询商品id
+		ShopGoodsExample shopGoodsExample=new ShopGoodsExample();
+		shopGoodsExample.or().andGoodsSellerIdEqualTo(id).andDelFlagEqualTo("0");
+		List<ShopGoods> goodsList=shopGoodsMapper.selectByExample(shopGoodsExample);
+		List<String> idList=new ArrayList<>();
+		for(int i=0;i<goodsList.size();i++) {
+			idList.add(goodsList.get(i).getId());
+		}
+		ShopOrderExample example=new ShopOrderExample();
+		example.or().andOrderGoodsIdIn(idList).andDelFlagEqualTo("0");
+		List<ShopOrder> list=shopOrderMapper.selectByExample(example);
+		return list;
+	}
+	/**
+	 * @desc 根据ids集，删除相应的订单
+	 * @param ids
+	 * @return
+	 */
+	@Override
+	public boolean deleteOrder(String[] ids) {
+		List<String> idList=new ArrayList<>();
+		for(int i=0;i<ids.length;i++) {
+			idList.add(ids[i]);
+		}
+		ShopOrder shopOrder=new ShopOrder();
+		shopOrder.setDelFlag("1");
+		ShopOrderExample example=new ShopOrderExample();
+		example.or().andIdIn(idList);
+		int count=shopOrderMapper.updateByExampleSelective(shopOrder, example);
+		if(count>=0) {
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * @desc 确认id对应的商品已经达到
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public boolean suerOrder(String id) {
+		ShopOrder shopOrder=new ShopOrder();
+		shopOrder.setOrderStatus("3");
+		shopOrder.setUpdateDate(new Date());
+		ShopOrderExample example=new ShopOrderExample();
+		example.or().andIdEqualTo(id);
+		int count=shopOrderMapper.updateByExampleSelective(shopOrder, example);
+		if(count>0) {
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * @desc 用户催单
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public boolean reminder(String id) {
+		ShopOrder shopOrder=new ShopOrder();
+		shopOrder.setOrderStatus("2");
+		shopOrder.setUpdateDate(new Date());
+		ShopOrderExample example=new ShopOrderExample();
+		example.or().andIdEqualTo(id);
+		int count=shopOrderMapper.updateByExampleSelective(shopOrder, example);
 		if(count>0) {
 			return true;
 		}

@@ -196,6 +196,21 @@ public class ShopUserServiceImpl implements ShopUserService{
 		saveUser(user);
 		
 	}
+	
+	/**
+	 * @desc 根据用户id，修改用户密码
+	 */
+	@Override
+	public boolean updatePWD(String id, String pwd) {
+		ShopUser user=new ShopUser();
+		user.setId(id);
+		user.setUserPassword(SecurityUtils.getMD5(pwd));
+		int count=shopUserMapper.updateByPrimaryKeySelective(user);
+		if(count>0) {
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public ShopUser findUserById(String uid) {
