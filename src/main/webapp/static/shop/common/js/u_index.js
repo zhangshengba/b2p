@@ -7,7 +7,6 @@ $.ajax({
     url:"/b2p/shop/customerCenter/myInfo",
     data: {},
     success:function(data){
-    	alert(data.model.Customer.userName);
     	if(data.model.Customer.userName!=null||data.model.Customer.userName!=""){
     		$("#userNameOne").html(data.model.Customer.userName);
     	}

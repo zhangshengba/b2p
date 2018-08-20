@@ -23,3 +23,32 @@ function setMyInfo(data){
 	$("#userTelphone").val(data.model.Customer.userTelphone);
 	$("#userEmail").val(data.model.Customer.userEmail);
 }
+/*显示上传图像按钮*/
+function change(){
+	var image=$("#userface").val();
+	if(image==null||image==""){
+		return false;
+	}
+	$("#submitButton").css("display","block");
+	return true;
+	
+}
+/**/
+function upload(){
+	$("#subform").ajaxSubmit({
+		url:"/b2p/shop/customerCenter/uploadImage",
+		type:"post",
+		headers: {
+	        cdutb2p_shop_token: GLOBAL_TOKEN
+	    },
+		dataType:"json",
+		async:false,
+		success:function(data){
+			alert("上传成功");
+		},
+	    error:function(data){
+	    	alert("上传失败");
+	    }
+		
+	});
+}
