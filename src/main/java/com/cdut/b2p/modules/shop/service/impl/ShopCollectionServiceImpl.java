@@ -12,6 +12,7 @@ import com.cdut.b2p.common.utils.IdUtils;
 import com.cdut.b2p.modules.shop.mapper.ShopCollectionMapper;
 import com.cdut.b2p.modules.shop.po.ShopCollection;
 import com.cdut.b2p.modules.shop.po.ShopCollectionExample;
+import com.cdut.b2p.modules.shop.po.ShopCollectionVo;
 import com.cdut.b2p.modules.shop.service.ShopCollectionService;
 @Service
 @Transactional
@@ -83,12 +84,23 @@ public class ShopCollectionServiceImpl implements ShopCollectionService{
 		ShopCollection shopCollection=new ShopCollection();
 		shopCollection.setDelFlag("1");
 		ShopCollectionExample example=new ShopCollectionExample();
-		example.or().andIdIn(ids).andDelFlagEqualTo("1");
+		example.or().andIdIn(ids).andDelFlagEqualTo("0");
 		int count=shopCollectionMapper.updateByExampleSelective(shopCollection, example);
 		if(count>0) {
 			return true;
 		}
 	    return false;
+	}
+	/**
+	 * @desc 根据用户id，查询收藏物
+	  * 图片 名称 收藏时间
+	 * @param uid
+	 * @return
+	 */
+	@Override
+	public List<ShopCollectionVo> selectMyCollection(String uid) {
+		List<ShopCollectionVo> list=shopCollectionMapper.selectMyCollection(uid);
+		return list;
 	}
 
 }
