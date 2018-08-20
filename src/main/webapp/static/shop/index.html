@@ -9,6 +9,8 @@
 	tppabs="common/css/base.css" media="all" />
 <link rel="stylesheet" type="text/css" href="common/css/listzz.css"
 	tppabs="common/css/listzz.css" media="all" />
+<link rel="stylesheet" type="text/css" href="chat/font_Icon/iconfont.css">
+<link rel="stylesheet" type="text/css" href="chat/css/chat.css">
 <script src="./common/js/token.js"></script>
 <script src="./common/js/path.js"></script>
 <script src="./common/js/jquery.js"></script>
@@ -17,6 +19,7 @@
 <script src="./common/js/pc_index.js"></script>
 <script src="./layer/layer.js"></script>
 <script src="./common/js/jquery.cookie.js"></script>
+<script src="./chat/js/chat.js"></script>
 
 </head>
 
@@ -196,7 +199,10 @@
 				tppabs="#">帮助中心</a>
 		</p>
 	</footer>
-
+	<div id="chat"></div>
 
 </body>
+<script>
+$("#chat").load("./chat/index.html");
+</script>
 </html>

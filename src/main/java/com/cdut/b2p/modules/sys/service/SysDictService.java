@@ -1,5 +1,7 @@
 package com.cdut.b2p.modules.sys.service;
 
+import java.util.List;
+
 import com.cdut.b2p.modules.sys.po.SysDict;
 /**
  * @title  SysDictService
@@ -12,8 +14,14 @@ import com.cdut.b2p.modules.sys.po.SysDict;
 public interface SysDictService {
 	public void save(SysDict sysDict);
 	
-	public SysDict findByLabel(String label,String type);
+	public SysDict findDictByLabel(String label,String type);
 	
 	public String findIdByType(String type);
+	
+	public SysDict findDictById(String type);
+	
+	public List<SysDict> findAllDictLabelByDictType(String goods_type);
+	
+	public List<SysDict> findAllDict();
 
 }

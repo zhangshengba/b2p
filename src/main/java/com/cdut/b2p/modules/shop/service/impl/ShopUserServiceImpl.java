@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cdut.b2p.common.utils.CacheUtils;
 import com.cdut.b2p.common.utils.IdUtils;
 import com.cdut.b2p.common.utils.SecurityUtils;
 import com.cdut.b2p.common.utils.StringUtils;
@@ -46,6 +47,8 @@ public class ShopUserServiceImpl implements ShopUserService{
 	public void saveUser(ShopUser shopUser) {
 		preInsertUser(shopUser);
 		shopUserMapper.insertSelective(shopUser);
+		CacheUtils.remove("user_" + shopUser.getId());
+		
 	}
 
 	@Transactional(readOnly = false)
@@ -154,6 +157,7 @@ public class ShopUserServiceImpl implements ShopUserService{
 	@Override
 	public boolean updateUser(ShopUser shopUser) {
 		Integer count=shopUserMapper.updateByPrimaryKeySelective(shopUser);
+		CacheUtils.remove("user_" + shopUser.getId());
 		if(count>0) {
 			return true;
 		}
@@ -165,6 +169,7 @@ public class ShopUserServiceImpl implements ShopUserService{
 	@Override
 	public boolean deleteUser(String id) {
 		shopUserMapper.deleteByPrimaryKey(id);
+		CacheUtils.remove("user_" + id);
 		return true;
 	}
 
@@ -191,16 +196,7 @@ public class ShopUserServiceImpl implements ShopUserService{
 		saveUser(user);
 		
 	}
-	/**
-	 * @desc 根据id，来查询用户信息
-	 * @param id
-	 * @return
-	 */
-	@Override
-	public ShopUser findUserById(String id) {
-		
-		return shopUserMapper.selectByPrimaryKey(id);
-	}
+	
 	/**
 	 * @desc 根据用户id，修改用户密码
 	 */
@@ -214,6 +210,16 @@ public class ShopUserServiceImpl implements ShopUserService{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public ShopUser findUserById(String uid) {
+		ShopUser u = (ShopUser) CacheUtils.get("user_" + uid);
+		if(u == null) {
+			u = shopUserMapper.selectByPrimaryKey(uid);
+			CacheUtils.put("user_" + uid, u);
+		}
+		return u;
 	}
 
 }

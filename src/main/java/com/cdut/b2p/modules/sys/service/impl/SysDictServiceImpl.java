@@ -44,24 +44,76 @@ public class SysDictServiceImpl implements SysDictService{
 		
 		preInsert(sysDict);
 		sysDictMapper.insertSelective(sysDict);
-		CacheUtils.get("dictList");
+		CacheUtils.remove("dictList");
+		CacheUtils.remove("sysdict_type_" + sysDict.getDictType());
+		CacheUtils.remove("sysdict_label_" + sysDict.getDictLabel());
+		CacheUtils.remove("sysdict_" + sysDict.getId());
+		CacheUtils.remove(sysDict.getDictType() + "_dictList");
 	}
 
 	@Transactional(readOnly = true)
 	@Override
-	public SysDict findByLabel(String label,String type) {
-		SysDictExample sde = new SysDictExample();
-		sde.or().andDictLabelEqualTo(label).andDictTypeEqualTo(type);
-		List<SysDict> list = sysDictMapper.selectByExample(sde);
+	public List<SysDict> findAllDictLabelByDictType(String type) {
+		List<SysDict> dictList = (List<SysDict>) CacheUtils.get(type + "_dictList");
+		if (dictList == null) {
+			SysDictExample sde = new SysDictExample();
+			sde.or().andDictTypeEqualTo(type);
+			dictList = sysDictMapper.selectByExample(sde);
+			CacheUtils.put(type + "_dictList", dictList);
+
+		}
+		return dictList;
+
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<SysDict> findAllDict() {
+		List<SysDict> dictList = (List<SysDict>) CacheUtils.get("dictList");
+		if (dictList == null) {
+			SysDictExample sde = new SysDictExample();
+			sde.or();
+			dictList = sysDictMapper.selectByExample(sde);
+			CacheUtils.put("dictList", dictList);
+		}
+		return dictList;
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public SysDict findDictByLabel(String label,String type) {
+		
+		List<SysDict> list = (List<SysDict>) CacheUtils.get("sysdict_type_" + type);
+		if(list == null) {
+			SysDictExample sde = new SysDictExample();
+			sde.or().andDictLabelEqualTo(label).andDictTypeEqualTo(type);
+			list = sysDictMapper.selectByExample(sde);
+			CacheUtils.put("sysdict_type_" + type, list);
+		}
 		return (list == null || list.isEmpty()) ? null : list.get(0);
 	}
 	
 	@Transactional(readOnly = true)
 	@Override
 	public String findIdByType(String type) {
-		SysDictExample sde = new SysDictExample();
-		sde.or().andDictTypeEqualTo(type);
-		List<SysDict> list = sysDictMapper.selectByExample(sde);
+		List<SysDict> list = (List<SysDict>) CacheUtils.get("sysdict_label_" + type);
+		if(list == null) {
+			SysDictExample sde = new SysDictExample();
+			sde.or().andDictTypeEqualTo(type);
+			list = sysDictMapper.selectByExample(sde);
+			CacheUtils.put("sysdict_label_" + type, list);
+		}
 		return (list == null || list.isEmpty()) ? null : list.get(0).getId();
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public SysDict findDictById(String id) {
+		SysDict dict = (SysDict) CacheUtils.get("sysdict_" + id);
+		if(dict == null) {
+			dict = sysDictMapper.selectByPrimaryKey(id);
+			CacheUtils.put("sysdict_" + id, dict);
+		}
+		return dict;
 	}
 }

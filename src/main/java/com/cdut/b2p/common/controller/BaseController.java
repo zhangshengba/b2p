@@ -123,6 +123,22 @@ public abstract class BaseController {
 	 * @param object
 	 * @return
 	 */
+	protected String renderSuccessStringAndUserId(HttpServletResponse response, String msg, Object data,Object user) {
+		HashMap<Object,Object> map = new HashMap<Object,Object>();
+		map.clear();
+		map.put("data", data);
+		map.put("msg", msg);
+		map.put("success", true);
+		map.put("user", user);
+		return renderString(response, JsonUtils.toJsonString(map), "application/json");
+	}
+	
+	/**
+	 * 客户端返回JSON字符串
+	 * @param response
+	 * @param object
+	 * @return
+	 */
 	protected String renderTokenString(HttpServletResponse response, String uid, String msg){
 		HashMap<Object,Object> map = new HashMap<Object,Object>();
 		map.clear();

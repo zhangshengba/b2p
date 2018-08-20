@@ -38,12 +38,7 @@ public interface ShopUserService {
 	 * @return
 	 */
 	public List<ShopUser> findAllUser();
-	/**
-	 * @desc 根据id，来查询用户信息
-	 * @param id
-	 * @return
-	 */
-	public ShopUser findUserById(String id);
+	
 	/**
 	 * @desc 更新某个用户的信息
 	 * @author zsb
@@ -74,6 +69,8 @@ public interface ShopUserService {
 	public ShopUser findUserByEmail(String email);
 	
 	public ShopUser findUserByNickname(String nickname);
+	
+	public ShopUser findUserById(String uid);
 
 
 

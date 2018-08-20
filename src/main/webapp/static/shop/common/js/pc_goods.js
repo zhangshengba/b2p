@@ -23,6 +23,10 @@ function genUserInfo() {
 		success : function(data) {
 			if (data['success']) {
 				$('#login').html("<a onclick=\"logout()\">登出</a>");
+				from_id=data['data']['id'];
+				from_name=data['data']['userNickname'];
+				from_img=data['data']['userImage'];
+				user_id = data['data']['id'];
 			}
 		},
 		error : function(data) {
@@ -84,6 +88,9 @@ function renderInitGoods(data) {
 		source : 'src',
 		show : true,
 	});
+	$('#contact').click(function(){
+		openChat(data['goodsSellerId'],data['goodsSellerNickname'],data['goodsSellerImg']);
+	});
 }
 function initRecommend(){
 	$.ajax({
@@ -135,5 +142,5 @@ $(document).ready(function() {
 	genUserInfo();
 	initGoods();
 	initRecommend();
-
+			
 });

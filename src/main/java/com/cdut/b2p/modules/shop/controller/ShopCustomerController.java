@@ -19,6 +19,7 @@ import com.cdut.b2p.common.controller.BaseController;
 import com.cdut.b2p.common.po.Page;
 import com.cdut.b2p.common.utils.AreaUtils;
 import com.cdut.b2p.common.utils.AreaUtils.TreeNode;
+import com.cdut.b2p.common.utils.CacheUtils;
 import com.cdut.b2p.modules.shop.po.ShopGoods;
 import com.cdut.b2p.modules.shop.po.ShopGoodsInfo;
 import com.cdut.b2p.modules.shop.security.annotation.ShopAuth;
@@ -41,6 +42,9 @@ public class ShopCustomerController extends BaseController{
 	@Autowired
 	private SysAreaService sysAreaService;
 	
+	@Autowired
+	private SysDictService sysDictService;
+	
 	
 	/**
 	 * 获取商品展示
@@ -49,7 +53,7 @@ public class ShopCustomerController extends BaseController{
 	public String recommend(HttpServletRequest request, HttpServletResponse response) {
 		
 		String uid = (String) request.getAttribute("uid");
-		List<ShopGoodsInfo> list = shopGoodsService.findRecommendGoods(uid);
+		List<ShopGoodsInfo> list = shopGoodsService.findRecommendGoods();
     	return renderSuccessString(response, "获取商品成功",list);
 	}
 
@@ -58,8 +62,8 @@ public class ShopCustomerController extends BaseController{
 	 */
 	@RequestMapping(value = "goods/info", method = RequestMethod.POST)
 	public String info(HttpServletRequest request, HttpServletResponse response,String goods_id) {
+		ShopGoodsInfo info = shopGoodsService.findGoodsByGoodsId(goods_id);
 		
-		ShopGoodsInfo info = shopGoodsService.findGoodsofOnePage(goods_id);
     	return renderSuccessString(response, "获取商品成功", info);
 	}
 	
@@ -102,7 +106,7 @@ public class ShopCustomerController extends BaseController{
 	 */
 	@RequestMapping(value = "goods/brand", method = RequestMethod.POST)
 	public String brand(HttpServletRequest request, HttpServletResponse response,String type) {
-    	List<SysDict> list = shopGoodsService.findAllBrandByGoodsType(type);
+    	List<SysDict> list = sysDictService.findAllDictLabelByDictType(type);
     	return renderSuccessString(response, "获取品牌数据成功", list);
 
 	}

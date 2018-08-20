@@ -50,16 +50,12 @@ public interface ShopGoodsService {
 	 */
 	public String findSellerId(String id);
 	
-	public List<SysDict> findAllBrandByGoodsType(String goods_type);
-
-	public List<SysDict> findAllDict();
-	
 	public Page<ShopGoodsInfo> findGoodsofOnePage(String type,String brand,
 			Integer min_price,Integer max_price,
 			String area,Integer pageNum,Integer pageSize,String keyword);
 	
-	public ShopGoodsInfo findGoodsofOnePage(String goods_id);
+	public ShopGoodsInfo findGoodsByGoodsId(String goods_id);
 	
-	public List<ShopGoodsInfo> findRecommendGoods(String uid);
+	public List<ShopGoodsInfo> findRecommendGoods();
 
 }

@@ -1,8 +1,9 @@
 package com.cdut.b2p.modules.shop.po;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class ShopGoodsInfo {
+public class ShopGoodsInfo implements Serializable{
 	  /**
      * 编号
      */
@@ -19,6 +20,12 @@ public class ShopGoodsInfo {
      */
   
     private String goodsSellerImg;
+    
+    /**
+     * 卖方id
+     */
+  
+    private String goodsSellerId;
     
     /**
      * 卖方签名
@@ -243,6 +250,14 @@ public class ShopGoodsInfo {
 
 	public void setGoodsSellerAutograph(String goodsSellerAutograph) {
 		this.goodsSellerAutograph = goodsSellerAutograph;
+	}
+
+	public String getGoodsSellerId() {
+		return goodsSellerId;
+	}
+
+	public void setGoodsSellerId(String goodsSellerId) {
+		this.goodsSellerId = goodsSellerId;
 	}
     
     

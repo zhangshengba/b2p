@@ -22,6 +22,7 @@ import com.cdut.b2p.modules.shop.mapper.ShopUserMapper;
 import com.cdut.b2p.modules.shop.po.ShopGoods;
 import com.cdut.b2p.modules.shop.po.ShopUser;
 import com.cdut.b2p.modules.shop.service.ShopGoodsService;
+import com.cdut.b2p.modules.shop.service.ShopUserService;
 import com.cdut.b2p.modules.sys.mapper.SysAreaMapper;
 import com.cdut.b2p.modules.sys.mapper.SysDictMapper;
 import com.cdut.b2p.modules.sys.po.SysArea;
@@ -30,6 +31,7 @@ import com.cdut.b2p.modules.sys.po.SysDict;
 import com.cdut.b2p.modules.sys.po.SysDictExample;
 import com.cdut.b2p.modules.sys.po.SysUser;
 import com.cdut.b2p.modules.sys.service.SysAreaService;
+import com.cdut.b2p.modules.sys.service.SysDictService;
 
 @Service
 @Transactional
@@ -37,13 +39,11 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 	@Autowired
 	private ShopGoodsMapper shopGoodsMapper;
 	@Autowired
-	private SysDictMapper sysDictMapper;
-	@Autowired
 	private SysAreaService sysAreaService;
 	@Autowired
-	private SysAreaMapper sysAreaMapper;
+	private SysDictService sysDictService;
 	@Autowired
-	private ShopUserMapper shopUserMapper;
+	private ShopUserService shopUserService;
 
 	/**
 	 * @desc 查询上一个月每新增加的商品数量
@@ -80,37 +80,49 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		preInsert(shopGoods);
 		shopGoodsMapper.insertSelective(shopGoods);
 		CacheUtils.remove("goodslist");
+		CacheUtils.remove("goods_id_" + shopGoods.getId());
 	}
-
-	@Transactional(readOnly = true)
+	
+	/**
+	 * @desc 根据id，更新某一件商品
+	 * @param shopGoods
+	 * @return boolean
+	 */
+	@Transactional(readOnly = false)
 	@Override
-	public List<SysDict> findAllBrandByGoodsType(String goods_type) {
-		List<SysDict> dictList = (List<SysDict>) CacheUtils.get(goods_type + "dictList");
-		if (dictList == null) {
-			SysDictExample sde = new SysDictExample();
-			sde.or().andDictTypeEqualTo(goods_type);
-			dictList = sysDictMapper.selectByExample(sde);
-			if (dictList.size() > 0) {
-				CacheUtils.put(goods_type + "dictList", dictList);
-			}
+	public boolean updateGoods(ShopGoods shopGoods) {
+		int count = shopGoodsMapper.updateByPrimaryKey(shopGoods);
+		CacheUtils.remove("goodslist");
+		CacheUtils.remove("goods_id_" + shopGoods.getId());
+		CacheUtils.get("goods_recommend");
+		if (count > 0) {
+			return true;
 		}
-		return dictList;
-
+		return false;
 	}
 
-	@Transactional(readOnly = true)
+	/**
+	 * @desc 根据商品id，删除某一件商品
+	 * @param id
+	 * @return
+	 */
+	@Transactional(readOnly = false)
 	@Override
-	public List<SysDict> findAllDict() {
-		List<SysDict> dictList = (List<SysDict>) CacheUtils.get("dictList");
-		if (dictList == null) {
-			SysDictExample sde = new SysDictExample();
-			sde.or();
-			dictList = sysDictMapper.selectByExample(sde);
-			CacheUtils.put("dictList", dictList);
+	public boolean deleteGoods(String id) {
+		ShopGoods shopGoods=new ShopGoods();
+		shopGoods.setId(id);
+		shopGoods.setDelFlag("1");
+		int count = shopGoodsMapper.updateByPrimaryKeySelective(shopGoods);
+		CacheUtils.remove("goodslist");
+		CacheUtils.remove("goods_id_" + id);
+		CacheUtils.get("goods_recommend");
+		if(count>0) {
+			return true;
 		}
-		return dictList;
+		return false;
 	}
-
+	
+	
 	@Transactional(readOnly = true)
 	@Override
 	public List<ShopGoods> findAllGoods() {
@@ -129,8 +141,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 	public Page<ShopGoodsInfo> findGoodsofOnePage(String type, String brand, Integer min_price, Integer max_price,
 			String area, Integer pageNum, Integer pageSize, String keyword) {
 
-		// List<ShopGoods> goodslist = findAllGoods();
-		type = findAllBrandByGoodsType(type).get(0).getId();
+		type = sysDictService.findAllDictLabelByDictType(type).get(0).getId();
 
 		if (type == null || StringUtils.isBlank(type)) {
 			return null;
@@ -191,21 +202,21 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 			} else {
 				info.setGoodsDesc(goods.getGoodsDiscrible());
 			}
-
-			ShopUser seller = shopUserMapper.selectByPrimaryKey(goods.getGoodsSellerId());
+			
+			ShopUser seller = shopUserService.findUserById(goods.getGoodsSellerId());
 			info.setGoodsSellerNickname(seller.getUserNickname());
 			info.setGoodsSellerImg(seller.getUserImage());
 
-			SysDict dict = sysDictMapper.selectByPrimaryKey(goods.getGoodsBrandId());
+			SysDict dict = sysDictService.findDictById(goods.getGoodsBrandId());
 			info.setGoodsBrand(dict.getDictLabel());
 
-			SysArea sysarea = sysAreaMapper.selectByPrimaryKey(goods.getGoodsAreaId());
+			SysArea sysarea = sysAreaService.findAreaById(goods.getGoodsAreaId());
 			info.setGoodsArea(sysarea.getAreaName());
 
-			SysArea sysarea1 = sysAreaMapper.selectByPrimaryKey(sysarea.getAreaParentId());
+			SysArea sysarea1 = sysAreaService.findAreaById(sysarea.getAreaParentId());
 			info.setGoodsCity(sysarea1.getAreaName());
 
-			SysArea sysarea2 = sysAreaMapper.selectByPrimaryKey(sysarea1.getAreaParentId());
+			SysArea sysarea2 = sysAreaService.findAreaById(sysarea1.getAreaParentId());
 			info.setGoodsProvince(sysarea2.getAreaName());
 
 			list1.add(info);
@@ -246,89 +257,20 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		return list;
 	}
 
-	/**
-	 * @desc 根据id，更新某一件商品
-	 * @param shopGoods
-	 * @return boolean
-	 */
-	@Transactional(readOnly = false)
-	@Override
-	public boolean updateGoods(ShopGoods shopGoods) {
-		int count = shopGoodsMapper.updateByPrimaryKey(shopGoods);
-		if (count > 0) {
-			return true;
-		}
-		return false;
-	}
 
-	/**
-	 * @desc 根据商品id，删除某一件商品
-	 * @param id
-	 * @return
-	 */
-	@Transactional(readOnly = false)
-	@Override
-	public boolean deleteGoods(String id) {
-		ShopGoods shopGoods=new ShopGoods();
-		shopGoods.setId(id);
-		shopGoods.setDelFlag("1");
-		int count = shopGoodsMapper.updateByPrimaryKeySelective(shopGoods);
-		if(count>0) {
-			return true;
-		}
-		return false;
-	}
+	
+
+
 
 	@Transactional(readOnly = true)
 	@Override
-	public ShopGoodsInfo findGoodsofOnePage(String goods_id) {
+	public ShopGoodsInfo findGoodsByGoodsId(String goods_id) {
+		
+		ShopGoodsInfo info = (ShopGoodsInfo) CacheUtils.get("goods_id_" + goods_id);
+		if(info == null) {
+			ShopGoods goods = shopGoodsMapper.selectByPrimaryKey(goods_id);
+			info = new ShopGoodsInfo();
 
-		ShopGoods goods = shopGoodsMapper.selectByPrimaryKey(goods_id);
-		ShopGoodsInfo info = new ShopGoodsInfo();
-
-		info.setId(goods.getId());
-		info.setGoodsBrandModel(goods.getGoodsBrandModel());
-		info.setGoodsClickTimes(goods.getGoodsClickTimes());
-		info.setGoodsOldLevel(goods.getGoodsOldLevel());
-		info.setGoodsOriginalPrice(goods.getGoodsOriginalPrice());
-		info.setGoodsPics(goods.getGoodsPics());
-		info.setGoodsPresentPrice(goods.getGoodsPresentPrice());
-		info.setGoodsTitle(goods.getGoodsTitle());
-		info.setGoodsStatus(goods.getGoodsStatus());
-		info.setGoodsDesc(goods.getGoodsDiscrible());
-
-		ShopUser seller = shopUserMapper.selectByPrimaryKey(goods.getGoodsSellerId());
-		info.setGoodsSellerNickname(seller.getUserNickname());
-		info.setGoodsSellerImg(seller.getUserImage());
-		info.setGoodsSellerAutograph(seller.getUserAutograph());
-
-		SysDict dict = sysDictMapper.selectByPrimaryKey(goods.getGoodsBrandId());
-		info.setGoodsBrand(dict.getDictLabel());
-
-		SysArea sysarea = sysAreaMapper.selectByPrimaryKey(goods.getGoodsAreaId());
-		info.setGoodsArea(sysarea.getAreaName());
-
-		SysArea sysarea1 = sysAreaMapper.selectByPrimaryKey(sysarea.getAreaParentId());
-		info.setGoodsCity(sysarea1.getAreaName());
-
-		SysArea sysarea2 = sysAreaMapper.selectByPrimaryKey(sysarea1.getAreaParentId());
-		info.setGoodsProvince(sysarea2.getAreaName());
-
-		return info;
-	}
-
-	@Transactional(readOnly = true)
-	@Override
-	public List<ShopGoodsInfo> findRecommendGoods(String uid) {
-
-		ShopGoodsExample sge = new ShopGoodsExample();
-		ShopGoodsExample.Criteria cri = sge.createCriteria();
-		sge.setLimit(15);
-		List<ShopGoods> goodslist = shopGoodsMapper.selectByExampleWithBLOBs(sge);
-		List<ShopGoodsInfo> list1 = new ArrayList<ShopGoodsInfo>();
-
-		for (ShopGoods goods : goodslist) {
-			ShopGoodsInfo info = new ShopGoodsInfo();
 			info.setId(goods.getId());
 			info.setGoodsBrandModel(goods.getGoodsBrandModel());
 			info.setGoodsClickTimes(goods.getGoodsClickTimes());
@@ -338,31 +280,84 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 			info.setGoodsPresentPrice(goods.getGoodsPresentPrice());
 			info.setGoodsTitle(goods.getGoodsTitle());
 			info.setGoodsStatus(goods.getGoodsStatus());
-			if (goods.getGoodsDiscrible().length() > 120) {
-				info.setGoodsDesc(goods.getGoodsDiscrible().substring(0, 120) + "...");
-			} else {
-				info.setGoodsDesc(goods.getGoodsDiscrible());
-			}
-			ShopUser seller = shopUserMapper.selectByPrimaryKey(goods.getGoodsSellerId());
+			info.setGoodsDesc(goods.getGoodsDiscrible());
+
+			ShopUser seller = shopUserService.findUserById(goods.getGoodsSellerId());
 			info.setGoodsSellerNickname(seller.getUserNickname());
 			info.setGoodsSellerImg(seller.getUserImage());
+			info.setGoodsSellerAutograph(seller.getUserAutograph());
+			info.setGoodsSellerId(seller.getId());
 
-			SysDict dict = sysDictMapper.selectByPrimaryKey(goods.getGoodsBrandId());
+			SysDict dict = sysDictService.findDictById(goods.getGoodsBrandId());
 			info.setGoodsBrand(dict.getDictLabel());
 
-			SysArea sysarea = sysAreaMapper.selectByPrimaryKey(goods.getGoodsAreaId());
+			SysArea sysarea = sysAreaService.findAreaById(goods.getGoodsAreaId());
 			info.setGoodsArea(sysarea.getAreaName());
 
-			SysArea sysarea1 = sysAreaMapper.selectByPrimaryKey(sysarea.getAreaParentId());
+			SysArea sysarea1 =sysAreaService.findAreaById(sysarea.getAreaParentId());
 			info.setGoodsCity(sysarea1.getAreaName());
 
-			SysArea sysarea2 = sysAreaMapper.selectByPrimaryKey(sysarea1.getAreaParentId());
+			SysArea sysarea2 = sysAreaService.findAreaById(sysarea1.getAreaParentId());
 			info.setGoodsProvince(sysarea2.getAreaName());
-
-			list1.add(info);
+			
+			CacheUtils.put("goods_id_" + goods_id, info);
 		}
-		return list1;
+		
+		info.setGoodsClickTimes(info.getGoodsClickTimes() + 1);
+		return info;
+	}
 
+	@Transactional(readOnly = true)
+	@Override
+	public List<ShopGoodsInfo> findRecommendGoods() {
+		
+		List<ShopGoodsInfo> list = (List<ShopGoodsInfo>) CacheUtils.get("goods_recommend");
+		
+		if(list == null) {
+			ShopGoodsExample sge = new ShopGoodsExample();
+			ShopGoodsExample.Criteria cri = sge.createCriteria();
+			cri.andGoodsClickTimesGreaterThanOrEqualTo(300);
+			sge.setLimit(30);
+			List<ShopGoods> goodslist = shopGoodsMapper.selectByExampleWithBLOBs(sge);
+			list = new ArrayList<ShopGoodsInfo>();
+
+			for (ShopGoods goods : goodslist) {
+				ShopGoodsInfo info = new ShopGoodsInfo();
+				info.setId(goods.getId());
+				info.setGoodsBrandModel(goods.getGoodsBrandModel());
+				info.setGoodsClickTimes(goods.getGoodsClickTimes());
+				info.setGoodsOldLevel(goods.getGoodsOldLevel());
+				info.setGoodsOriginalPrice(goods.getGoodsOriginalPrice());
+				info.setGoodsPics(goods.getGoodsPics());
+				info.setGoodsPresentPrice(goods.getGoodsPresentPrice());
+				info.setGoodsTitle(goods.getGoodsTitle());
+				info.setGoodsStatus(goods.getGoodsStatus());
+				if (goods.getGoodsDiscrible().length() > 120) {
+					info.setGoodsDesc(goods.getGoodsDiscrible().substring(0, 120) + "...");
+				} else {
+					info.setGoodsDesc(goods.getGoodsDiscrible());
+				}
+				ShopUser seller = shopUserService.findUserById(goods.getGoodsSellerId());
+				info.setGoodsSellerNickname(seller.getUserNickname());
+				info.setGoodsSellerImg(seller.getUserImage());
+
+				SysDict dict = sysDictService.findDictById(goods.getGoodsBrandId());
+				info.setGoodsBrand(dict.getDictLabel());
+
+				SysArea sysarea =sysAreaService.findAreaById(goods.getGoodsAreaId());
+				info.setGoodsArea(sysarea.getAreaName());
+
+				SysArea sysarea1 = sysAreaService.findAreaById(sysarea.getAreaParentId());
+				info.setGoodsCity(sysarea1.getAreaName());
+
+				SysArea sysarea2 = sysAreaService.findAreaById(sysarea1.getAreaParentId());
+				info.setGoodsProvince(sysarea2.getAreaName());
+
+				list.add(info);
+			}
+			CacheUtils.put("goods_recommend", list);
+		}
+		return list;
 	}
 	/**
 	 * @desc 根据商品id,查询卖家id
@@ -375,5 +370,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		}
 		return null;
 	}
+
+
 
 }

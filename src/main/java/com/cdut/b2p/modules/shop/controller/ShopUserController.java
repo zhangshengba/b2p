@@ -36,20 +36,13 @@ public class ShopUserController extends BaseController {
 
 	/**
 	 * 用户信息
-	 */
-    @ShopAuth
-	@RequestMapping(value = "user/info", method = RequestMethod.POST)
-	public String info(HttpServletRequest request, HttpServletResponse response, Model model) {
-    	String uid = (String) request.getAttribute("uid");
-    	return renderSuccessString(response, "登陆成功" + uid);
-
-	}
-    
+	 */  
     @ShopAuth
    	@RequestMapping(value = "user/islogin", method = RequestMethod.POST)
-   	public String isLogin(HttpServletRequest request, HttpServletResponse response, Model model) {
+   	public String isLogin(HttpServletRequest request, HttpServletResponse response) {
        	String uid = (String) request.getAttribute("uid");
-       	return renderSuccessString(response, "已经登陆");
+       	ShopUser u = shopUserService.findUserById(uid);
+       	return renderSuccessString(response, "已经登陆", u);
 
    	}
 
