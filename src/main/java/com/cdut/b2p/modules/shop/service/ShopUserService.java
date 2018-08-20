@@ -38,6 +38,7 @@ public interface ShopUserService {
 	 * @return
 	 */
 	public List<ShopUser> findAllUser();
+	
 	/**
 	 * @desc 更新某个用户的信息
 	 * @author zsb
@@ -45,6 +46,13 @@ public interface ShopUserService {
 	 * @return
 	 */
 	public boolean updateUser(ShopUser shopUser);
+	/**
+	 * @desc 根据用户id，更新密码
+	 * @param id
+	 * @param pwd
+	 * @return
+	 */
+	public boolean updatePWD(String id,String pwd);
 	/**
 	 * @desc  根id删除某个用户
 	 * @author zsb
