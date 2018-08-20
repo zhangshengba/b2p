@@ -74,9 +74,11 @@ public class CustomerCenterController extends BaseController{
 	@RequestMapping(value="/myPWD",method=RequestMethod.POST)
 	public String myPWD(HttpServletResponse response,HttpServletRequest request) {
 		ModelAndView model=new ModelAndView();
+		System.out.println("修改密码");
 		String uid=(String) request.getAttribute("uid");
 		String oldpwd=request.getParameter("oldPWD");
 		String newpwd=request.getParameter("newPWD");
+		System.out.println(uid+"\n"+oldpwd+"\n"+newpwd);
 		ShopUser user=shopUserService.findUserById(uid);
 		if(!SecurityUtils.getMD5(oldpwd).equals(user.getUserPassword())) {
 			model.addObject("PWDMessage", "false");
