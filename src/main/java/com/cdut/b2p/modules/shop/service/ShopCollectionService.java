@@ -12,12 +12,7 @@ import com.cdut.b2p.modules.shop.po.ShopCollectionVo;
  * @Date   2018/8/18
  */
 public interface ShopCollectionService {
-	/**
-	 * @desc 添加一件收藏物
-	 * @param shopCollection
-	 * @return
-	 */
-	public boolean addCollection(ShopCollection shopCollection);
+	
 	/**
 	 * @desc 添加一件收藏物
 	 * @param uid 用户id
@@ -44,5 +39,13 @@ public interface ShopCollectionService {
 	 * @return
 	 */
 	public boolean delCollection(String[]id);
+	
+	public boolean delCollection(String id);
+	
+	public boolean delCollection(String uid, String gid);
+	
+	public long countCollectionNums(String goods_id);
+	
+	public boolean isCollectd(String uid, String gid);
 	
 }

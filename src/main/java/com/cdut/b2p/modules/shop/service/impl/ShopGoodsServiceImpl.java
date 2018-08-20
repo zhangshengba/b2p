@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.cdut.b2p.modules.shop.mapper.ShopGoodsMapper;
+import com.cdut.b2p.modules.shop.po.ShopCollection;
+import com.cdut.b2p.modules.shop.po.ShopCollectionExample;
 import com.cdut.b2p.modules.shop.po.ShopGoods;
 import com.cdut.b2p.modules.shop.po.ShopGoodsExample;
 import com.cdut.b2p.modules.shop.po.ShopGoodsInfo;
 import com.cdut.b2p.common.po.Page;
+import com.cdut.b2p.common.task.ShopGoodsTaskHandler;
 import com.cdut.b2p.common.utils.CacheUtils;
 import com.cdut.b2p.common.utils.IdUtils;
 import com.cdut.b2p.common.utils.StringUtils;
@@ -92,7 +95,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 	@Transactional(readOnly = false)
 	@Override
 	public boolean updateGoods(ShopGoods shopGoods) {
-		int count = shopGoodsMapper.updateByPrimaryKey(shopGoods);
+		int count = shopGoodsMapper.updateByPrimaryKeyWithBLOBs(shopGoods);
 		CacheUtils.remove("goodslist");
 		CacheUtils.remove("goods_id_" + shopGoods.getId());
 		CacheUtils.remove("goods_recommend");
@@ -302,6 +305,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		}
 	
 		info.setGoodsClickTimes(info.getGoodsClickTimes() + 1);
+		ShopGoodsTaskHandler.andUpdate(info.getId());
 		//shopGoodsMapper.updateByPrimaryKeyWithBLOBs(info);
 		return info;
 	}
@@ -368,6 +372,15 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 			return shopGoods.getGoodsSellerId();
 		}
 		return null;
+	}
+
+	@Override
+	public boolean updateGoodsClickTimes(String id, int times) {
+		ShopGoods shopGoods = shopGoodsMapper.selectByPrimaryKey(id);
+		shopGoods.setGoodsClickTimes(shopGoods.getGoodsClickTimes() + times);
+		boolean rs = updateGoods(shopGoods);
+		
+		return rs;
 	}
 
 
