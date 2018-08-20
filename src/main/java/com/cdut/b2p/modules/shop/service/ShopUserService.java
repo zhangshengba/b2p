@@ -59,8 +59,8 @@ public interface ShopUserService {
 	 * @param id
 	 * @return
 	 */
-	public boolean deleteUser(String id);
 	
+	public boolean deleteUser(String id);
 
 	public void saveWallet(ShopWallet shopWallet);
 	

@@ -81,6 +81,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		shopGoodsMapper.insertSelective(shopGoods);
 		CacheUtils.remove("goodslist");
 		CacheUtils.remove("goods_id_" + shopGoods.getId());
+		CacheUtils.remove("goods_recommend");
 	}
 	
 	/**
@@ -94,7 +95,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		int count = shopGoodsMapper.updateByPrimaryKey(shopGoods);
 		CacheUtils.remove("goodslist");
 		CacheUtils.remove("goods_id_" + shopGoods.getId());
-		CacheUtils.get("goods_recommend");
+		CacheUtils.remove("goods_recommend");
 		if (count > 0) {
 			return true;
 		}
@@ -115,11 +116,13 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		int count = shopGoodsMapper.updateByPrimaryKeySelective(shopGoods);
 		CacheUtils.remove("goodslist");
 		CacheUtils.remove("goods_id_" + id);
-		CacheUtils.get("goods_recommend");
+		CacheUtils.remove("goods_recommend");
+
 		if(count>0) {
 			return true;
 		}
 		return false;
+
 	}
 	
 	
@@ -257,11 +260,6 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		return list;
 	}
 
-
-	
-
-
-
 	@Transactional(readOnly = true)
 	@Override
 	public ShopGoodsInfo findGoodsByGoodsId(String goods_id) {
@@ -302,8 +300,9 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 			
 			CacheUtils.put("goods_id_" + goods_id, info);
 		}
-		
+	
 		info.setGoodsClickTimes(info.getGoodsClickTimes() + 1);
+		//shopGoodsMapper.updateByPrimaryKeyWithBLOBs(info);
 		return info;
 	}
 
