@@ -20,9 +20,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.cdut.b2p.common.config.Global;
 import com.cdut.b2p.common.controller.BaseController;
 import com.cdut.b2p.common.utils.IdUtils;
 import com.cdut.b2p.common.utils.SecurityUtils;
@@ -101,34 +103,30 @@ public class CustomerCenterController extends BaseController{
 	}
 	@ShopAuth
 	@RequestMapping(value="/uploadImage",method=RequestMethod.POST)
-	public String updateImage(@RequestParam(value="file") CommonsMultipartFile fileImage,HttpServletResponse response,HttpServletRequest request) {
+	public String updateImage(@RequestParam(value="file") MultipartFile file,HttpServletResponse response,HttpServletRequest request) throws IllegalStateException, IOException {
+		
 		ModelAndView model=new ModelAndView();
 		String uid=(String) request.getAttribute("uid");
-		String fileName="";
-		if(!fileImage.isEmpty()){
-			System.out.println("文件成功上传...");
-			//获取文件的后缀名
-			String type=fileImage.getOriginalFilename().substring(fileImage.getOriginalFilename().indexOf("."));
-			//取当前时间戳，生成一个唯一的文件名
-			fileName="\\userfiles\\user\\"+uid+type;
-			//存放路径
-			String filePath="E:\\Eclipse\\workplace\\b2p\\src\\main\\webapp"+fileName;
-			System.out.println("filePath:"+filePath);
-			File destFile = new File(filePath);
-			try {
-				// FileUtils.copyInputStreamToFile()这个方法里对IO进行了自动操作，不需要额外的再去关闭IO流
-				FileUtils.copyInputStreamToFile(fileImage.getInputStream(), destFile);// 复制临时文件到指定目录下
-			}catch (IOException e) {
-				e.printStackTrace();
-			}
+		String path = request.getContextPath();
+		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+		// 获取文件上传的真实路径
+		String uploadPath = request.getSession().getServletContext().getRealPath("/");
+		// 上传文件过程
+
+		String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+
+		String destDir = Global.getUserfilesBaseDir();
+		File destFile = new File(uploadPath + destDir);
+		if (!destFile.exists()) {
+			destFile.mkdirs();
 		}
-		else{
-			System.out.println("文件上传失败...");
-			model.addObject("Message", "no");
-			return renderString(response, model);
-		}
+		String fileName =  uid + "." + suffix;
+		File f = new File(destFile.getAbsoluteFile() + File.separator + fileName);
+		
+		file.transferTo(f);
+		f.createNewFile();
 		//进行数据更新
-		shopUserService.updateImage(uid, fileName);
+		shopUserService.updateImage(uid, destDir + File.separator + fileName);
 		model.addObject("Message", "yes");
 		return renderString(response, model);
 	}
