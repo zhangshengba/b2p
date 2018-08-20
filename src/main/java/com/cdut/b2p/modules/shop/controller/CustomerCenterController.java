@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cdut.b2p.common.controller.BaseController;
+import com.cdut.b2p.common.utils.IdUtils;
+import com.cdut.b2p.common.utils.SecurityUtils;
 import com.cdut.b2p.modules.shop.po.ShopCart;
 import com.cdut.b2p.modules.shop.po.ShopCollection;
 import com.cdut.b2p.modules.shop.po.ShopOrder;
@@ -73,9 +75,16 @@ public class CustomerCenterController extends BaseController{
 	public String myPWD(HttpServletResponse response,HttpServletRequest request) {
 		ModelAndView model=new ModelAndView();
 		String uid=(String) request.getAttribute("uid");
-		String pwd=request.getParameter("userPassword");
-		shopUserService.updatePWD(uid, pwd);
-		model.addObject("PWDMessage", "密码修改成功！");
+		String oldpwd=request.getParameter("oldPWD");
+		String newpwd=request.getParameter("newPWD");
+		ShopUser user=shopUserService.findUserById(uid);
+		if(!SecurityUtils.getMD5(oldpwd).equals(user.getUserPassword())) {
+			model.addObject("PWDMessage", "false");
+			return renderString(response, model);
+		}
+		
+		shopUserService.updatePWD(uid, newpwd);
+		model.addObject("PWDMessage", "true");
 		return renderString(response, model);
 	}
 	

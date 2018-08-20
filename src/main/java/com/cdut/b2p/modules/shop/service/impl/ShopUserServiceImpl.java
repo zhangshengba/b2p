@@ -208,7 +208,7 @@ public class ShopUserServiceImpl implements ShopUserService{
 	public boolean updatePWD(String id, String pwd) {
 		ShopUser user=new ShopUser();
 		user.setId(id);
-		user.setUserPassword(pwd);
+		user.setUserPassword(SecurityUtils.getMD5(pwd));
 		int count=shopUserMapper.updateByPrimaryKeySelective(user);
 		if(count>0) {
 			return true;
