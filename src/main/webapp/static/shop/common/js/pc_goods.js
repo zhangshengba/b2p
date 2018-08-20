@@ -6,6 +6,143 @@ function getQueryString(name) {
 	return null;
 }
 
+function want(){
+
+	var flag = $('#want_img').attr("flag");
+	if(flag == "0"){
+		$.ajax({
+		type : "POST",
+		headers : {
+			cdutb2p_shop_token : GLOBAL_TOKEN
+		},
+		url : getPath() + "/shop/goods/collection/add",
+		data : {
+			goods_id : getQueryString("goods_id"),
+		},
+		dataType : "json",
+		success : function(data) {
+			if (data['success']) {
+				$('#want_text').html("不想要");
+				$('#want_img').attr("flag","1");
+				$('#want_img').attr("src", "common/img/unwant.png");
+				if(data['data'] < 1){
+					$('#want_no').html("宝贝还没有被收藏，快来抢沙发");
+				}else{
+					$('#want_no').html("宝贝被收藏了"+data['data']+"次");
+				}
+			}
+		},
+		error : function(data) {
+			layer.alert('系统错误');
+		}
+
+		});
+	}else{
+		$.ajax({
+		type : "POST",
+		headers : {
+			cdutb2p_shop_token : GLOBAL_TOKEN
+		},
+		url : getPath() + "/shop/goods/collection/del",
+		data : {
+			goods_id : getQueryString("goods_id"),
+		},
+		dataType : "json",
+		success : function(data) {
+			if (data['success']) {
+				$('#want_img').attr("flag","0");
+				$('#want_text').html("想要");
+				$('#want_img').attr("src", "common/img/want.png");
+				if(data['data'] < 1){
+					$('#want_no').html("宝贝还没有被收藏，快来抢沙发");
+				}else{
+					$('#want_no').html("宝贝被收藏了"+data['data']+"次");
+				}
+			}
+		},
+		error : function(data) {
+			layer.alert('系统错误');
+		}
+
+		});
+	}
+	
+}
+function want_init(){
+	if(token != ""){
+		$.ajax({
+		type : "POST",
+		headers : {
+			cdutb2p_shop_token : GLOBAL_TOKEN
+		},
+		url : getPath() + "/shop/goods/collection/nums",
+		data : {
+			goods_id : getQueryString("goods_id"),
+		},
+		dataType : "json",
+		success : function(data) {
+			if (data['success']) {
+				if(data['data'][0] < 1){
+					$('#want_no').html("宝贝还没有被收藏，快来抢沙发");
+				}else{
+					$('#want_no').html("宝贝被收藏了"+data['data'][0]+"次");
+				}
+				if(data['data'][1]){
+					$('#want_text').html("不想要");
+					$('#want_img').attr("flag","1");
+					$('#want_img').attr("src","common/img/unwant.png");
+				}else{
+					$('#want_img').attr("flag","0");
+					$('#want_text').html("想要");
+					$('#want_img').attr("src","common/img/want.png");
+				}
+				
+			}
+		},
+		error : function(data) {
+			layer.alert('系统错误');
+		}
+
+		});
+	}else{
+		//$('#want').hide();
+		$.ajax({
+		type : "POST",
+		headers : {
+			cdutb2p_shop_token : GLOBAL_TOKEN
+		},
+		url : getPath() + "/shop/goods/collection/nums_no",
+		data : {
+			goods_id : getQueryString("goods_id"),
+		},
+		dataType : "json",
+		success : function(data) {
+			if (data['success']) {
+				if(data['data'][0] < 1){
+					$('#want_no').html("宝贝还没有被收藏，快来抢沙发");
+				}else{
+					$('#want_no').html("宝贝被收藏了"+data['data'][0]+"次");
+				}
+				if(token == ""){
+					$('#want_text').html("想要");
+					$('#want_img').attr("src","common/img/want.png");
+					$('#want').click(function(){
+						window.location.href = "./login.html";
+					});
+					
+				}
+			}
+		},
+		error : function(data) {
+			layer.alert('系统错误');
+		}
+
+		});
+	}
+	
+	
+}
+
 function logout() {
 	localStorage.cdutb2p_shop_token = ""
 	sessionStorage.cdutb2p_shop_token = ""
@@ -132,5 +269,6 @@ $(document).ready(function() {
 	genUserInfo();
 	initGoods();
 	initRecommend();
+	want_init();
 			
 });

@@ -57,5 +57,7 @@ public interface ShopGoodsService {
 	public ShopGoodsInfo findGoodsByGoodsId(String goods_id);
 	
 	public List<ShopGoodsInfo> findRecommendGoods();
+	
+	public boolean updateGoodsClickTimes(String id,int times);
 
 }
