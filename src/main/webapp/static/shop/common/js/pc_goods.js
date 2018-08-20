@@ -126,17 +126,7 @@ function renderRecommend(data){
         html += "</li>"
 	}
 	$('#recomend').html(html);
-	$('#goods_img1').jqthumb({
-		classname : 'jqthumb',
-		width : '370px',
-		height : '280px',
-		position : {
-			x : '50%',
-			y : '50%'
-		},
-		source : 'src',
-		show : true,
-	});
+
 }
 $(document).ready(function() {
 	genUserInfo();
