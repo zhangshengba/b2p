@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,7 +66,7 @@ public class SellerCenterController extends BaseController {
 		if (!destFile.exists()) {
 			destFile.mkdirs();
 		}
-		String fileNameNew = String.valueOf(System.currentTimeMillis()) + "." + suffix;
+		String fileNameNew = String.valueOf(System.currentTimeMillis()) + RandomStringUtils.randomAlphanumeric(5) + "." + suffix;
 		File f = new File(destFile.getAbsoluteFile() + File.separator + fileNameNew);
 		// 如果当前文件已经存在了，就跳过。
 		if (f.exists()) {

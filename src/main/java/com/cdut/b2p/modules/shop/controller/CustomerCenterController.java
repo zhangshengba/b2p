@@ -126,7 +126,7 @@ public class CustomerCenterController extends BaseController{
 		file.transferTo(f);
 		f.createNewFile();
 		//进行数据更新
-		shopUserService.updateImage(uid, destDir + File.separator + fileName);
+		shopUserService.updateImage(uid, destDir + fileName);
 		model.addObject("Message", "yes");
 		return renderString(response, model);
 	}

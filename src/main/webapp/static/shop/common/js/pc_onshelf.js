@@ -196,7 +196,7 @@ function onshelf(){
 		layer.alert("商品型号长度最大20");
 		return;
 	}
-	if($('#pre_price').val().length < || $('#pre_price').val().length > 6){
+	if($('#pre_price').val().length < 1 || $('#pre_price').val().length > 6){
 		layer.alert("商品原价为1-999999");
 		return;
 	}
