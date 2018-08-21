@@ -17,7 +17,7 @@ public class ShopGoodsTask {
 	@Autowired
 	ShopGoodsTaskHandler shopGoodsTaskHandler;
 	
-	//@Scheduled(cron = "0 0 2 * * ?")
+	@Scheduled(cron = "0 0 2 * * ?")
 	//@Scheduled(cron = "*/5 * * * * ?")
 	public void execute() {
 		logger.debug("execute  ShopGoodsTask");

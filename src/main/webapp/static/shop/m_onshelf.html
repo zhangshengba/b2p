@@ -106,7 +106,7 @@
 								<div class="tip"></div>
 								<div class="volatile_wrap">
 									<div class="volatile_required_wrap clearfix">
-										<select class="selectordef" name="ObjectType">
+										<select class="selectordef" name="ObjectType" id="brand_select">
 											<option value="">苹果</option>
 										</select>
 									</div>
@@ -114,16 +114,29 @@
 							</div>
 
 						</div>
+						
+						<div class="rows_wrap clearfix hh-price">
+							<div class="rows_content">
+								<div class="tip" id="brand_model_tip"></div>
+								<div class="input_text_wrap clearfix" 
+									style="position: relative;">
+									<input type="inputText" tabindex="3" id="brand_model"
+										autocomplete="off" style="width: 132px;" required>
+								</div>
+							</div>
+							<div class="rows_title">
+								<span><span class="rows_title_star">*</span>型号</span>
+							</div>
+						</div>
 
 						<!--几成新-->
 						<div class="rows_wrap clearfix">
 							<div class="rows_content">
-								<div class="tip"></div>
-								<select class="selectordef" name="oldlevel">
-									<option value="volvo">全新</option>
-									<option value="saab">95成新</option>
-									<option value="opel">9成新</option>
-									<option value="audi">8成新及以下</option>
+								<div class="tip" id="select_oldlevel_tip"></div>
+								<select class="selectordef" name="oldlevel" id="select_oldlevel">
+									<option selected value="10">全新</option>
+									<option value="9">9成新</option>
+									<option value="8">8成新及以下</option>
 								</select>
 							</div>
 							<div class="rows_title">
@@ -134,11 +147,11 @@
 						<!--价钱-->
 						<div class="rows_wrap clearfix hh-price">
 							<div class="rows_content">
-								<div class="tip"></div>
-								<div class="input_text_wrap clearfix" name="MinPrice"
+								<div class="tip" id="pre_price_tip"></div>
+								<div class="input_text_wrap clearfix" 
 									style="position: relative;">
-									<input type="inputText" tabindex="3" id="MinPrice"
-										autocomplete="off" style="width: 132px;"><span>元</span>
+									<input type="inputText" tabindex="3" id="pre_price"
+										autocomplete="off" style="width: 132px;" number="true"><span>元</span>
 								</div>
 							</div>
 							<div class="rows_title">
@@ -149,11 +162,11 @@
 						<!--价钱-->
 						<div class="rows_wrap clearfix hh-price">
 							<div class="rows_content">
-								<div class="tip"></div>
-								<div class="input_text_wrap clearfix" name="MinPrice"
+								<div class="tip" id="pre_price_tip"></div>
+								<div class="input_text_wrap clearfix" 
 									style="position: relative;">
-									<input type="inputText" tabindex="3" id="MinPrice"
-										autocomplete="off" style="width: 132px;"><span>元</span>
+									<input type="inputText" tabindex="3" id="now_price"
+										autocomplete="off" style="width: 132px;" number="true" ><span>元</span>
 								</div>
 							</div>
 							<div class="rows_title">
@@ -168,12 +181,14 @@
 							</div>
 							<div class="rows_content">
 								<div class="tip"></div>
-								<select class="selectordef">
-									<option value="">金堂</option>
-								</select> <select class="selectordef">
-									<option value="">金堂</option>
-								</select> <select class="selectordef">
-									<option value="">金堂</option>
+								<select class="selectordef" id="select_area_province">
+									
+								</select> 
+								<select class="selectordef" id="select_area_city">
+									
+								</select> 
+								<select class="selectordef" id="select_area_area">
+									
 								</select>
 							</div>
 
@@ -191,11 +206,11 @@
 						<!--标题-->
 						<div class="rows_wrap clearfix">
 							<div class="rows_content">
-								<div class="tip"></div>
+								<div class="tip" id="title_tip"></div>
 								<div class="input_text_wrap" name="Title"
 									style="position: relative;">
-									<input type="inputText" tabindex="7" id="Title"
-										autocomplete="off" maxlength="30" style="width: 395px;">
+									<input type="inputText" tabindex="7" id="title"
+										autocomplete="off" maxlength="30" style="width: 395px;" minlength="10" maxlength="100">
 								</div>
 							</div>
 							<div class="rows_title">
@@ -208,9 +223,9 @@
 
 
 							<div class="rows_content" style="">
-								<div class="tip"></div>
+								<div class="tip" id="describe_tip"></div>
 								<!-- <textarea id="miaoshu" width="18" height="28"><textarea> -->
-								<textarea rows="10" cols="100"></textarea>
+								<textarea rows="10" cols="100" id="describe"  minlength="10" maxlength="200"></textarea>
 							</div>
 
 							<div class="rows_title">
@@ -277,7 +292,7 @@
 						<div class="rows_wrap clearfix">
 							<div class="rows_content">
 								<div class="tip"></div>
-								<div class="submit_wrap">
+								<div class="submit_wrap" id="submit">
 									<span>发布</span>
 								</div>
 							</div>
