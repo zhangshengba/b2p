@@ -376,6 +376,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		return null;
 	}
 
+	@Transactional(readOnly = false)
 	@Override
 	public boolean updateGoodsClickTimes(String id, int times) {
 		ShopGoods shopGoods = shopGoodsMapper.selectByPrimaryKey(id);
@@ -383,6 +384,13 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		boolean rs = updateGoods(shopGoods);
 		
 		return rs;
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<ShopGoods> findGoodsBySellerId(String uid) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
