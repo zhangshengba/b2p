@@ -14,6 +14,8 @@ $.ajax({
 	                             '<td >'+item.orderPrice+'</td>'+
 	                             '<td >'+item.orderStatus+'</td>'+
 	                             '<td ><input type="hidden" value='+item.id+'></td>'+
+	                             '<td ><button>催单</button><button>确认到达</button></td>'+
+	                             '<td ><button>评价</button><button>投诉</button><button>删除</button></td>'+
 	                     '</tr>'
 	                     ); 
                   });
