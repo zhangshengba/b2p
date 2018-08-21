@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ import com.cdut.b2p.common.utils.DateUtils;
 import com.cdut.b2p.common.utils.IdUtils;
 import com.cdut.b2p.common.utils.ValidateUtils;
 import com.cdut.b2p.modules.shop.po.ShopGoods;
+import com.cdut.b2p.modules.shop.po.ShopGoodsInfo;
 import com.cdut.b2p.modules.shop.security.annotation.ShopAuth;
 import com.cdut.b2p.modules.shop.service.ShopGoodsService;
 import com.cdut.b2p.modules.sys.service.SysDictService;
@@ -125,10 +127,77 @@ public class SellerCenterController extends BaseController {
 		}else {
 			return renderErrorString(response, "上架失败");
 		}
+	}
 	
-
+	@ShopAuth
+	@RequestMapping(value = ("/goods/goods_list"), method = RequestMethod.POST)
+	public String goods_list(HttpServletRequest request, HttpServletResponse response) {
+		String uid=(String) request.getAttribute("uid");
+		List<ShopGoodsInfo> list = shopGoodsService.findGoodsBySellerId(uid);
+		return renderSuccessString(response, "获取商品", list);	
+	}
+	
+	@ShopAuth
+	@RequestMapping(value = ("/goods/goods_del"), method = RequestMethod.POST)
+	public String goods_del(HttpServletRequest request, HttpServletResponse response, String goods_id) {
+		String uid=(String) request.getAttribute("uid");
+		ShopGoods goods = shopGoodsService.findGoodsById(goods_id);
+		if(goods == null || !goods.getGoodsSellerId().equals(uid)) {
+			return renderSuccessString(response, "删除失败");	
+		}
+		boolean rs = shopGoodsService.deleteGoods(goods_id);
+		if(rs) {
+			return renderSuccessString(response, "删除成功");	
+		}else {
+			return renderSuccessString(response, "删除失败");	
+		}
 		
+	}
+	
+	@ShopAuth
+	@RequestMapping(value = ("/goods/edit"), method = RequestMethod.POST)
+	public String upload(HttpServletRequest request, HttpServletResponse response, String goods_id, String brand_id, String brand_model,
+			String oldLevel, String pre_price, String now_price, String area_id, String title, String descibe,
+			String pics) {
+		String uid=(String) request.getAttribute("uid");
+		if(goods_id == null) {
+			return renderErrorString(response, "修改失败");
+		}
+		ShopGoods goods = shopGoodsService.findGoodsById(goods_id);
+		if(goods == null || !goods.getGoodsSellerId().equals(uid)) {
+			return renderErrorString(response, "修改失败");
+		}
+		if (ValidateUtils.validateText(brand_id, 32, 32)
+				&& ValidateUtils.validateText(brand_model, 1, 20)
+				&& ValidateUtils.validateText(oldLevel, 1, 2)
+				&& ValidateUtils.validateText(pre_price, 1, 6)
+				&& ValidateUtils.validateText(now_price, 1, 6)
+				&& ValidateUtils.validateText(area_id, 32, 32)
+				&& ValidateUtils.validateText(title, 10, 100)
+				&& ValidateUtils.validateText(descibe, 10, 200)
+				&& ValidateUtils.validateText(pics, 1, 255)) {
 
+			goods.setGoodsAreaId(area_id);
+			goods.setGoodsBrandId(brand_id);
+			goods.setGoodsBrandModel(brand_model);
+			goods.setGoodsDiscrible(descibe);
+			goods.setGoodsOriginalPrice(new BigDecimal(Integer.parseInt(pre_price)));
+			goods.setGoodsPresentPrice(new BigDecimal(Integer.parseInt(now_price)));
+			goods.setGoodsSellerId(uid);
+			goods.setGoodsTitle(title);
+			goods.setGoodsOldLevel(oldLevel);
+
+			String[] splited = pics.split(",");
+			if(splited.length > 0) {
+				goods.setGoodsPics(splited[0]);
+			}
+			goods.setRemarks(pics);
+			shopGoodsService.updateGoods(goods);
+			return renderSuccessString(response, "修改成功");
+
+		}else {
+			return renderErrorString(response, "修改失败");
+		}
 	}
 
 }

@@ -190,7 +190,7 @@ function renderBrand(data) {
 }
 
 
-function onshelf(){
+function goods_edit(){
 	if($('#brand_model').val().length < 1 || $('#brand_model').val().length > 20){
 		layer.alert("商品型号长度最大20");
 		return;
@@ -225,8 +225,9 @@ function onshelf(){
 			 headers : {
 				cdutb2p_shop_token : GLOBAL_TOKEN
 			},
-             url: getPath() + "/shop/sellerCenter/goods/onshelf",
+             url: getPath() + "/shop/sellerCenter/goods/edit",
              data: {
+				goods_id:getQueryString("goods_id"),
 				brand_id:brand_select_id,  
 				brand_model:$('#brand_model').val(),
 				oldLevel:oldlevel_select, 
@@ -243,7 +244,7 @@ function onshelf(){
 							layer.alert(data['msg']);
 							goods_id = data['data'];
 							var t=setTimeout(function(){
-								window.location.href = "./goods.html?goods_id="+goods_id;
+								window.location.href = "./goods.html?goods_id="+getQueryString("goods_id");
 							},2000);
 
 						 }else{
@@ -257,17 +258,69 @@ function onshelf(){
          });
 }
 
-$(document).ready(function() {
+function getQueryString(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	var r = window.location.search.substr(1).match(reg);
+	if (r != null)
+		return unescape(r[2]);
+	return null;
+}
+
+function initGoods() {
+	if (getQueryString("goods_id") == null
+			|| getQueryString("goods_id").length != 32) {
+		window.location.href = "./index.html";
+	}
+	$.ajax({
+		type : "POST",
+		headers : {
+			cdutb2p_shop_token : GLOBAL_TOKEN
+		},
+		url : getPath() + "/shop/goods/info",
+		data : {
+			goods_id : getQueryString("goods_id"),
+		},
+		dataType : "json",
+		success : function(data) {
+			if (data['success']) {
+				renderInitGoods(data['data']);
+			}
+		},
+		error : function(data) {
+			layer.alert('系统错误');
+		}
+
+	});
+}
+
+function renderInitGoods(data) {
+	$('#title').val(data['goodsTitle']);
+	$('#pre_price').val(data['goodsOriginalPrice']);
+	$('#now_price').val(data['goodsPresentPrice']);
+	$('#brand_model').val(data['goodsBrandModel']);
+	$('#describe').val(data['goodsDesc']);
+	
+	$('#brand_select').val(data['goodsBrandId']);
+	
+	area_select_id = data['goodsAreaId'];
+	brand_select_id = data['goodsBrandId'];
+	oldlevel_select = data['goodsOldLevel'];
 	genUserInfo();
 	genArea();
 	genBrand();
-	oldlevel_select = "10";
+	$('#select_oldlevel').val(data['goodsOldLevel']);
 	$('#select_oldlevel').change(function(){
 		oldlevel_select = $('#select_oldlevel').find("option:selected").attr("value");
 	});
 	
+	
+}
+
+$(document).ready(function() {
+	initGoods();
 	$('#submit').click(function(){
-		onshelf();
+		goods_edit();
 	});
 	
+
 });

@@ -344,7 +344,7 @@ public class CustomerCenterController extends BaseController{
 		String id=request.getParameter("c_id");
 		ShopCart cart=shopCartService.findCartById(id);
 		//获取商品id
-		ShopGoodsInfo goods=shopGoodsService.findGoodsByGoodsId(cart.getCartGoodsId());
+		ShopGoodsInfo goods=shopGoodsService.findGoodsByGoodsId(cart.getCartGoodsId(), false);
 		//对比功能->价格
 		return renderString(response, model);
 	}
