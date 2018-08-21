@@ -24,7 +24,7 @@
 <script src="./common/js/jquery.cookie.js"></script>
 <script src="./upload/js/webuploader.js"></script>
 <script src="./upload/js/upload.js"></script>
-<script src="./common/js/pc_onshelf.js"></script>
+<script src="./common/js/pc_goods_onshelf.js"></script>
 </head>
 
 <body>
@@ -33,50 +33,43 @@
 		<!--包-->
 		<div class="w pos">
 			<!--顶左-->
-			<div class="bar_left">
-				<h2>成都</h2>
+			<div class="bar_left"><h2></h2>
 				<div id="commonTopbar_homepageLink">
-					<strong><a class="mytxt" href="./shop.html" target="_self">B@P首页</a></strong>
+					<strong><a class="mytxt" target="_self" tongji_tag="" href="index.html">B@P首页</a></strong>
 				</div>
 			</div>
 			<!--顶右-->
 			<div class="bar_right">
 				<div id="commonTopbar_login">
-					<span title="cdut135">cdut135</span>
-					<!--获取用户信息-->
-					<a style="margin-left: 6px" target="_self">退出</a>
-				</div>
-				<div id="commonTopbar_mymenu" class="haschild">
-					<a id="commonTopbar_tomy" href="./m_buyer_collection.html"
-						target="_blank">买家中心</a>
-				</div>
-				<div id="commonTopbar_vip" class="haschild">
-					<a class="mytxt" href="./m_seller_product.html" target="_blank">卖家中心</a>
+					<span title="cdut135" id="userNameOne" style="color:orange">my account</span><!--获取用户信息-->
+					
+					<a style="margin-left:6px" onclick="clearToken();window.location.reload();" target="_self">退出</a>
 				</div>
 				<div id="commonTopbar_help" class="help-con haschild">
-					<a class="mytxt" target="_blank">联系客服</a>
+					<a class="mytxt" tongji_tag="pc_topbar_log_ai" target="_blank">联系客服</a>
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<!--水平导航栏-->
-	<div class="header-guide">
-		<div class="header-container">
+	
+    <!--水平导航栏-->
+    <div class="header-guide">
+        <div class="header-container">
+        	<!-- <img id="uc-newlogo" src="./common/img/logo.png" onclick="" style="cursor:pointer"> -->
 			<ul class="header-ul" id="header-ul">
-				<li><a class="a1" href="./m_buyer_collection.html"
-					target="_self">买家中心</a></li>
-				<li><a class="a1" href="./m_persondata.html" target="_self">账户设置</a>
-				</li>
-				<li><a class="a1" target="_self" onclick="">我的资金</a></li>
-				<li><a class="a1" href="./m_seller_product.html" target="_self">卖家中心</a>
-				</li>
+				<li class="a1"><a class="a1"
+					target="_self" href="c_center.html">买家中心</a></li>
+				<li><a class="a1"target="_self" onclick=""
+					href="u_center.html">账户设置</a></li>
+				<li><a class="a1" target="_self" onclick=""
+					href="s_center.html">卖家中心</a></li>
 			</ul>
 			<div class="header-search-div">
-				<a class="header-bt" href="./m_onshelf.html" target="_blank">发布信息</a>
-			</div>
-		</div>
-	</div>
+                
+                
+            </div>
+        </div>
+    </div>
 
 
 	<!-- paytype end -->

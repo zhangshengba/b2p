@@ -1,4 +1,7 @@
-$.ajax({
+/*设置我的信息*/
+setMyInfo();
+function setMyInfo(data){
+	$.ajax({
 	type:"POST",
 	headers: {
         cdutb2p_shop_token: GLOBAL_TOKEN
@@ -7,21 +10,22 @@ $.ajax({
     url:"/b2p/shop/customerCenter/myInfo",
     data: {},
     success:function(data){
-    	setMyInfo(data);
-    },
+		if(GLOBAL_TOKEN == ""){
+			window.location.href="./login.html";
+		}
+    	if(data.model.Customer.userImage!=null||data.model.Customer.userImage!=""){
+			$("#roundnessSquareImg").attr('src','../..'+data.model.Customer.userImage);
+		}
+		$("#userName").val(data.model.Customer.userName);
+		$("#userNickname").val(data.model.Customer.userNickname);
+		$("#userTelphone").val(data.model.Customer.userTelphone);
+		$("#userEmail").val(data.model.Customer.userEmail);
+		},
     error:function(data){
-    	alert("发生错误");
+    	alert("请登录");
+    	
     }
-});
-/*设置我的信息*/
-function setMyInfo(data){
-	if(data.model.Customer.userImage!=null||data.model.Customer.userImage!=""){
-		$("#roundnessSquareImg").attr('src','../..'+data.model.Customer.userImage);
-	}
-	$("#userName").val(data.model.Customer.userName);
-	$("#userNickname").val(data.model.Customer.userNickname);
-	$("#userTelphone").val(data.model.Customer.userTelphone);
-	$("#userEmail").val(data.model.Customer.userEmail);
+	});
 }
 /*显示上传图像按钮*/
 function change(){
@@ -46,6 +50,8 @@ function upload(){
 		success:function(data){
 			alert("上传成功");
 			window.location.reload();
+			
+			
 		},
 	    error:function(data){
 	    	alert("上传失败");

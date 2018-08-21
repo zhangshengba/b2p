@@ -19,29 +19,29 @@ $.ajax({
     	
     }
 });
-function setInfo(){
-	$("#menu183").removeClass();
-	$("#menu182").removeClass();
-	$("#myPWD").hide();
-	$("#myMessage").hide();
-	$("#menu163").addClass("li-selected");
-	$("#myInfo").css("display","block");
-	
-}
-function setPWD(){
+function setOrder(){
 	$("#menu163").removeClass();
 	$("#menu182").removeClass();
-	$("#menu183").addClass("li-selected");
-	$("#myInfo").hide();
+	$("#myGoods").hide();
 	$("#myMessage").hide();
-	$("#myPWD").css("display","block");
+	$("#menu183").addClass("li-selected");
+	$("#myOrder").css("display","block");
+	
+}
+function setGoods(){
+	$("#menu183").removeClass();
+	$("#menu182").removeClass();
+	$("#menu163").addClass("li-selected");
+	$("#myOrder").hide();
+	$("#myMessage").hide();
+	$("#myGoods").css("display","block");
 	
 }
 function setMessage(){
 	$("#menu163").removeClass();
 	$("#menu183").removeClass();
 	$("#menu182").addClass("li-selected");
-	$("#myInfo").hide();
-	$("#myPWD").hide();
+	$("#myOrder").hide();
+	$("#myGoods").hide();
 	$("#myMessage").css("display","block");
 }

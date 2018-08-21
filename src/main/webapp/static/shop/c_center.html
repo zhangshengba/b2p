@@ -3,13 +3,12 @@
 <head>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>用户中心</title>
-
+	<link rel="icon" href="./common/img/page_logo.png" type="image/x-icon" />
+    <title>买家中心</title>
 	<link rel="stylesheet" type="text/css" href="./common/css/user_center_new.css"/>
-	<link rel="stylesheet" type="text/css" href="./common/css/CompontsLoader.css"/>  
+	<link rel="stylesheet" type="text/css" href="./common/css/CompontsLoader.css"/> 
     <script src="./common/js/jquery.js"></script>
 	<script src="./common/js/token.js"></script>
-	<script src="./common/js/u_index.js"></script>
     <script src="./common/js/c_index.js"></script>
 </head>
 
@@ -19,9 +18,9 @@
 		<!--包-->
 		<div class="w pos">
 			<!--顶左-->
-			<div class="bar_left"><h2>成都</h2>
+			<div class="bar_left">
 				<div id="commonTopbar_homepageLink">
-					<strong><a class="mytxt" href="" target="_blank" tongji_tag="">B@P首页</a></strong>
+					<strong><a class="mytxt" href="index.html" target="_self" tongji_tag="">B@P首页</a></strong>
 				</div>
 			</div>
 			<!--顶右-->
@@ -29,7 +28,7 @@
 				<div id="commonTopbar_login">
 					<span title="cdut135" id="userNameOne" style="color:orange">my account</span><!--获取用户信息-->
 					<!-- <span class="red"><a style="color:#F00;margin: 0px;" href="" title="你有4条未读短信息">4</a></span>) -->
-					<a href="" style="margin-left:6px" target="_self">退出</a>
+					<a href="" style="margin-left:6px" onclick="clearToken();window.location.reload();" target="_self">退出</a>
 				</div>
 				<div id="commonTopbar_help" class="help-con haschild">
 					<a href="" class="mytxt" tongji_tag="pc_topbar_log_ai" target="_blank">联系客服</a>
@@ -47,38 +46,25 @@
 					target="_self" href="c_center.html">买家中心</a></li>
 				<li><a class="a1"target="_self" onclick=""
 					href="u_center.html">账户设置</a></li>
-				<li><a class="a1" target="_blank" onclick=""
+				<li><a class="a1" target="_self" onclick=""
 					href="s_center.html">卖家中心</a></li>
 			</ul>
 			<div class="header-search-div">
-				<form onsubmit="b_query();return false;">
-					<div class="header-input-div" id="searchbar">
-						<span id="key"> <input type="text" id="keyword" name="key"
-							class="header-input" onblur="win.closeToolTipWindow();"
-							placeholder="搜索" autocomplete="off"
-							onkeyup="win.GetContentData();" />
-						</span> <input type="submit" class="header-input-search-bt"
-							id="searchbtn" value="" onclick="" />
-					</div>
-				</form>
-				<a class="header-bt" href="" onclick="" target="_blank">发布信息</a>
+                
+                <a class="header-bt" onclick="" target="_self" href="goods_onshelf.html">发布信息</a>
             </div>
         </div>
     </div>
 
     <div class="uc-content-div">
-
 		<!--左侧垂直导航栏-->
 		<div class="leftmenu-div">
-
 			<!--左侧菜单-->
 			<div class="leftmenu-content">
-
 				<!--标题-->
 				<div class="leftmenu-content-header">
-					<a href="" onclick=""><span>买家中心</span></a>
+					<a><span>买家中心</span></a>
 				</div>
-
 				<!--菜单-->
 				<ul class="leftmenu-content-ul">
 					<li class="li-selected" id="menu3">
@@ -98,9 +84,7 @@
 					<span onclick="customerMessage()">买家通知</span></a>
 					</li>
 				</ul>
-
 			</div>
-
 		</div>
 
 		<div class="rightmenu-div">
