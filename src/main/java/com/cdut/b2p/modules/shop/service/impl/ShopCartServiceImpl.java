@@ -70,7 +70,7 @@ public class ShopCartServiceImpl  implements ShopCartService{
 	@Override
 	public List<ShopCartVo> findCartByUser(String uid) {
 		ShopCartExample example=new ShopCartExample();
-		example.or().andCartUserIdEqualTo(uid);
+		example.or().andCartUserIdEqualTo(uid).andDelFlagEqualTo("0");
 		List<ShopCartVo> list=shopCartMapper.selectMyCart(uid);
 		return list;
 	}
@@ -96,6 +96,16 @@ public class ShopCartServiceImpl  implements ShopCartService{
 			return true;
 		}
 		return false;
+	}
+	/**
+	 * @desc 根据购物车的id，查询相应的记录信息
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public ShopCart findCartById(String id) {
+		ShopCart cart=shopCartMapper.selectByPrimaryKey(id);
+		return cart;
 	}
 
 }

@@ -41,7 +41,7 @@ public class ShopWorkorderServiceImpl implements ShopWorkorderService{
 	@Override
 	public List<ShopWorkorder> findWorkOrderByUser(String uid) {
 		ShopWorkorderExample example=new ShopWorkorderExample();
-		example.or().andWorkorderReceiverIdEqualTo(uid).andWorkorderTypeIdEqualTo("1");
+		example.or().andWorkorderReceiverIdEqualTo(uid).andWorkorderTypeIdEqualTo("1").andDelFlagEqualTo("0");
 		List<ShopWorkorder> list=shopWorkorderMapper.selectByExample(example);
 		return list;
 	}

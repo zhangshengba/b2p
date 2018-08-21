@@ -32,6 +32,8 @@ import com.cdut.b2p.modules.shop.po.ShopCart;
 import com.cdut.b2p.modules.shop.po.ShopCartVo;
 import com.cdut.b2p.modules.shop.po.ShopCollection;
 import com.cdut.b2p.modules.shop.po.ShopCollectionVo;
+import com.cdut.b2p.modules.shop.po.ShopGoods;
+import com.cdut.b2p.modules.shop.po.ShopGoodsInfo;
 import com.cdut.b2p.modules.shop.po.ShopOrder;
 import com.cdut.b2p.modules.shop.po.ShopUser;
 import com.cdut.b2p.modules.shop.po.ShopWorkorder;
@@ -275,7 +277,7 @@ public class CustomerCenterController extends BaseController{
 	 */
 	@RequestMapping(value="/delMyMessage",method=RequestMethod.POST)
 	public String delMyMessage(HttpServletResponse response,HttpServletRequest request) {
-		String id=request.getParameter("id");
+		String id=request.getParameter("w_id");
 		shopWorkorderService.delWorkOrderById(id);
 		return renderString(response, "删除成功");
 	}
@@ -316,9 +318,34 @@ public class CustomerCenterController extends BaseController{
 		model.addObject("CartList", list);
 		return renderString(response, model);
 	}
+	/**
+	 * @desc 删除购物车中的某些商品
+	 * @param response
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/delMyCart",method=RequestMethod.POST)
 	public String delMyCart(HttpServletResponse response,HttpServletRequest request) {
-		String[]ids=request.getParameterValues("gid");
+		String id=request.getParameter("c_id");
+		String[]ids= {id};
+		System.out.println("删除购物车："+id);
 		shopCartService.delCart(ids);
 		return renderString(response, "删除成功");
+	}
+	/**
+	 * @desc 对选中的物品，进行对比功能
+	 * @param response
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/compareMyCart",method=RequestMethod.POST)
+	public String compareMyCart(HttpServletResponse response,HttpServletRequest request) {
+		ModelAndView model=new ModelAndView();
+		String id=request.getParameter("c_id");
+		ShopCart cart=shopCartService.findCartById(id);
+		//获取商品id
+		ShopGoodsInfo goods=shopGoodsService.findGoodsByGoodsId(cart.getCartGoodsId());
+		//对比功能->价格
+		return renderString(response, model);
 	}
 }
