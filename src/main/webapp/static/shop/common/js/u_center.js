@@ -45,6 +45,7 @@ function upload(){
 		async:false,
 		success:function(data){
 			alert("上传成功");
+			window.location.reload();
 		},
 	    error:function(data){
 	    	alert("上传失败");

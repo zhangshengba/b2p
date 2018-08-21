@@ -34,14 +34,14 @@ public class ShopWorkorderServiceImpl implements ShopWorkorderService{
 		return false;
 	}
 	/**
-	 * @desc 根据接受者的id，查询相应的消息【该消息状态为1，表示订单状态】
+	 * @desc 根据接受者的id，查询相应的消息【该消息类型为1，表示订单状态】
 	 * @param uid
 	 * @return
 	 */
 	@Override
 	public List<ShopWorkorder> findWorkOrderByUser(String uid) {
 		ShopWorkorderExample example=new ShopWorkorderExample();
-		example.or().andWorkorderReceiverIdEqualTo(uid).andWorkorderStatusEqualTo("1");
+		example.or().andWorkorderReceiverIdEqualTo(uid).andWorkorderTypeIdEqualTo("1");
 		List<ShopWorkorder> list=shopWorkorderMapper.selectByExample(example);
 		return list;
 	}

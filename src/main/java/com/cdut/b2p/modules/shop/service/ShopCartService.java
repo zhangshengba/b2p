@@ -3,6 +3,7 @@ package com.cdut.b2p.modules.shop.service;
 import java.util.List;
 
 import com.cdut.b2p.modules.shop.po.ShopCart;
+import com.cdut.b2p.modules.shop.po.ShopCartVo;
 
 public interface ShopCartService {
 	/**
@@ -23,7 +24,7 @@ public interface ShopCartService {
 	 * @param uid
 	 * @return
 	 */
-	public List<ShopCart> findCartByUser(String uid);
+	public List<ShopCartVo> findCartByUser(String uid);
 	/**
 	 * @desc 根据ids集，删除对应的购物车记录
 	 * @param ids

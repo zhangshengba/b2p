@@ -29,6 +29,7 @@ import com.cdut.b2p.common.controller.BaseController;
 import com.cdut.b2p.common.utils.IdUtils;
 import com.cdut.b2p.common.utils.SecurityUtils;
 import com.cdut.b2p.modules.shop.po.ShopCart;
+import com.cdut.b2p.modules.shop.po.ShopCartVo;
 import com.cdut.b2p.modules.shop.po.ShopCollection;
 import com.cdut.b2p.modules.shop.po.ShopCollectionVo;
 import com.cdut.b2p.modules.shop.po.ShopOrder;
@@ -248,6 +249,9 @@ public class CustomerCenterController extends BaseController{
 		shopCollectionService.delCollection(array);
 		return renderString(response, "删除成功");
 	}
+	
+	
+	
 	/**
 	 * @desc 查询用户所接受到的订单消息
 	 * @param response
@@ -272,7 +276,7 @@ public class CustomerCenterController extends BaseController{
 	@RequestMapping(value="/delMyMessage",method=RequestMethod.POST)
 	public String delMyMessage(HttpServletResponse response,HttpServletRequest request) {
 		String id=request.getParameter("id");
-		
+		shopWorkorderService.delWorkOrderById(id);
 		return renderString(response, "删除成功");
 	}
 	
@@ -308,7 +312,7 @@ public class CustomerCenterController extends BaseController{
 	public String selectMyCart(HttpServletResponse response,HttpServletRequest request) {
 		String uid=(String) request.getAttribute("uid");
 		ModelAndView model=new ModelAndView();
-		List<ShopCart> list=shopCartService.findCartByUser(uid);
+		List<ShopCartVo> list=shopCartService.findCartByUser(uid);
 		model.addObject("CartList", list);
 		return renderString(response, model);
 	}
