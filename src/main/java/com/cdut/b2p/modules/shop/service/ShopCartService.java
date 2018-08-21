@@ -26,6 +26,12 @@ public interface ShopCartService {
 	 */
 	public List<ShopCartVo> findCartByUser(String uid);
 	/**
+	 * @desc 根据购物车的id，查询相应的记录信息
+	 * @param id
+	 * @return
+	 */
+	public ShopCart findCartById(String id);
+	/**
 	 * @desc 根据ids集，删除对应的购物车记录
 	 * @param ids
 	 * @return
