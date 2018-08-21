@@ -9,27 +9,26 @@ var brand_select_id;
 var oldlevel_select;
 function genUserInfo() {
 	$.ajax({
-		type : "POST",
-		headers : {
-			cdutb2p_shop_token : GLOBAL_TOKEN
-		},
-		url : getPath() + "/shop/user/islogin",
-		data : {},
-		dataType : "json",
-		success : function(data) {
-			if (!data['success']) {
-				layer.alert(data['msg']);
-				var t=setTimeout(function(){
-				window.location.href = "./login.html";
-				},2000);
-				
-			}
-		},
-		error : function(data) {
-			layer.alert('系统错误');
+	type:"POST",
+	headers: {
+        cdutb2p_shop_token: GLOBAL_TOKEN
+    },
+    dataType: "json",
+    url:"/b2p/shop/customerCenter/myInfo",
+    data: {},
+    success:function(data){
+		if(GLOBAL_TOKEN == ""){
+			window.location.href="./login.html";
 		}
-
-	});
+    	if(data.model.Customer.userNickname!=null||data.model.Customer.userNickname!=""){
+    		$("#userNameOne").html(data.model.Customer.userNickname);
+    	}
+    },
+    error:function(data){
+    	alert("发生错误");
+    	
+    }
+});
 }
 
 function genArea() {
