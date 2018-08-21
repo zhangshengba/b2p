@@ -24,6 +24,9 @@
     <result column="del_flag" jdbcType="CHAR" property="delFlag" />
     <result column="goods_pics" jdbcType="VARCHAR" property="url"/>
     <result column="goods_discrible" jdbcType="VARCHAR" property="describe"/>
+    <result column="goods_original_price" jdbcType="DECIMAL" property="oldPrice" />
+    <result column="goods_present_price" jdbcType="DECIMAL" property="nowPrice"/>
+    <result column="goods_old_level" jdbcType="CHAR" property="level"/>
   </resultMap>
   
   <sql id="Example_Where_Clause">
@@ -297,6 +300,6 @@
   </update>
   <select id="selectMyCart" parameterType="java.lang.String" resultType="com.cdut.b2p.modules.shop.po.ShopCartVo" 
    resultMap="cartMap">
-   select c.*,g.goods_pics,g.goods_discrible from shop_cart c,shop_goods g where c.cart_user_id=#{id} and c.del_flag='0' and c.cart_goods_id=g.id
+   select c.*,g.goods_pics,g.goods_discrible,g.goods_original_price,g.goods_present_price,g.goods_old_level   from shop_cart c,shop_goods g where c.cart_user_id=#{id} and c.del_flag='0' and c.cart_goods_id=g.id
    </select>
 </mapper>
