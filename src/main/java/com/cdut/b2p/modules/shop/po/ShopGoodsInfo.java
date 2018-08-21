@@ -107,6 +107,12 @@ public class ShopGoodsInfo implements Serializable{
      * 商品描述
      */
     private String goodsDesc;
+    
+    /**
+     * 商品描述
+     */
+    private String remarks;
+
 
 	public String getId() {
 		return id;
@@ -259,7 +265,16 @@ public class ShopGoodsInfo implements Serializable{
 	public void setGoodsSellerId(String goodsSellerId) {
 		this.goodsSellerId = goodsSellerId;
 	}
-    
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	
     
 
 }

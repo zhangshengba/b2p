@@ -203,6 +203,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 			info.setGoodsTitle(goods.getGoodsTitle());
 			info.setGoodsNums(size);
 			info.setGoodsStatus(goods.getGoodsStatus());
+			//info.setRemarks(goods.getRemarks());
 			if (goods.getGoodsDiscrible().length() > 120) {
 				info.setGoodsDesc(goods.getGoodsDiscrible().substring(0, 120) + "...");
 			} else {
@@ -282,6 +283,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 			info.setGoodsTitle(goods.getGoodsTitle());
 			info.setGoodsStatus(goods.getGoodsStatus());
 			info.setGoodsDesc(goods.getGoodsDiscrible());
+			info.setRemarks(goods.getRemarks());
 
 			ShopUser seller = shopUserService.findUserById(goods.getGoodsSellerId());
 			info.setGoodsSellerNickname(seller.getUserNickname());

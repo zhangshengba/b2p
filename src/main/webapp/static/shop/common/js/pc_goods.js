@@ -208,7 +208,22 @@ function renderInitGoods(data) {
 	$('#seller_img').attr("src", getPath() + data['goodsSellerImg']);
 	$('#seller_img2').attr("src", getPath() + data['goodsSellerImg']);
 	$('#goods_desc').html(data['goodsDesc']);
-	$('#goods_img2').attr("src", getPath() + data['goodsPics']);
+	
+	html = "";
+	if(data['remarks'] == null){
+		html += "<img src=\""+ getPath() + data['goodsPics'] +"\">";
+		$('#goods_img2').html(html);
+	}else{
+		var pics = data['remarks'].split(",");
+		for(var i in pics){
+			if(pics[i] != ""){
+				html += "<img src=\""+ getPath() + pics[i] +"\">";
+			}
+		}
+		$('#goods_img2').html(html);
+	}
+	
+	
 	$('#seller_autograph').html(data['goodsSellerAutograph']);
 	$('#seller_nickname1').html(data['goodsSellerNickname']);
 	$('#goods_area').html(

@@ -463,7 +463,7 @@
         };
 		
 		uploader.on('uploadSuccess', function(file,response) {
-            
+            img_list.push(response);
             console.log("file:",file);
             console.log("response:",response);
         });

@@ -13,7 +13,7 @@ public class ChatTask {
 	@Autowired
 	ChatTaskHandler chatTaskHandler;
 
-	//@Scheduled(cron = "*/5 * * * * ?")
+	@Scheduled(cron = "*/5 * * * * ?")
 	public void execute() {
 		logger.debug("execute  ChatTask");
 		try {
