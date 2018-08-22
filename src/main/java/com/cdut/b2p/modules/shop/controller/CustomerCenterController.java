@@ -35,6 +35,7 @@ import com.cdut.b2p.modules.shop.po.ShopCollectionVo;
 import com.cdut.b2p.modules.shop.po.ShopGoods;
 import com.cdut.b2p.modules.shop.po.ShopGoodsInfo;
 import com.cdut.b2p.modules.shop.po.ShopOrder;
+import com.cdut.b2p.modules.shop.po.ShopOrderVo;
 import com.cdut.b2p.modules.shop.po.ShopUser;
 import com.cdut.b2p.modules.shop.po.ShopWorkorder;
 import com.cdut.b2p.modules.shop.security.annotation.ShopAuth;
@@ -142,10 +143,12 @@ public class CustomerCenterController extends BaseController{
 	@ShopAuth
 	@RequestMapping(value="/myOrder",method=RequestMethod.POST)
 	public String getMyOrder(HttpServletResponse response,HttpServletRequest request) {
+		System.out.println("查询我的订单信息");
 		ModelAndView model=new ModelAndView();
 		String uid=(String) request.getAttribute("uid");
-		List<ShopOrder> orderList=shopOrderService.findOrderByCustomer(uid);
-		model.addObject("OrderList", orderList);
+		List<ShopOrderVo> orderList=shopOrderService.myOrders(uid);
+		System.out.println("查询我的订单信息"+orderList.size());
+		model.addObject("OrderVoList", orderList);
 		return renderString(response, model); 
 	}
 	/**
@@ -283,11 +286,7 @@ public class CustomerCenterController extends BaseController{
 	}
 	
 	
-	
-	
-	
-	
-	
+
 	
 	/**
 	 * @desc 添加商品到购物车
@@ -346,6 +345,10 @@ public class CustomerCenterController extends BaseController{
 		//获取商品id
 		ShopGoodsInfo goods=shopGoodsService.findGoodsByGoodsId(cart.getCartGoodsId());
 		//对比功能->价格
+		List<ShopGoods> list=shopGoodsService.compareGoods(goods);
+		System.out.println("对比商品:"+list.size());
+		System.out.println(list.get(0));
+		model.addObject("ShopGoodsList", list);
 		return renderString(response, model);
 	}
 }

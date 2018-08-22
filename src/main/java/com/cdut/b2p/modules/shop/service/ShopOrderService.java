@@ -6,6 +6,7 @@ import java.util.List;
 import org.quartz.SimpleTrigger;
 
 import com.cdut.b2p.modules.shop.po.ShopOrder;
+import com.cdut.b2p.modules.shop.po.ShopOrderVo;
 
 public interface ShopOrderService {
 	/**
@@ -33,6 +34,12 @@ public interface ShopOrderService {
 	 * @return
 	 */
 	public List<ShopOrder> findOrderByCustomer(String id);
+	/**
+	 * @desc 展示用户的 订单信息
+	 * @param uid
+	 * @return
+	 */
+	public List<ShopOrderVo> myOrders(String uid);
 	/**
 	 * @desc 通过卖方id，查询订单
 	 * @param id

@@ -17,6 +17,7 @@ import com.cdut.b2p.modules.shop.po.ShopGoods;
 import com.cdut.b2p.modules.shop.po.ShopGoodsExample;
 import com.cdut.b2p.modules.shop.po.ShopOrder;
 import com.cdut.b2p.modules.shop.po.ShopOrderExample;
+import com.cdut.b2p.modules.shop.po.ShopOrderVo;
 import com.cdut.b2p.modules.shop.service.ShopOrderService;
 
 @Service
@@ -198,6 +199,16 @@ public class ShopOrderServiceImpl implements ShopOrderService{
 			return true;
 		}
 		return false;
+	}
+	/**
+	 * @desc 展示用户的 订单信息
+	 * @param uid
+	 * @return
+	 */
+	@Override
+	public List<ShopOrderVo> myOrders(String uid) {
+		List<ShopOrderVo> list=shopOrderMapper.myOrders(uid);
+		return list;
 	}
 
 }
