@@ -343,7 +343,7 @@ public class CustomerCenterController extends BaseController{
 		String id=request.getParameter("c_id");
 		ShopCart cart=shopCartService.findCartById(id);
 		//获取商品id
-		ShopGoodsInfo goods=shopGoodsService.findGoodsByGoodsId(cart.getCartGoodsId());
+		ShopGoodsInfo goods=shopGoodsService.findGoodsByGoodsId(cart.getCartGoodsId(), false);
 		//对比功能->价格
 		List<ShopGoods> list=shopGoodsService.compareGoods(goods);
 		System.out.println("对比商品:"+list.size());

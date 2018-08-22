@@ -135,7 +135,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		List<ShopGoods> goodslist = (List<ShopGoods>) CacheUtils.get("goodslist");
 		if (goodslist == null) {
 			ShopGoodsExample sge = new ShopGoodsExample();
-			sge.or();
+			sge.or().andDelFlagEqualTo("0");
 			goodslist = shopGoodsMapper.selectByExample(sge);
 			CacheUtils.put("goodslist", goodslist);
 		}
@@ -158,7 +158,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		sge.setLimit(pageSize);
 		sge.setOffset(pageNum.equals(0) ? 0 : (long) ((pageNum - 1) * pageSize));
 		cri.andGoodsCategoryIdEqualTo(type);
-
+		cri.andDelFlagEqualTo("0");
 		if (area != null && !StringUtils.isBlank(area)) {
 			List<SysArea> arealist = sysAreaService.findAllChildrenByParentId(area);
 			List<String> areaIdList = new ArrayList<String>();
@@ -259,20 +259,24 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 	@Override
 	public List<ShopGoods> findGoodsByDate(Date startDate, Date endDate) {
 		ShopGoodsExample example = new ShopGoodsExample();
-		example.or().andCreateDateBetween(startDate, endDate);
+		example.or().andCreateDateBetween(startDate, endDate).andDelFlagEqualTo("0");
 		List<ShopGoods> list = shopGoodsMapper.selectByExample(example);
 		return list;
 	}
 
 	@Transactional(readOnly = true)
 	@Override
-	public ShopGoodsInfo findGoodsByGoodsId(String goods_id) {
+	public ShopGoodsInfo findGoodsByGoodsId(String goods_id, boolean is_add) {
 		
 		ShopGoodsInfo info = (ShopGoodsInfo) CacheUtils.get("goods_id_" + goods_id);
 		if(info == null) {
 			ShopGoods goods = shopGoodsMapper.selectByPrimaryKey(goods_id);
+			
+			if(goods.getDelFlag().equals("1")) {
+				return null;
+			}
+			
 			info = new ShopGoodsInfo();
-
 			info.setId(goods.getId());
 			info.setGoodsBrandModel(goods.getGoodsBrandModel());
 			info.setGoodsClickTimes(goods.getGoodsClickTimes());
@@ -284,7 +288,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 			info.setGoodsStatus(goods.getGoodsStatus());
 			info.setGoodsDesc(goods.getGoodsDiscrible());
 			info.setRemarks(goods.getRemarks());
-
+			info.setUptime(goods.getGoodsUpTime());
 			ShopUser seller = shopUserService.findUserById(goods.getGoodsSellerId());
 			info.setGoodsSellerNickname(seller.getUserNickname());
 			info.setGoodsSellerImg(seller.getUserImage());
@@ -306,8 +310,11 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 			CacheUtils.put("goods_id_" + goods_id, info);
 		}
 	
-		info.setGoodsClickTimes(info.getGoodsClickTimes() + 1);
-		ShopGoodsTaskHandler.andUpdate(info.getId());
+		if(is_add) {
+			info.setGoodsClickTimes(info.getGoodsClickTimes() + 1);
+			ShopGoodsTaskHandler.andUpdate(info.getId());
+		}
+		
 		//shopGoodsMapper.updateByPrimaryKeyWithBLOBs(info);
 		return info;
 	}
@@ -321,12 +328,13 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 		if(list == null) {
 			ShopGoodsExample sge = new ShopGoodsExample();
 			ShopGoodsExample.Criteria cri = sge.createCriteria();
-			cri.andGoodsClickTimesGreaterThanOrEqualTo(300);
+			cri.andGoodsClickTimesGreaterThanOrEqualTo(300).andDelFlagEqualTo("0");
 			sge.setLimit(30);
 			List<ShopGoods> goodslist = shopGoodsMapper.selectByExampleWithBLOBs(sge);
 			list = new ArrayList<ShopGoodsInfo>();
 
 			for (ShopGoods goods : goodslist) {
+				
 				ShopGoodsInfo info = new ShopGoodsInfo();
 				info.setId(goods.getId());
 				info.setGoodsBrandModel(goods.getGoodsBrandModel());
@@ -367,15 +375,17 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 	/**
 	 * @desc 根据商品id,查询卖家id
 	 */
+	@Transactional(readOnly = false)
 	@Override
 	public String findSellerId(String id) {
 		ShopGoods shopGoods=shopGoodsMapper.selectByPrimaryKey(id);
-		if(shopGoods!=null) {
+		if(shopGoods!=null && shopGoods.getDelFlag().equals("0")) {
 			return shopGoods.getGoodsSellerId();
 		}
 		return null;
 	}
 
+	@Transactional(readOnly = false)
 	@Override
 	public boolean updateGoodsClickTimes(String id, int times) {
 		ShopGoods shopGoods = shopGoodsMapper.selectByPrimaryKey(id);
@@ -393,6 +403,30 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
 	public List<ShopGoods> compareGoods(ShopGoodsInfo shopGoodsInfo) {
 		List<ShopGoods>list=shopGoodsMapper.compareGoods(shopGoodsInfo);
 		return list;
+	}
+
+	@Transactional(readOnly = false)
+	@Override
+	public List<ShopGoodsInfo> findGoodsBySellerId(String uid) {
+		ShopGoodsExample example = new ShopGoodsExample();
+		example.or().andGoodsSellerIdEqualTo(uid).andDelFlagEqualTo("0");;
+		List<ShopGoods> list = shopGoodsMapper.selectByExample(example);
+		List<ShopGoodsInfo> list1 = new ArrayList<ShopGoodsInfo>();
+		for(ShopGoods goods : list) {
+			list1.add(findGoodsByGoodsId(goods.getId(), false));
+		}
+		return list1;
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@Override
+	public ShopGoods findGoodsById(String goods_id) {
+		ShopGoods goods = shopGoodsMapper.selectByPrimaryKey(goods_id);
+		if(goods.getDelFlag().equals("0")) {
+			return goods;
+		}
+		return null;
 	}
 
 
