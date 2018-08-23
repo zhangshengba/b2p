@@ -16,6 +16,7 @@ $.ajax({
 					'<td><a href="goods.html?goods_id='+item.collectionGoodsId+'"><img style="width:100px;height:100px" src=../..'+item.url+'></a></td>'+
 					'<td><span style="padding-top:20px;font-size:12px;margin-left:10px;text-align:left;width:200px;height:100px;overflow:hidden;display:block">'+item.describe+'<span></td>' + 
 					'</td>'+
+					'<td><input type="hidden" id="id'+index+'" value="'+item.id+'"></td>'+
 				    '</tr>');	
 		});
 		$("#tbody").append('<tr style="height:120px; overflow: hidden;display:block;margin-top:15px;border-bottom:thick dotted #fff;">' +
@@ -34,7 +35,7 @@ function checkAll(obj){
 	 if(obj.checked==true){
 		  for(var i=0;i<answer.length;i++){
 		   answer[i].checked = true;
-		  }
+	}
 	 }else{
 		  for(var i=0;i<answer.length;i++){
 		   answer[i].checked = false;
@@ -54,7 +55,8 @@ function isCheck(){
 	for(var i=0;i<array.length;i++){
 		console.log(array[i]);
 	}
-
+	alert("array");
+	alert(array);
 	//进行请求传递
 	$.ajax({
 		type : "POST",
@@ -66,9 +68,10 @@ function isCheck(){
 		data:{array:array},
 		success:function(data){
 			alert("删除成功");
+			window.location.reload();
 		},
 		error:function(data){
-			
+			window.location.href="./login.html";
 		}
 		
 	});
