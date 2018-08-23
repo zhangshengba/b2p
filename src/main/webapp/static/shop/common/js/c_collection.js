@@ -55,8 +55,6 @@ function isCheck(){
 	for(var i=0;i<array.length;i++){
 		console.log(array[i]);
 	}
-	alert("array");
-	alert(array);
 	//进行请求传递
 	$.ajax({
 		type : "POST",
