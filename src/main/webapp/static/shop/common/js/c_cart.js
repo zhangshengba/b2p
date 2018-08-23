@@ -9,16 +9,17 @@ $.ajax({
 	success : function(data) {
 		$.each(data.model.CartList, function(index, item) {	
 			$("#tbody").append('<tr style="height:120px; overflow: hidden;display:block;margin-top:15px;border-bottom:thick dotted #fff;">' +
-					'<td><img style="width:100px;height:100px" src=../..'+item.url+'></td>'+
+					'<td><a href="goods.html?goods_id='+item.cartGoodsId+'"><img style="width:100px;height:100px" src=../..'+item.url+'></a></td>'+
 					'<td><span style="padding-top:20px;font-size:12px;margin-left:10px;text-align:left;width:200px;height:100px;overflow:hidden;display:block">'+item.describe+'<span></td>' + 
-					'<td style="width:120px;height:100px"><span style="width:120px;font-size:14px;display:block">原价￥'+item.oldPrice+'</span>'+
+					'<td style="width:120px;height:100px"><span style="width:120px;font-size:14px;display:block" >原价￥'+item.oldPrice+'</span>'+
 					'<span style="width:120px;color:red;font-size:20px;display:block">现价￥'+item.nowPrice+'</span></td>'+ 
 					'<td style="width:50px;height:100px;"><span style="width:50px;font-size:14px;color:orange">程度'+item.level+'</td>'+ 
 					'<td><input type="hidden" id="id'+index+'" value='+item.id+'>'+
+					'<td><input type="hidden" id="goods_'+index+'" value='+item.cartGoodsId+'>'+
 					'<td style="padding-left:10px;width:100px;height:100px">'+
-					'<span style="width:80px;display:block;line-height:30px;font-size:15px;"><button style="background:#ff552e;color:white" onclick="compare('+index+')">对比</button></span>'+
-					'<span style="width:80px;display:block;height:30px"><button style="background:#ff552e;color:white" onclick="buyCart('+index+')">购买</button></button></span>'+
-					'<span style="width:80px;display:block;height:30px"><button style="background:#ff552e;color:white" onclick="delCart('+index+')">删除</button></span>'+
+					'<span style="width:80px;display:block;line-height:30px;font-size:15px;"><button style="background:#ff552e;color:white;border-radius:8px;width:100%;height:100%;" onclick="compare('+index+')">对比</button></span>'+
+					'<span style="width:80px;display:block;height:30px"><button style="background:#ff552e;color:white;cursor: pointer;border-radius: 8px;width:100%;height:100%;" onclick="buyCart('+index+')">购买</button></button></span>'+
+					'<span style="width:80px;display:block;height:30px"><button style="background:#ff552e;color:white;border-radius: 8px;width:100%;height:100%;" onclick="delCart('+index+')">删除</button></span>'+
 					'</td>'+
 				    '</tr>');
 		});
@@ -39,7 +40,11 @@ function timestampToTime(timestamp) {
 }
 /*购买一件商品*/
 function buyCart(index){
-
+	if( GLOBAL_TOKEN==""){
+		window.location.href="./login.html";
+	}
+	var goods_id=$("#goods_"+index).val();
+	window.location.href="./order.html?goods_id="+goods_id;
 }
 /*删除购物车中的某件商品*/
 function delCart(index){
@@ -47,7 +52,6 @@ function delCart(index){
 	if(cart_id!=null||cart_id!=""){
 		var param={};
 		param.c_id=cart_id;
-		alert(cart_id);
 		$.ajax({
 			type : "POST",
 			headers : {

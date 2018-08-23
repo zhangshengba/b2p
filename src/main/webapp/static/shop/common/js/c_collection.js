@@ -13,7 +13,7 @@ $.ajax({
 			
 			$("#tbody").append('<tr style="height:120px; overflow: hidden;display:block;margin-top:15px;border-bottom:thick dotted #fff;">' +
 					'<td style="width:20px;margin-right:10px"><input name="checkbox" type="checkbox" /></td>' +
-					'<td><img style="width:100px;height:100px" src=../..'+item.url+'></td>'+
+					'<td><a href="goods.html?goods_id='+item.collectionGoodsId+'"><img style="width:100px;height:100px" src=../..'+item.url+'></a></td>'+
 					'<td><span style="padding-top:20px;font-size:12px;margin-left:10px;text-align:left;width:200px;height:100px;overflow:hidden;display:block">'+item.describe+'<span></td>' + 
 					'</td>'+
 				    '</tr>');	

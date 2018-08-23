@@ -15,6 +15,13 @@ public interface ShopOrderService {
 	 */
 	public Integer addOrdersCountByMonth();
 	/**
+	 * @desc 添加一个订单
+	 * @param uid
+	 * @param gid
+	 * @return
+	 */
+	public ShopOrder addOrder(String uid,String gid);
+	/**
 	 * @desc 查询某一时间段内的用户订单
 	 * @author zsb
 	 * @param startDate

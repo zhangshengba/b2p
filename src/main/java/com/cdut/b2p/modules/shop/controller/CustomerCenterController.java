@@ -28,6 +28,7 @@ import com.cdut.b2p.common.config.Global;
 import com.cdut.b2p.common.controller.BaseController;
 import com.cdut.b2p.common.utils.IdUtils;
 import com.cdut.b2p.common.utils.SecurityUtils;
+import com.cdut.b2p.modules.shop.po.ShopAddress;
 import com.cdut.b2p.modules.shop.po.ShopCart;
 import com.cdut.b2p.modules.shop.po.ShopCartVo;
 import com.cdut.b2p.modules.shop.po.ShopCollection;
@@ -298,7 +299,7 @@ public class CustomerCenterController extends BaseController{
 	@RequestMapping(value="/myCart",method=RequestMethod.POST)
 	public String myCart(HttpServletResponse response,HttpServletRequest request) {
 		String uid=(String) request.getAttribute("uid");
-		String gid=request.getParameter("gid");
+		String gid=request.getParameter("goods_id");
 		shopCartService.addCart(uid, gid);
 		return renderString(response, "添加成功");
 	}
