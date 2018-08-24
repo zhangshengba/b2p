@@ -10,11 +10,10 @@ $.ajax({
 		    	  $.each(data.model.OrderVoList, function(index, item) {
 		    		  $("#tbody").append('<tr style="width:100%;height:120px;border-bottom:thick dotted #fff;">'+
 	              		'<td style="width:110px;height:110px;"><img style="width:100px;height:100px;" src="../..'+item.url+'"/></td>'+
-	              		'<td style="width:300px;padding-left:20px;padding-top:60px"><span style="display:block;width:300px;height:100px;overflow:hidden;">'+'二手手机购买'+'</span></td>'+
-	              		'<td style="width:200px;"><span>'+timestampToTime(item.createDate)+'</span></td>'+
-	              		'<td style="width:200px;"><span>￥'+item.orderPrice+'</span></td>'+
-	              		'<td style="width:200px;"><span>'+item.orderPrice+'</span></td>'+
-	              		'<td style="width:300px;"><a href="#"><span>评论一波</span></a></td>'+
+	              		'<td style="width:100px;"><span>'+'二手手机购买'+'</span></td>'+
+	              		'<td style="width:100px;"><span>'+timestampToTime(item.createDate)+'</span></td>'+
+	              		'<td style="width:100px;"><span>￥'+item.orderPrice+'</span></td>'+
+	              		'<td style="width:100px;"><a href="./goods.html?goods_id='+item.orderGoodsId+'"><span>评论一波</span></a></td>'+
 	              	'</tr>');
                   });
 		    },

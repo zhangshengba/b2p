@@ -352,4 +352,20 @@ public class CustomerCenterController extends BaseController{
 		model.addObject("ShopGoodsList", list);
 		return renderString(response, model);
 	}
+	@RequestMapping(value="/show",method=RequestMethod.POST)
+	public String show(HttpServletResponse response,HttpServletRequest request) {
+		System.out.println("进行第二种方式对比");
+		ModelAndView model=new ModelAndView();
+		String last_id=request.getParameter("last_id");
+		String now_id=request.getParameter("now_id");
+		ShopCart cart1=shopCartService.findCartById(last_id);
+		ShopCart cart2=shopCartService.findCartById(now_id);
+		System.out.println(last_id+"\n"+now_id);
+		ShopGoodsInfo info1=shopGoodsService.findGoodsByGoodsId(cart1.getCartGoodsId(), false);
+		ShopGoodsInfo info2=shopGoodsService.findGoodsByGoodsId(cart2.getCartGoodsId(), false);
+		model.addObject("ShopGoodsInfo1", info1);
+		model.addObject("ShopGoodsInfo2", info2);
+		//对比功能->价格
+		return renderString(response, model);
+	}
 }
