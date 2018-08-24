@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cdut.b2p.common.controller.BaseController;
+import com.cdut.b2p.common.utils.IdUtils;
 import com.cdut.b2p.modules.shop.po.ShopGoods;
 import com.cdut.b2p.modules.shop.po.ShopGoodsInfo;
 import com.cdut.b2p.modules.shop.po.ShopOrder;
@@ -62,5 +63,42 @@ public class ShopOrderController extends BaseController{
 		ShopOrder order=shopOrderService.addOrder(uid, gid);
 		model.addObject("ShopOrder", order);
 		return renderString(response, model);
+	}
+	/**
+	 * @desc 确认下单
+	 * @param response
+	 * @param request
+	 * @return
+	 */
+	@ShopAuth
+	@RequestMapping(value="/sureOrder",method=RequestMethod.POST)
+	public String userOrder(HttpServletResponse response,HttpServletRequest request,ShopOrder shopOrder) {
+		String uid=(String) request.getAttribute("uid");
+		shopOrder.setOrderBuyerId(uid);
+		shopOrderService.addOrder(shopOrder);
+		String order_id=shopOrder.getId();
+		ModelAndView model=new ModelAndView();
+		model.addObject("Id",order_id);
+		return renderString(response,model );
+	}
+	/**
+	 * @desc 用户支付所购物品的金钱
+	 * @param response
+	 * @param request
+	 * @return
+	 */
+	@ShopAuth
+	@RequestMapping(value="/pay",method=RequestMethod.POST)
+	public String pay(HttpServletResponse response,HttpServletRequest request,ShopOrder shopOrder) {
+		String uid=(String) request.getAttribute("uid");
+		System.out.println("进入支付环节");
+		shopOrder.setId(IdUtils.uuid());
+		shopOrder.setOrderBuyerId(uid);
+		shopOrderService.addOrder(shopOrder);
+		String order_id=shopOrder.getId();
+		if(shopOrderService.pay(order_id, uid)) {
+			return renderString(response, "yes");
+		}
+		return renderString(response, "no");
 	}
 }
