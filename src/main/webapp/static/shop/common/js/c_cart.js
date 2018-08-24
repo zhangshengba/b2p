@@ -17,7 +17,7 @@ $.ajax({
 					'<td><input type="hidden" id="id'+index+'" value='+item.id+'>'+
 					'<td><input type="hidden" id="goods_'+index+'" value='+item.cartGoodsId+'>'+
 					'<td style="padding-left:10px;width:100px;height:100px">'+
-					'<span style="width:80px;display:block;line-height:30px;font-size:15px;"><button style="background:#ff552e;color:white;border-radius:8px;width:100%;height:100%;" onclick="compare('+index+')">对比</button></span>'+
+					'<span style="width:80px;display:block;line-height:30px;font-size:15px;"><button style="background:#ff552e;color:white;border-radius:8px;width:100%;height:100%;" onclick="duibi('+index+')"  id="duibi'+index+'">对比</button></span>'+
 					'<span style="width:80px;display:block;height:30px"><button style="background:#ff552e;color:white;cursor: pointer;border-radius: 8px;width:100%;height:100%;" onclick="buyCart('+index+')">购买</button></button></span>'+
 					'<span style="width:80px;display:block;height:30px"><button style="background:#ff552e;color:white;border-radius: 8px;width:100%;height:100%;" onclick="delCart('+index+')">删除</button></span>'+
 					'</td>'+
@@ -28,6 +28,7 @@ $.ajax({
 		alert("请登录");
 	}
 });
+
 function timestampToTime(timestamp) {
     var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
     Y = date.getFullYear() + '-';
@@ -105,6 +106,31 @@ function compare(index){
 				alert("请登录");
 			}
 		});
+	}
+}
+/*两次点击对比按钮，所获取的id值*/
+var last_id;
+var now_id;
+/*点击对比按钮的次数*/
+var compareCount=0;
+function duibi(index){
+	++compareCount;
+	var cart_id=$("#id"+index).val();
+	now_id=cart_id;
+	if(compareCount==1){
+		last_id=now_id;
+		$("#duibi"+index).css("background","#FF7F50");
+		
+	}
+	else if(compareCount==2){
+		//进行对比
+		window.location.href="./c_show.html?last_id="+last_id+"&now_id="+now_id;
+	}
+	else{
+		//进行取消
+		compareCount=0;
+		$("#duibi"+last_id).css("background","#ff552e");
+		$("#duibi"+now_id).css("background","#ff552e");
 	}
 }
 /*鼠标离开对比商品列表*/
