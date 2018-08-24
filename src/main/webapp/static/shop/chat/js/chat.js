@@ -43,9 +43,11 @@ if(token != ""){
 	};
 	websocket.onerror = function(event) {
 		//layer.alert("系统错误");
+		$('#chat').hide()
 	};
 	websocket.onclose = function(event) {
 		//layer.alert("系统错误");	
+		$('#chat').hide()
 	}
 }else{
 	$('#chat').hide()
@@ -95,6 +97,7 @@ function renderChat(id){
 	
 function openChat(seller_id,seller_nickname,seller_img){
 	if(seller_id == user_id){
+		layer.alert("不能对自己聊天");
 		return;
 	}
 	to_id = seller_id;
