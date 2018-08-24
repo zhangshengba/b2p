@@ -19,7 +19,6 @@
 <script src="./common/js/pc_index.js"></script>
 <script src="./layer/layer.js"></script>
 <script src="./common/js/jquery.cookie.js"></script>
-<script src="./chat/js/chat.js"></script>
 
 </head>
 
@@ -203,6 +202,9 @@
 
 </body>
 <script>
-$("#chat").load("./chat/index.html");
+var token = GLOBAL_TOKEN;
+$("#chat").load("./chat/index.html",function(){
+$.getScript("./chat/js/chat.js");
+});
 </script>
 </html>
