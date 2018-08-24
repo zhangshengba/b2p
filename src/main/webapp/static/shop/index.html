@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="common/css/listzz.css"
 	tppabs="common/css/listzz.css" media="all" />
 <link rel="stylesheet" type="text/css" href="chat/font_Icon/iconfont.css">
+<link rel="stylesheet" type="text/css" href="chat/css/chat.css">
 <script src="./common/js/token.js"></script>
 <script src="./common/js/path.js"></script>
 <script src="./common/js/jquery.js"></script>
@@ -200,4 +201,10 @@
 	<div id="chat"></div>
 
 </body>
+<script>
+var token = GLOBAL_TOKEN;
+$("#chat").load("./chat/index.html",function(){
+$.getScript("./chat/js/chat.js");
+});
+</script>
 </html>
