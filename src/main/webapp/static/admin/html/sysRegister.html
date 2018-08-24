@@ -32,13 +32,7 @@
   		var userNickname=registerForm.userNickname.value;
   		var userImage=registerForm.userImage.value;
   		var userPassword=registerForm.userPassword.value;
-  		/*
-  		alert(isUserName());
-  		alert(isUserEmail());
-  		alert(isUserNickname());
-  		alert(isUserPassword());
-  		alert(isPassword());
-  		*/
+ 
   		if(isUserName()&&isUserEmail()&&isUserNickname()&&isUserPassword()&&isPassword()){
   			var param={};
   	  		param.userName=userName;
@@ -74,7 +68,6 @@
   			});
   		}
   		else{
-  			alert("信息有误！");
   		}
   		
   	}

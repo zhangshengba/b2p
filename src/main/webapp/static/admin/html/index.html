@@ -41,6 +41,9 @@
     <script src="../js/jquery.js"></script>
   <script type="text/javascript">
 	  function load(){
+		  if(GLOBAL_TOKEN==""){
+			  window.location.href="./sysLogin.html";
+		  }
 		  $.ajax({
 	            type:"POST",
 	            headers: {
@@ -50,8 +53,10 @@
 	            url:"/b2p/sys/admin/index",
 	            data: {},
 	            success:function(data){
-	               alert("返回所需数据");
+	               /*
+	            	alert("返回所需数据");
 	               alert(data.model.User.id);
+	               */
                    setUser(data);
                    //进行信息展示
                    setInfo(data);
@@ -59,7 +64,7 @@
 	            },
 	            error:function(data){
 	            	//发生错误，跳转到404页面
-	                alert("发生错误");
+	                //alert("发生错误");
 	            }
 	        });
 		  
@@ -87,7 +92,7 @@
               dataType: "json",
               url:"/b2p/sys/admin/exit",
               success:function(data){
-                  alert(data.Message);
+                  //alert(data.Message);
                   if(data.Message=="exit"){
                       //清除缓存
                       localStorage.removeItem("cdutb2p_sys_token");
@@ -100,7 +105,7 @@
               },
               error:function(data){
                   //发生错误，跳转到404页面
-                  alert("发生错误");
+                  //alert("发生错误");
               }
           });
 
@@ -358,7 +363,7 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3 id="newOrders">150</h3>
+              <h3 id="newOrders">0</h3>
               <p>新增订单</p>
             </div>
             <div class="icon">
@@ -373,7 +378,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3 id="newGoods">53<sup style="font-size: 20px">%</sup></h3>
+              <h3 id="newGoods">0<sup style="font-size: 20px">%</sup></h3>
               <p>新增商品</p>
             </div>
             <div class="icon">
@@ -381,14 +386,14 @@
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
-        </div>ss
+        </div>
         <!--一段时间内，新增加的用户注册数-->
 		<!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3 id="newUsers">44</h3>
+              <h3 id="newUsers">0</h3>
 
               <p>新增用户</p>
             </div>
@@ -404,7 +409,7 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3 id="newVisitors">65</h3>
+              <h3 id="newVisitors">0</h3>
 
               <p>新增浏览用户</p>
             </div>
