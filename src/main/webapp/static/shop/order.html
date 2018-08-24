@@ -33,19 +33,12 @@
 			<!--顶右-->
 			<div class="bar_right">
 				<div id="commonTopbar_login">
-					<span title="cdut135">cdut135</span>
-					<!--获取用户信息-->
-					<a style="margin-left: 6px" href="./login.html" target="_self">退出</a>
-				</div>
-				<div id="commonTopbar_mymenu" class="haschild">
-					<a id="commonTopbar_tomy" href=""
-						target="_blank">买家中心</a>
-				</div>
-				<div id="commonTopbar_vip" class="haschild">
-					<a class="mytxt" href="./m_seller_product.html" target="_blank">卖家中心</a>
+					<span title="cdut135" id="userNameOne" style="color:orange">my account</span><!--获取用户信息-->
+					<!-- <span class="red"><a style="color:#F00;margin: 0px;" href="" title="你有4条未读短信息">4</a></span>) -->
+					<a href="" style="margin-left:6px" onclick="clearToken();window.location.reload();" target="_self">退出</a>
 				</div>
 				<div id="commonTopbar_help" class="help-con haschild">
-					<a class="mytxt" target="_blank">联系客服</a>
+					<a href="" class="mytxt" tongji_tag="pc_topbar_log_ai" target="_blank">联系客服</a>
 				</div>
 			</div>
 		</div>
@@ -57,18 +50,18 @@
 			<ul class="header-ul" id="header-ul">
 				<li><a class="a1" href="./m_buyer_collection.html"
 					target="_self">买家中心</a></li>
-				<li><a class="a1" href="#" target="_self">账户设置</a>
+				<li><a class="a1" href="./u_center.html" target="_self">账户设置</a>
 				</li>
-				<li><a class="a1" href="#" target="_self">卖家中心</a>
+				<li><a class="a1" href="./s_center.html" target="_self">卖家中心</a>
 				</li>
 			</ul>
 			<div class="header-search-div">
-				<a class="header-bt" href="#" target="_blank">发布信息</a>
+				<a class="header-bt" href="./goods_onshelf.html" target="_blank">发布信息</a>
 			</div>
 		</div>
 	</div>
 
-	<div class="page-wrap w">
+	<div class="page-wrap w" id="order_info">
 		<div class="panel">
 			<h1 class="panel-title">收货地址</h1>
 			<div class="panel-body address-con" style="display:inline-block" id="address">
@@ -116,7 +109,6 @@
 			            <div style="margin-top:20px;display:block;width:250px;height:40px">
 			                <input type="button" value="保存该地址" onclick="sureAddress()" style="margin-left:105px;border-radius:4px;width: 100px;height: 40px;background: #fff;color:orangered;border:1px solid orangered;">
 			            </div>
-			
 			        </form>
 			    </div>
 			</div>
@@ -151,12 +143,19 @@
 				</table>
 				<div class="submit-con">
 					<span >订单总价:</span> <span class="submit-total" id="order_price"></span>
-					<span class="btn order-submit">提交订单</span>
+					<span class="btn order-submit" onclick="sureOrder()">提交订单</span>
 				</div>
 			</div>
 		</div>
 	</div>
-
+	<!-- 显示支付是否成功 -->
+	<div id="isSuccess" style="display:none;position: fixed;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.5);">
+		<div style="border-radius: 4px;background:#eeeeee;width:400px;height:100px;z-index: 1;margin: 12% auto;overflow: auto;">
+			   <span id="tishi" style="margin_left:150px;margin-top:30px;text-align:center;width:100px;line-height:50px;font-size:25px '微软雅黑';"></span>     
+        	   <input type="button" value="X" style="font-size:20px;margin-left:270px;width:30px;height:30px;background:#eeeeee;border-radius:8px;border:1px solid #eeeeee;display:inline-block;"
+			        onclick="window.location.href='./u_center.html'">
+        </div>
+	</div>
 
 </body>
 </html>

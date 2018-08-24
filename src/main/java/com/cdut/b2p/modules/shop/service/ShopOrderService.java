@@ -22,6 +22,12 @@ public interface ShopOrderService {
 	 */
 	public ShopOrder addOrder(String uid,String gid);
 	/**
+	 * @desc 增加一个订单
+	 * @param shopOrder
+	 * @return
+	 */
+	public boolean addOrder(ShopOrder shopOrder);
+	/**
 	 * @desc 查询某一时间段内的用户订单
 	 * @author zsb
 	 * @param startDate
@@ -53,6 +59,13 @@ public interface ShopOrderService {
 	 * @return
 	 */
 	public List<ShopOrder> findOrderBySeller(String id);
+	/**
+	 * @desc 根据订单id，前往支付
+	 * @param id
+	 * @param uid
+	 * @return
+	 */
+	public boolean pay(String id,String uid);
 	/**
 	 * @desc 用户催单
 	 * @param id

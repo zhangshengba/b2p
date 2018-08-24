@@ -281,6 +281,7 @@ function buy(){
 		dataType : "json",
 		success : function(data) {
 			alert("添加成功");
+			window.location.href="./c_cart.html";
 		},
 		error : function(data) {
 			//layer.alert('系统错误');

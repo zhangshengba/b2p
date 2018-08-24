@@ -2,6 +2,7 @@ package com.cdut.b2p.modules.shop.service.impl;
 
 import static org.junit.jupiter.api.Assumptions.assumingThat;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,12 +17,18 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cdut.b2p.common.utils.IdUtils;
 import com.cdut.b2p.modules.shop.mapper.ShopGoodsMapper;
 import com.cdut.b2p.modules.shop.mapper.ShopOrderMapper;
+import com.cdut.b2p.modules.shop.mapper.ShopUserMapper;
+import com.cdut.b2p.modules.shop.mapper.ShopWalletMapper;
 import com.cdut.b2p.modules.shop.po.ShopGoods;
 import com.cdut.b2p.modules.shop.po.ShopGoodsExample;
 import com.cdut.b2p.modules.shop.po.ShopOrder;
 import com.cdut.b2p.modules.shop.po.ShopOrderExample;
 import com.cdut.b2p.modules.shop.po.ShopOrderVo;
+import com.cdut.b2p.modules.shop.po.ShopUser;
+import com.cdut.b2p.modules.shop.po.ShopWallet;
+import com.cdut.b2p.modules.shop.po.ShopWalletExample;
 import com.cdut.b2p.modules.shop.service.ShopOrderService;
+import com.sun.org.apache.xerces.internal.impl.dv.xs.DecimalDV;
 
 @Service
 @Transactional
@@ -30,6 +37,10 @@ public class ShopOrderServiceImpl implements ShopOrderService{
 	private ShopOrderMapper shopOrderMapper;
 	@Autowired
 	private ShopGoodsMapper shopGoodsMapper;
+	@Autowired
+	private ShopWalletMapper shopWalletMapper;
+	@Autowired
+	private ShopUserMapper shopUserMapper;
 	/**
 	 * @desc 上一个月成交的订单数量
 	 * @author zsb
@@ -235,6 +246,55 @@ public class ShopOrderServiceImpl implements ShopOrderService{
 		int count=shopOrderMapper.insertSelective(order);
 		
 		return order;
+	}
+	/**
+	 * @desc 增加一个订单
+	 */
+	@Override
+	public boolean addOrder(ShopOrder shopOrder) {
+		shopOrder.setCreateDate(new Date());
+		shopOrder.setUpdateDate(new Date());
+		shopOrder.setDelFlag("0");
+		shopOrder.setOrderStatus("0");
+		int count=shopOrderMapper.insertSelective(shopOrder);
+		if(count>0) {
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * @desc 根据订单id，前往支付
+	 */
+	@Override
+	public boolean pay(String id,String uid) {
+		//根据订单查询，支付总价
+		ShopOrder shopOrder=shopOrderMapper.selectByPrimaryKey(id);
+		BigDecimal price=shopOrder.getOrderPrice();
+		//根据用户id，查询钱包
+		ShopUser user=shopUserMapper.selectByPrimaryKey(uid);
+		String w_id=user.getUserWalletId();
+		if(w_id==null||w_id=="") {
+			return false;
+		}
+		//进行余额查询
+		ShopWallet wallet=shopWalletMapper.selectByPrimaryKey(w_id);
+		if(wallet.getBalance().longValue()<shopOrder.getOrderPrice().longValue()) {
+			return false;
+		}
+		//更新订单
+		ShopOrderExample example=new ShopOrderExample();
+		example.or().andIdEqualTo(id);
+		ShopOrder order=new ShopOrder();
+		order.setOrderStatus("1");
+		order.setUpdateDate(new Date());
+		shopOrderMapper.updateByExampleSelective(order, example);
+		//更新钱包表
+		ShopWalletExample shopWalletExample=new ShopWalletExample();
+		shopWalletExample.or().andIdEqualTo(w_id);
+		ShopWallet shopWallet=new ShopWallet();
+		shopWallet.setBalance(new BigDecimal(wallet.getBalance().longValue()-shopOrder.getOrderPrice().longValue()));
+		shopWalletMapper.updateByExampleSelective(shopWallet, shopWalletExample);
+		return true;
 	}
 
 }
