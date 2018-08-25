@@ -25,7 +25,7 @@ function genUserInfo() {
     	}
     },
     error:function(data){
-    	alert("发生错误");
+    	//alert("发生错误");
     	
     }
 });
@@ -47,7 +47,7 @@ function genArea() {
 			}
 		},
 		error : function(data) {
-			layer.alert('系统错误');
+			//layer.alert('系统错误');
 		}
 
 	});
@@ -161,7 +161,7 @@ function genBrand() {
 			}
 		},
 		error : function(data) {
-			layer.alert('系统错误');
+			//layer.alert('系统错误');
 		}
 
 	});
@@ -252,7 +252,7 @@ function onshelf(){
                       },
 					  
              error: function(data){  
-                        layer.alert('系统错误');
+                        //layer.alert('系统错误');
                    }
          });
 }
