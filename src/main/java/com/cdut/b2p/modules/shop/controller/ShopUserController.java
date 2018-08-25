@@ -124,11 +124,11 @@ public class ShopUserController extends BaseController {
 			if (code != null && !StringUtils.isBlank(code)) {
 				Long t = (Long) CacheUtils.get(id + "time");
 				if (!TimestampUtils.IsAfter(t)) {
-					return renderErrorString(response, "已经发送邮件,请等待五分钟后在发送");
+					return renderErrorString(response, "已经发送邮件,请等待30秒后在发送");
 				}
 			}
 			String regEmailCode = StringUtils.genRandomStringOfInt(6);
-			Long time = TimestampUtils.timeAfter(5 * 60 * 1000);
+			Long time = TimestampUtils.timeAfter(1 * 30 * 1000);
 			CacheUtils.put(id, regEmailCode);
 			CacheUtils.put(id + "time", time);
 			CacheUtils.put(id + "email", email);
@@ -156,7 +156,7 @@ public class ShopUserController extends BaseController {
 				if (code_pre != null && !StringUtils.isBlank(code_pre)) {
 					Long t = (Long) CacheUtils.get("password_" + email + "_time");
 					if (!TimestampUtils.IsAfter(t)) {
-						return renderErrorString(response, "已经发送邮件,请等待五分钟后在发送");
+						return renderErrorString(response, "已经发送邮件,请等待30秒后在发送");
 					}
 				}
 				
@@ -165,7 +165,7 @@ public class ShopUserController extends BaseController {
 						+ request.getServerPort() + request.getContextPath() + "/static";
 				String url = contextpath + Global.getShopPath() + "/set_password.html" + "?email=" + email + "&code="
 						+ code;
-				Long time = TimestampUtils.timeAfter(5 * 60 * 1000);
+				Long time = TimestampUtils.timeAfter(1 * 30 * 1000);
 				CacheUtils.put("password_" + email + "_time", time);
 				CacheUtils.put("password_" + email, code);
 				EmailUtils.Send(email, url, "访问连接,设置新密码");
