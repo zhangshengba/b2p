@@ -69,7 +69,7 @@ public abstract class BaseController {
 	protected void addMessage(RedirectAttributes redirectAttributes, String... messages) {
 		StringBuilder sb = new StringBuilder();
 		for (String message : messages){
-			sb.append(message).append(messages.length>1?"<br/>":"");
+			sb.append(message).append(messages.length>1?"<br/>":"")	;
 		}
 		redirectAttributes.addFlashAttribute("message", sb.toString());
 	}
@@ -162,6 +162,7 @@ public abstract class BaseController {
 	 * 客户端返回字符串
 	 * @param response
 	 * @param string
+	 * @param type为返回的数据格式类型
 	 * @return
 	 */
 	protected String renderString(HttpServletResponse response, String string, String type) {
